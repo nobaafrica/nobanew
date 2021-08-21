@@ -26,5 +26,6 @@ Route::get('/verify-account', VerifyAccount::class)->name('verify-account')->mid
 Route::get('/wallet', Wallet::class)->name('wallet')->middleware('auth');
 
 Route::get('/payment/webhook', [Webhook::class, 'validateRequest']);
+Route::get('/payment/callback', [Webhook::class, 'verifyPayment']);
 
 require __DIR__.'/auth.php';

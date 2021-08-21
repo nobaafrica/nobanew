@@ -3,9 +3,12 @@
 namespace App\Jobs;
 
 use App\Events\CustomerIdentified;
+use App\Models\Transactions;
+use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Support\Str;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -35,11 +38,25 @@ class ProcessWebhook implements ShouldQueue
     {
         $event = $this->event['event'];
         $data = $this->event['data'];
+        $wallet = Wallet::where('customerCode', $data['customer_code'])->first();
         if($event == 'customeridentification.success'):
-            Wallet::where('customerCode', $data['customer_code'])->update(['verified', 1]);
+            $wallet->verified = 1;
+            $wallet->save();
             CustomerIdentified::dispatch($data['customer_code']);
         elseif($event == 'charge.success'):
-            Wallet::where('customerCode', $data['customer_code'])->update(['accountBalance', $data['amount']/100]);
+            $user = User::find($wallet->user_id);
+            $user->transactions()->create([
+                'id' => Str::uuid(), 
+                'transactionType' => 'credit', 
+                'amount' => $data['amount']/100, 
+                'reference' => $data['reference'], 
+                'status' => $data['status'], 
+                'time' => $data['paid_at'],
+                'payment_method' => $data['channel'],
+            ]);
+            $wallet->accountBalance = $wallet->accountBalance + $data['amount'];
+            $wallet->withdrawableBalance = $wallet->withdrawableBalance + $data['amount'];
+            $wallet->save();
         endif;
     }
 }

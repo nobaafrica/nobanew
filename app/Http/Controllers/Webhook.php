@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessWebhook;
+use App\Models\Transactions;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class Webhook extends Controller
@@ -14,16 +18,6 @@ class Webhook extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
     {
         //
     }
@@ -48,47 +42,30 @@ class Webhook extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function verifyPayment()
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $tref = request()->query('trxref');
+        $url = "https://api.paystack.co/transaction/verify/$tref";
+        $request = Http::withToken(config('app.paystack_secret'))->get($url)->object();
+        if($request->data->status == 'success'):
+            $user = User::find(Auth::user()->id);
+            $user->wallet()->update([
+                'withdrawableBalance' =>  $user->wallet->withdrawableBalance + $request->data->amount/100,
+                'accountBalance' =>  $user->wallet->accountBalance + $request->data->amount/100,
+            ]);
+            Transactions::where('reference', $tref)->update([
+                'status' => 'success',
+                'time' => now(),
+                'payment_method' => $request->data->channel
+            ]);
+            session()->flash('success', 'Wallet funded successfully');
+            return redirect()->route('wallet');
+        endif;
     }
 }

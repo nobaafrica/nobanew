@@ -68,7 +68,7 @@
 
                         <div class="d-flex flex-column h-100">
                             <div class="mb-4 mb-md-5">
-                                <a href="index.html" class="d-block auth-logo">
+                                <a href="{{route('/')}}" class="d-block auth-logo">
                                     <img src="assets/images/logo-dark.png" alt="" height="58" class="auth-logo-dark">
                                     <img src="assets/images/logo-light.png" alt="" height="58" class="auth-logo-light">
                                 </a>

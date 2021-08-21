@@ -1,5 +1,7 @@
 @push('styles')
 <link href="{{ asset ('assets/libs/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset ('assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset ('assets/libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />  
 @endpush
 <div>
     <x-slot name="header">
@@ -19,6 +21,7 @@
             </div>
         </div>
     </x-slot> 
+    <x-alert />
     <div class="row">
         <div class="col-xl-4">
             <div class="card">
@@ -67,20 +70,11 @@
 
                 <div class="card-body border-top">
                     <p class="text-muted mb-4">Manage Wallet</p>
-                    @if (session()->has('error'))
-                    <div class = 'font-medium text-sm text-danger'>
-                        {{ session('error') }}
-                    </div>
-                    @elseif(session()->has('success'))
-                    <div class = 'font-medium text-sm text-success'>
-                        {{ session('success') }}
-                    </div>
-                    @endif
                     <div class="text-center">
-                        <div class="row justify-content-between">
+                        <div class="row justify-content-between p-2">
                             @if (is_null($wallet) || is_null($wallet->accountNumber))
                             <div class="col-sm-4">
-                                <div class="mt-4 mt-sm-0">
+                                <div>
                                     <div class="font-size-24 text-primary mb-2">
                                         <i class="bx bx-plus"></i>
                                     </div>
@@ -104,7 +98,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-4">
-                                <div class="mt-4 mt-sm-0">
+                                <div>
                                     <div class="font-size-24 text-primary mb-2">
                                         <i class="bx bx-import"></i>
                                     </div>
@@ -183,33 +177,83 @@
             </div>
         </div>
     </div>
-</div>
-@push('modals')
-<div class="modal fade" id="fund-wallet" tabindex="-1" aria-labelledby="fundWallet" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header border-bottom-0">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="text-center mb-4">
-                    <div class="avatar-md mx-auto mb-4">
-                        <div class="avatar-title bg-light rounded-circle text-primary h1">
-                            <i class="mdi mdi-check-outline"></i>
-                        </div>
-                    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Transactions</h4>
+                    <div class="mt-4">
+                        <div class="table-responsive">
+                            <table id="datatable" class="table table-hover dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th>ID No</th>
+                                        <th>Date</th>
+                                        <th>Amount</th>
+                                        <th>Transaction Status</th>
+                                        <th>Transaction Type</th>
+                                        <th>Payment Method</th>
+                                    </tr>
+                                </thead>
 
-                    <div class="row justify-content-center">
-                        <div class="col-xl-10">
-                            <h4 class="text-primary">Proceed to Paystack!</h4>
-                            <p class="text-muted font-size-14 mb-4">How much do you want to fund your wallet with?</p>
-                            <div class="input-group bg-light rounded">
-                                <input type="number" inputmode="numeric" class="form-control bg-transparent border-0" placeholder="Enter Amount">
-                                
-                                <button class="btn btn-primary" type="button" id="button-addon2">
-                                    <i class="bx bxs-paper-plane"></i>
-                                </button>
-                                
+                                <tbody>
+                                    @foreach ($transactions as $tx)
+                                    <tr class="text-capitalize">
+                                        <td><a href="javascript: void(0);" class="text-body fw-bold">#{{$tx->reference}}</a></td>
+                                        <td>{{\Carbon\Carbon::parse($tx->time)->format('d F, Y')}}</td>
+                                        <td>₦{{number_format($tx->amount)}}</td>
+                                        <td>
+                                            @if(Str::lower($tx->status) == 'success')
+                                            <span class="badge badge-pill badge-soft-success font-size-11">{{$tx->status}}</span>
+                                            @else
+                                            <span class="badge badge-pill badge-soft-danger font-size-11">{{$tx->status}}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($tx->transactionType == 'credit')
+                                            <span class="badge badge-pill badge-soft-success font-size-11">{{$tx->transactionType}}</span>
+                                            @else
+                                            <span class="badge badge-pill badge-soft-danger font-size-11">{{$tx->transactionType}}</span>
+                                            @endif
+                                        <td>
+                                            <i class="fab fa-cc-mastercard me-1"></i> {{$tx->payment_method}}
+                                        </td>
+                                    </tr> 
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end row -->
+    <div class="modal fade" id="fund-wallet" tabindex="-1" aria-labelledby="fundWallet" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <div class="avatar-md mx-auto mb-4">
+                            <div class="avatar-title bg-light rounded-circle text-primary h1">
+                                <i class="mdi mdi-check-outline"></i>
+                            </div>
+                        </div>
+    
+                        <div class="row justify-content-center">
+                            <div class="col-xl-10">
+                                <h4 class="text-primary">Proceed to Paystack!</h4>
+                                <p class="text-muted font-size-14 mb-4">How much do you want to fund your wallet with?</p>
+                                <form class="input-group bg-light rounded" wire:submit.prevent='fundWallet'>
+                                    <input type="number" inputmode="numeric" wire:model='fundingAmount' class="form-control bg-transparent border-0" placeholder="Enter Amount">
+                                    <button class="btn btn-primary" type="submit" id="button-addon2">
+                                        <i class="bx bxs-paper-plane"></i>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -218,10 +262,30 @@
         </div>
     </div>
 </div>
-@endpush
 @push('scripts')
-<script src="{{ asset ('assets/js/pages/crypto-wallet.init.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}" defer></script>
 <script type="module" defer>
-
+    document.addEventListener('DOMContentLoaded', function () {
+        let txs = {!!$txs!!}
+        var options = {
+            series: [
+                { type: "area", name: "Transactions", data: txs },
+            ],
+            chart: { height: 240, type: "line", toolbar: { show: !1 } },
+            dataLabels: { enabled: !1 },
+            stroke: { curve: "smooth", width: 2, dashArray: [0, 0, 3] },
+            fill: { type: "solid", opacity: [0.15, 0.05, 1] },
+            xaxis: { type: 'category' },
+            colors: ["#8ebf49", "#3452e1", "#50a5f1"],
+        },
+        chartOverview = new ApexCharts(document.querySelector("#overview-chart"), options);
+        chartOverview.render(),
+        $(function () {
+            $("#datatable").DataTable(), $(".dataTables_length select").addClass("form-select form-select-sm");
+        });
+    })
 </script>
 @endpush

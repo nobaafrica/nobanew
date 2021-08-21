@@ -62,7 +62,7 @@ return [
 
     'paystack_secret' => env('PAYSTACK_SECRET'),
 
-    'payment_url' => env('PAYMENT_CALLBACK'),
+    'payment_callback' => env('PAYMENT_CALLBACK'),
 
     /*
     |--------------------------------------------------------------------------

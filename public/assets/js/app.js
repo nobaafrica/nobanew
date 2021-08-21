@@ -47,8 +47,8 @@
               s("#light-mode-switch").prop("checked", !1),
               s("#rtl-mode-switch").prop("checked", !1),
               s("#dark-rtl-mode-switch").prop("checked", !1),
-              s("#bootstrap-style").attr("href", "assets/css/bootstrap-dark.min.css"),
-              s("#app-style").attr("href", "assets/css/app-dark.min.css"),
+              s("#bootstrap-style").attr("href", "assets/css/bootstrap-dark.css"),
+              s("#app-style").attr("href", "assets/css/app-dark.css"),
               sessionStorage.setItem("is_visited", "dark-mode-switch"))
             : 1 == s("#rtl-mode-switch").prop("checked") && "rtl-mode-switch" === e
             ? (s("#light-mode-switch").prop("checked", !1),

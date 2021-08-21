@@ -3,8 +3,11 @@
 namespace App\Http\Livewire;
 
 use App\Events\CustomerIdentified;
+use App\Models\Transactions;
 use App\Models\User;
 use App\Models\Wallet as ModelsWallet;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Livewire\Component;
@@ -19,6 +22,10 @@ class Wallet extends Component
     public $withdrawableBalance;
     public $referralBonus;
     public $fundingAmount;
+    public $transactions;
+    protected $creditTx;
+    protected $debitTx;
+    
 
     public function mount()
     {
@@ -29,6 +36,9 @@ class Wallet extends Component
         $this->accountName = is_null($this->wallet) ? null : $this->wallet->accountName;
         $this->withdrawableBalance = is_null($this->wallet) ? null : $this->wallet->withdrawableBalance;
         $this->referralBonus = is_null($this->wallet) ? null : $this->wallet->referralBonus;
+        $this->transactions = $this->user->transactions;
+        $this->creditTx = $this->transactions->where('transactionType', 'credit');
+        $this->debitTx = $this->transactions->where('transactionType', 'debit');
     }
 
     public function generateWallet()
@@ -74,19 +84,38 @@ class Wallet extends Component
     public function fundWallet()
     {
         $url = "https://api.paystack.co/transaction/initialize";
+        $ref = mt_rand();
         $initpayment = Http::withToken(config('app.paystack_secret'))->post($url, [
+            'reference' => $ref,
             'email' => $this->user->email,
             'amount' => $this->fundingAmount * 100,
             'callback_url' => config('app.payment_callback'),
         ])->object();
 
         if($initpayment->status == 'true'):
-
+            $this->user->transactions()->create([
+                'id' => Str::uuid(), 
+                'transactionType' => 'credit', 
+                'amount' => $this->fundingAmount, 
+                'reference' => $ref, 
+                'status' => 'pending', 
+                'time' => now(),
+            ]);
+            return redirect($initpayment->data->authorization_url);
+        else:
+            session()->flash('error', 'Unable to initialize payment');
         endif;
+    }
+
+    public function txs()
+    {
+        $query = DB::table('transactions')->select(DB::raw('DATE_FORMAT(time, "%b") AS x'), DB::raw('SUM(amount) as y'),)->where(['user_id' => $this->user->id])->groupByRaw(DB::raw('MONTH(time)'))->orderBy(DB::raw('MONTH(time)'))->get();
+        return $query->toJson();
     }
 
     public function render()
     {
-        return view('livewire.wallet');
+       
+        return view('livewire.wallet')->with(['txs' => $this->txs()]);
     }
 }
