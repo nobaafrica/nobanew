@@ -44,8 +44,8 @@ class Wallet extends Component
         $this->transactions = $this->user->transactions;
         $this->creditTx = $this->transactions->where('transactionType', 'credit');
         $this->debitTx = $this->transactions->where('transactionType', 'debit');
-        $this->userBank = dd($this->user) ? null : $this->user->bank->last()->bank;
-        $this->userAccount = dd($this->user) ? null : $this->user->bank->last()->nuban;
+        $this->userBank = dd($this->user->bank()) ? null : $this->user->bank->last()->bank;
+        $this->userAccount = dd($this->user->bank()) ? null : $this->user->bank->last()->nuban;
     }
 
     public function generateWallet()
