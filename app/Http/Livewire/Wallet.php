@@ -44,8 +44,8 @@ class Wallet extends Component
         $this->transactions = $this->user->transactions;
         $this->creditTx = $this->transactions->where('transactionType', 'credit');
         $this->debitTx = $this->transactions->where('transactionType', 'debit');
-        $this->userBank = dd($this->user->bank()) ? null : $this->user->bank->last()->bank;
-        $this->userAccount = dd($this->user->bank()) ? null : $this->user->bank->last()->nuban;
+        $this->userBank = dd($this->user->bank()->last()) ? null : $this->user->bank()->last()->bank;
+        $this->userAccount = dd($this->user->bank()->last()) ? null : $this->user->bank()->last()->nuban;
     }
 
     public function generateWallet()
@@ -75,7 +75,7 @@ class Wallet extends Component
         $verify = Http::withToken(config('app.paystack_secret'))->post($validationUrl, [
             "country" => "NG",
             "type" => "bvn",
-            "value" => $this->user->bank->first()->bvn,
+            "value" => $this->user->bank()->first()->bvn,
             "first_name" => $this->user->firstName,
             "last_name" => $this->user->lastName,
         ])->object();
@@ -130,8 +130,8 @@ class Wallet extends Component
                 session()->flash('error', 'You do not have enough money in your for this transaction');
             else:
                 // get user bank info
-                $account = is_null($this->user->bank->last()->nuban) ? null : $this->user->bank->last()->nuban;
-                $userBank = is_null($this->user->bank->last()->nuban) ? null : $this->user->bank->last()->bank;
+                $account = is_null($this->user->bank()->last()->nuban) ? null : $this->user->bank()->last()->nuban;
+                $userBank = is_null($this->user->bank()->last()->nuban) ? null : $this->user->bank()->last()->bank;
                 // get transfer info
                 if($this->user->withdrawal()->count() < 1):
                     $withdrawalInfo = $this->firstWithdrawal($account, $userBank);
