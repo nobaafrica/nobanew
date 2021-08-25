@@ -6,6 +6,7 @@ use App\Events\CustomerIdentified;
 use App\Models\Transactions;
 use App\Models\User;
 use App\Models\Wallet;
+use App\Models\Bank;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Support\Str;
@@ -38,12 +39,15 @@ class ProcessWebhook implements ShouldQueue
     {
         $event = $this->event['event'];
         $data = $this->event['data'];
-        $wallet = Wallet::where('customerCode', $data['customer_code'])->first();
         if($event == 'customeridentification.success'):
+            $customer = empty($data['customer_code']) ? $data['customer']['customer_code'] : $data['customer_code'];
+            $wallet = Wallet::where('customerCode', $data['customer_code'])->first();
             $wallet->verified = 1;
             $wallet->save();
             CustomerIdentified::dispatch($data['customer_code']);
         elseif($event == 'charge.success'):
+            $customer = empty($data['customer_code']) ? $data['customer']['customer_code'] : $data['customer_code'];
+            $wallet = Wallet::where('customerCode', $customer)->first();
             $user = User::find($wallet->user_id);
             $user->transactions()->create([
                 'id' => Str::uuid(), 
@@ -54,9 +58,18 @@ class ProcessWebhook implements ShouldQueue
                 'time' => $data['paid_at'],
                 'payment_method' => $data['channel'],
             ]);
-            $wallet->accountBalance = $wallet->accountBalance + $data['amount'];
-            $wallet->withdrawableBalance = $wallet->withdrawableBalance + $data['amount'];
+            $wallet->accountBalance = $wallet->accountBalance + $data['amount']/100;
+            $wallet->withdrawableBalance = $wallet->withdrawableBalance + $data['amount']/100;
             $wallet->save();
+        elseif($event == 'transfer.success'): 
+            Transactions::where('reference', $data['reference'])->update(['status' => $data['status'], 'payment_method' => 'transfer']);
+            $user = Bank::where('nuban', $data['recipient']['details']['account_number'])->first();
+            $wallet = Wallet::where('user_id', $user->user->id)->first();
+            $wallet->accountBalance = $wallet->accountBalance - $data['amount']/100;
+            $wallet->withdrawableBalance = $wallet->withdrawableBalance - $data['amount']/100;
+            $wallet->save();
+        elseif($event == 'transfer.failed'): 
+            Transactions::where('reference', $data['reference'])->update(['status' => $data['status']]);
         endif;
     }
 }

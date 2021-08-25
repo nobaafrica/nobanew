@@ -6,11 +6,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Transactions extends Model
+class Partnership extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['id', 'user_id', 'transactionType', 'amount', 'reference', 'status', 'time'];
+    protected $fillable = [
+        'id',
+        'user_id',
+        'package_id',
+        'package_name',
+        'amount',
+        'isRedeemed',
+        'estimatedPayout',
+        'commodityUnit',
+        'percentageProfit',
+        'payoutDate',
+        'estimatedProfit',
+    ];
 
     public function getIncrementing()
     {
@@ -25,5 +37,10 @@ class Transactions extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function package()
+    {
+        return $this->belongsTo(Package::class);
     }
 }

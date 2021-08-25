@@ -6,17 +6,17 @@
     function a(e) {
         document.getElementById("header-lang-img") &&
             ("en" == e
-                ? (document.getElementById("header-lang-img").src = "assets/images/flags/us.jpg")
+                ? (document.getElementById("header-lang-img").src = "/assets/images/flags/us.jpg")
                 : "sp" == e
-                ? (document.getElementById("header-lang-img").src = "assets/images/flags/spain.jpg")
+                ? (document.getElementById("header-lang-img").src = "/assets/images/flags/spain.jpg")
                 : "gr" == e
-                ? (document.getElementById("header-lang-img").src = "assets/images/flags/germany.jpg")
+                ? (document.getElementById("header-lang-img").src = "/assets/images/flags/germany.jpg")
                 : "it" == e
-                ? (document.getElementById("header-lang-img").src = "assets/images/flags/italy.jpg")
-                : "ru" == e && (document.getElementById("header-lang-img").src = "assets/images/flags/russia.jpg"),
+                ? (document.getElementById("header-lang-img").src = "/assets/images/flags/italy.jpg")
+                : "ru" == e && (document.getElementById("header-lang-img").src = "/assets/images/flags/russia.jpg"),
             localStorage.setItem("language", e),
             null == (t = localStorage.getItem("language")) && a(n),
-            s.getJSON("assets/lang/" + t + ".json", function (e) {
+            s.getJSON("/assets/lang/" + t + ".json", function (e) {
                 s("html").attr("lang", t),
                     s.each(e, function (e, t) {
                         "head" === e && s(document).attr("title", t.title), s("[key='" + e + "']").text(t);
@@ -36,8 +36,8 @@
               s("#dark-mode-switch").prop("checked", !1),
               s("#rtl-mode-switch").prop("checked", !1),
               s("#dark-rtl-mode-switch").prop("checked", !1),
-              s("#bootstrap-style").attr("href", "assets/css/bootstrap.css"),
-              s("#app-style").attr("href", "assets/css/app.css"),
+              s("#bootstrap-style").attr("href", "/assets/css/bootstrap.css"),
+              s("#app-style").attr("href", "/assets/css/app.css"),
               sessionStorage.setItem("is_visited", "light-mode-switch"))
             : 1 == s("#dark-mode-switch").prop("checked") && "dark-mode-switch" === e
             ? (s("html").removeAttr("dir"),
@@ -47,8 +47,8 @@
               s("#light-mode-switch").prop("checked", !1),
               s("#rtl-mode-switch").prop("checked", !1),
               s("#dark-rtl-mode-switch").prop("checked", !1),
-              s("#bootstrap-style").attr("href", "assets/css/bootstrap-dark.css"),
-              s("#app-style").attr("href", "assets/css/app-dark.css"),
+              s("#bootstrap-style").attr("href", "/assets/css/bootstrap-dark.css"),
+              s("#app-style").attr("href", "/assets/css/app-dark.css"),
               sessionStorage.setItem("is_visited", "dark-mode-switch"))
             : 1 == s("#rtl-mode-switch").prop("checked") && "rtl-mode-switch" === e
             ? (s("#light-mode-switch").prop("checked", !1),
@@ -57,8 +57,8 @@
               s('body').removeAttr('data-sidebar'),
               s("#dark-mode-switch").prop("checked", !1),
               s("#dark-rtl-mode-switch").prop("checked", !1),
-              s("#bootstrap-style").attr("href", "assets/css/bootstrap-rtl.min.css"),
-              s("#app-style").attr("href", "assets/css/app-rtl.min.css"),
+              s("#bootstrap-style").attr("href", "/assets/css/bootstrap-rtl.min.css"),
+              s("#app-style").attr("href", "/assets/css/app-rtl.min.css"),
               s("html").attr("dir", "rtl"),
               sessionStorage.setItem("is_visited", "rtl-mode-switch"))
             : 1 == s("#dark-rtl-mode-switch").prop("checked") &&
@@ -69,8 +69,8 @@
               s('body').attr('data-sidebar', 'dark'),
               s("#rtl-mode-switch").prop("checked", !1),
               s("#dark-mode-switch").prop("checked", !1),
-              s("#bootstrap-style").attr("href", "assets/css/bootstrap-dark-rtl.min.css"),
-              s("#app-style").attr("href", "assets/css/app-dark-rtl.min.css"),
+              s("#bootstrap-style").attr("href", "/assets/css/bootstrap-dark-rtl.min.css"),
+              s("#app-style").attr("href", "/assets/css/app-dark-rtl.min.css"),
               s("html").attr("dir", "rtl"),
               sessionStorage.setItem("is_visited", "dark-rtl-mode-switch"));
     }

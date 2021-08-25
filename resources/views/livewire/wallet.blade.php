@@ -104,7 +104,7 @@
                                     </div>
 
                                     <div class="mt-3">
-                                        <a href="javascript: void(0);" class="btn btn-primary btn-sm w-md">Withdraw</a>
+                                        <a  data-bs-toggle="modal" data-bs-target="#withdraw-funds" class="btn btn-primary btn-sm w-md">Withdraw</a>
                                     </div>
                                 </div>
                             </div>
@@ -250,6 +250,43 @@
                                 <p class="text-muted font-size-14 mb-4">How much do you want to fund your wallet with?</p>
                                 <form class="input-group bg-light rounded" wire:submit.prevent='fundWallet'>
                                     <input type="number" inputmode="numeric" wire:model='fundingAmount' class="form-control bg-transparent border-0" placeholder="Enter Amount">
+                                    <button class="btn btn-primary" type="submit" id="button-addon2">
+                                        <i class="bx bxs-paper-plane"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="withdraw-funds" tabindex="-1" aria-labelledby="withdwaw-funds" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <div class="avatar-md mx-auto mb-4">
+                            <div class="avatar-title bg-light rounded-circle text-primary h1">
+                                <i class="mdi mdi-check-outline"></i>
+                            </div>
+                        </div>
+    
+                        <div class="row justify-content-center">
+                            <div class="col-xl-10">
+                                <h4 class="text-primary">Withdraw Funds!</h4>
+                                <div class="flex flex-column justify-content-start mt-4 mb-4">
+                                    <p class="text-muted font-size-13">Funds would be paid into this account</p>
+                                    <p class="text-muted font-size-12">Bank: {{$this->user->bank->last()->bank}}</p>
+                                    <p class="text-muted font-size-12">Account Number: {{$this->user->bank->last()->nuban}}</p>
+                                    <p class="text-muted font-size-12">Account Name: {{$this->user->firstName. " ". $this->user->lastName}}</p>
+                                </div>
+                                <p class="text-muted font-size-14 mb-4">How much do you want to withdraw?</p>
+                                <form class="input-group bg-light rounded" wire:submit.prevent='withdrawFunds'>
+                                    <input type="number" inputmode="numeric" wire:model='withdrawalAmount' class="form-control bg-transparent border-0" placeholder="Enter Amount">
                                     <button class="btn btn-primary" type="submit" id="button-addon2">
                                         <i class="bx bxs-paper-plane"></i>
                                     </button>

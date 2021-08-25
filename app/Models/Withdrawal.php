@@ -6,21 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Transactions extends Model
+class Withdrawal extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['id', 'user_id', 'transactionType', 'amount', 'reference', 'status', 'time'];
-
-    public function getIncrementing()
-    {
-        return false;
-    }
-
-    public function getKeyType()
-    {
-        return 'string';
-    }
+    protected $fillable = ['user_id', 'recipient_code', 'bank_code', 'bank_name'];
 
     public function user()
     {
