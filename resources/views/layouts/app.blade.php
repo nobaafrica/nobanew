@@ -75,8 +75,7 @@
     <script src="{{ asset ('/assets/libs/select2/js/select2.min.js') }}" defer></script>
     <!-- apexcharts -->
     <script src="{{ ('/assets/libs/apexcharts/apexcharts.min.js') }}" defer></script>
-    @stack('scripts')
     <!-- App js -->
     <script src="{{ ('/assets/js/app.js') }}" defer></script>
-   
+    @stack('scripts')
 </html>
