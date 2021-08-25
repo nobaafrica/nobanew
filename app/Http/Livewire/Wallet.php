@@ -44,8 +44,8 @@ class Wallet extends Component
         $this->transactions = $this->user->transactions;
         $this->creditTx = $this->transactions->where('transactionType', 'credit');
         $this->debitTx = $this->transactions->where('transactionType', 'debit');
-        $this->userBank = dd($this->user->bank()->last()) ? null : $this->user->bank()->last()->bank;
-        $this->userAccount = dd($this->user->bank()->last()) ? null : $this->user->bank()->last()->nuban;
+        $this->userBank = dd($this->user->bank()->first()) ? null : $this->user->bank()->first()->bank;
+        $this->userAccount = dd($this->user->bank()->first()) ? null : $this->user->bank()->first()->nuban;
     }
 
     public function generateWallet()
@@ -130,8 +130,8 @@ class Wallet extends Component
                 session()->flash('error', 'You do not have enough money in your for this transaction');
             else:
                 // get user bank info
-                $account = is_null($this->user->bank()->last()->nuban) ? null : $this->user->bank()->last()->nuban;
-                $userBank = is_null($this->user->bank()->last()->nuban) ? null : $this->user->bank()->last()->bank;
+                $account = is_null($this->user->bank()->first()->nuban) ? null : $this->user->bank()->first()->nuban;
+                $userBank = is_null($this->user->bank()->first()->nuban) ? null : $this->user->bank()->first()->bank;
                 // get transfer info
                 if($this->user->withdrawal()->count() < 1):
                     $withdrawalInfo = $this->firstWithdrawal($account, $userBank);
