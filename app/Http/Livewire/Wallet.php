@@ -28,6 +28,8 @@ class Wallet extends Component
     protected $debitTx;
     public $banks;
     public $withdrawalAmount;
+    public $userBank;
+    public $userAccount;
     
 
     public function mount()
@@ -42,6 +44,8 @@ class Wallet extends Component
         $this->transactions = $this->user->transactions;
         $this->creditTx = $this->transactions->where('transactionType', 'credit');
         $this->debitTx = $this->transactions->where('transactionType', 'debit');
+        $this->userBank = $this->user->bank->last()->bank;
+        $this->userAccount = $this->user->bank->last()->nuban;
     }
 
     public function generateWallet()

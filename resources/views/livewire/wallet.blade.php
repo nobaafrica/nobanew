@@ -280,8 +280,8 @@
                                 <h4 class="text-primary">Withdraw Funds!</h4>
                                 <div class="flex flex-column justify-content-start mt-4 mb-4">
                                     <p class="text-muted font-size-13">Funds would be paid into this account</p>
-                                    <p class="text-muted font-size-12">Bank: {{$this->user->bank->last()->bank}}</p>
-                                    <p class="text-muted font-size-12">Account Number: {{$this->user->bank->last()->nuban}}</p>
+                                    <p class="text-muted font-size-12">Bank: {{$userBank}}</p>
+                                    <p class="text-muted font-size-12">Account Number: {{$userAccount}}</p>
                                     <p class="text-muted font-size-12">Account Name: {{$this->user->firstName. " ". $this->user->lastName}}</p>
                                 </div>
                                 <p class="text-muted font-size-14 mb-4">How much do you want to withdraw?</p>
