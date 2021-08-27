@@ -82,6 +82,7 @@ class Wallet extends Component
 
         if($verify->status == true):
             session()->flash('success', $verify->message);
+            CustomerIdentified::dispatch($customer);
         elseif($verify->message == "Customer already identified"):
             CustomerIdentified::dispatch($customer);
             return redirect()->route('wallet');
