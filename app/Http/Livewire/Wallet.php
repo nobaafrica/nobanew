@@ -60,10 +60,12 @@ class Wallet extends Component
             ])->object();
             if($request->status == true):
                 $customer = $request->data->customer_code;
-                $this->user->wallet()->create([
-                        'id' => Str::uuid(),
-                        'customerCode' => $customer
-                ]);
+                if(is_null($this->wallet)):
+                    $this->user->wallet()->create([
+                            'id' => Str::uuid(),
+                            'customerCode' => $customer
+                    ]);
+                endif;
             else:
                 session()->flash('error', $request->message);
             endif;
@@ -81,9 +83,11 @@ class Wallet extends Component
         ])->object();
 
         if($verify->status == true):
-            session()->flash('success', $verify->message);
             CustomerIdentified::dispatch($customer);
+            session()->flash('success', $verify->message);
+            return redirect()->route('wallet');
         elseif($verify->message == "Customer already identified"):
+            session()->flash('success', $verify->message);
             CustomerIdentified::dispatch($customer);
             return redirect()->route('wallet');
         endif;
