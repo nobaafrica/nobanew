@@ -3,11 +3,13 @@
 use App\Http\Controllers\Webhook;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\DownloadAgreement;
+use App\Http\Livewire\EditProfile;
 use App\Http\Livewire\Index;
 use App\Http\Livewire\Package;
 use App\Http\Livewire\Packages;
 use App\Http\Livewire\Partnership;
 use App\Http\Livewire\Partnerships;
+use App\Http\Livewire\Profile;
 use App\Http\Livewire\Register;
 use App\Http\Livewire\VerifyAccount;
 use App\Http\Livewire\VerifyEmail;
@@ -37,6 +39,8 @@ Route::get('/package/{package}', Package::class)->name('package')->middleware(['
 Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'verified']);
 Route::get('/partnership/{partnership}', Partnership::class)->name('partnership')->middleware(['auth', 'verified']);
 Route::get('/print-agreement/{partnership}', DownloadAgreement::class)->name('agreement');
+Route::get('/profile', Profile::class)->name('profile')->middleware(['auth', 'verified']);
+Route::get('/edit-profile/{user}', EditProfile::class)->name('edit-profile')->middleware(['auth', 'verified']);
 
 Route::get('/payment/callback', [Webhook::class, 'verifyPayment']);
 

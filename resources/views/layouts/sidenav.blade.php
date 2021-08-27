@@ -35,7 +35,7 @@
                 </li>
                 
                 <li>
-                    <a href="calendar.html" class="waves-effect">
+                    <a href="{{route('profile')}}" class="waves-effect">
                         <i class="bx bx-user"></i>
                         <span key="t-calendar">Profile</span>
                     </a>

@@ -29,7 +29,7 @@
                                 <div class="row">
                                     <div class="col-md-12 offset-md-1 col-sm-9 col-8">
                                         <div>
-                                            <img src="{{ asset('/assets/images/product/img-7.png') }}" alt="" class="img-fluid mx-auto d-block">
+                                            <img src="{{ asset($partnership->package->frontPicture ?? $partnership->package->package->pictures->picture) }}" width="300" alt="" class="img-fluid mx-auto d-block">
                                         </div>
                                     </div>
                                     <div class="text-center">

@@ -28,8 +28,14 @@ class Dashboard extends Component
         $this->trending =  Partnership::where('user_id', Auth::user()->id)->with('package')->groupBy('package_id')->orderBy('created_at', 'desc')->get();
     }
 
+    public function txs()
+    {
+        $query = DB::table('transactions')->select(DB::raw('DATE_FORMAT(time, "%b") AS x'), DB::raw('SUM(amount) as y'),)->where(['user_id' => $this->user->id])->groupByRaw(DB::raw('MONTH(time)'))->orderBy(DB::raw('MONTH(time)'))->get();
+        return $query->toJson();
+    }
+
     public function render()
     {
-        return view('livewire.dashboard');
+        return view('livewire.dashboard')->with(['txs' => $this->txs()]);
     }
 }

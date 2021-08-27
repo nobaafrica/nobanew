@@ -37,6 +37,7 @@
                                 <h5>{{auth()->user()->firstName. " ". auth()->user()->lastName}}</h5>
                                 <p class="mb-1">{{auth()->user()->email}}</p>
                                 <p class="mb-0">Id no: #{{Str::limit(auth()->user()->id, 7, '')}}</p>
+                                <p class="mb-0">Referral Code: {{auth()->user()->refCode}}</p>
                             </div>
                             
                         </div>

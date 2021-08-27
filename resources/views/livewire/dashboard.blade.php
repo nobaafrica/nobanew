@@ -7,6 +7,24 @@
     }, 1e3);
 </script>
 @endif
+<script type="module" defer>
+    document.addEventListener('DOMContentLoaded', function () {
+        let txs = {!!$txs!!}
+        var options = {
+            series: [
+                { type: "area", name: "Transactions", data: txs },
+            ],
+            chart: { height: 240, type: "line", toolbar: { show: !1 } },
+            dataLabels: { enabled: !1 },
+            stroke: { curve: "smooth", width: 2, dashArray: [0, 0, 3] },
+            fill: { type: "solid", opacity: [0.15, 0.05, 1] },
+            xaxis: { type: 'category' },
+            colors: ["#8ebf49", "#3452e1", "#50a5f1"],
+        },
+        chartOverview = new ApexCharts(document.querySelector("#overview-chart"), options);
+        chartOverview.render();
+    });
+</script>
 @endpush
 <div>
     <x-slot name="header">
@@ -34,11 +52,11 @@
                         <div class="col-7">
                             <div class="text-primary p-3">
                                 <h5 class="text-primary">Welcome Back !</h5>
-                                <p class="text-capitalize">{{config('app.name')}}</p>
+                                <p class="text-capitalize">{{Auth::user()->lastName ?? Auth::user()->email}}</p>
                             </div>
                         </div>
                         <div class="col-5 align-self-end">
-                            <img src="/assets/images/profile-img.png" alt="" class="img-fluid">
+                            <img src="{{asset(Auth::user()->profilePicture ?? "/assets/images/user.png")}}" alt="" class="img-fluid">
                         </div>
                     </div>
                 </div>
@@ -46,7 +64,7 @@
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="avatar-md profile-user-wid mb-4">
-                                <img src="/assets/images/users/avatar-1.jpg" alt="" class="img-thumbnail rounded-circle">
+                                <img src="{{asset(Auth::user()->profilePicture ?? "/assets/images/user.png")}}" alt="" class="img-thumbnail rounded-circle">
                             </div>
                             <h5 class="font-size-15 text-truncate text-capitalize">{{Auth::user()->firstName ?? Auth::user()->email}}</h5>
                         </div>
@@ -64,7 +82,7 @@
                                     </div>
                                 </div>
                                 <div class="mt-4">
-                                    <a href="javascript: void(0);" class="btn btn-primary waves-effect waves-light btn-sm">View Profile <i class="mdi mdi-arrow-right ms-1"></i></a>
+                                    <a href="{{route('profile')}}" class="btn btn-primary waves-effect waves-light btn-sm">View Profile <i class="mdi mdi-arrow-right ms-1"></i></a>
                                 </div>
                             </div>
                         </div>
@@ -176,8 +194,7 @@
                             </ul>
                         </div>
                     </div>
-                    
-                    <div id="stacked-column-chart" class="apex-charts" dir="ltr"></div>
+                    <div id="overview-chart" class="apex-charts" dir="ltr"></div>
                 </div>
             </div>
         </div>
