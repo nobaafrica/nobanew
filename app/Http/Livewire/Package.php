@@ -11,6 +11,7 @@ use Livewire\Component;
 class Package extends Component
 {
     public ModelsPackage $package;
+    public $user;
     public $duration;
     public $price;
     public $unit = 1;
@@ -25,6 +26,7 @@ class Package extends Component
         $this->profit = $this->package->profitPercentage;
         $this->payout = $this->price + ($this->price * ($this->package->profitPercentage/100));
         $this->commitment = $this->price * $this->unit;
+        $this->user = User::find(Auth::user()->id);
     }
 
     public function updatedUnit()
@@ -35,15 +37,14 @@ class Package extends Component
 
     public function partner()
     {
-        $user = User::find(Auth::user()->id);
-        if($user->wallet->accountBalance >= $this->commitment):
-            $profit = $this->commitment * $this->package->profitPercentage/100;
-            $user->wallet()->update([
-                'accountBalance' => $user->wallet->accountBalance - $this->commitment,
-                'withdrawableBalance' => $user->wallet->withdrawableBalance - $this->commitment
-            ]);
+        if($this->user->wallet->accountBalance >= $this->commitment):
             $ref = Str::uuid();
-            $user->partnerships()->create([
+            $profit = $this->commitment * $this->package->profitPercentage/100;
+            $this->user->wallet()->update([
+                'accountBalance' => $this->user->wallet->accountBalance - $this->commitment,
+                'withdrawableBalance' => $this->user->wallet->withdrawableBalance - $this->commitment
+            ]);
+            $this->user->partnerships()->create([
                 'id' => $ref,
                 'package_id' => $this->package->id,
                 'package_name' => $this->package->name,
@@ -54,7 +55,7 @@ class Package extends Component
                 'payoutDate' => now()->addMonths($this->duration),
                 'estimatedProfit' => $profit,
             ]);
-            $user->transactions()->create([
+            $this->user->transactions()->create([
                 'id' => Str::uuid(), 
                 'transactionType' => 'debit', 
                 'amount' => $this->commitment, 
@@ -63,6 +64,23 @@ class Package extends Component
                 'payment_method' => 'wallet balance',
                 'time' => now(),
             ]);
+            if (!empty($this->user->referralCode)):
+                $referrer = User::where('refCode', $this->user->referralCode)->first();
+                $bonus = $this->commitment * 2/100;
+                $referrer->wallet()->update([
+                    'referralBonus' => $bonus,
+                    'withdrawableBalance' => $this->user->wallet->withdrawableBalance + $bonus
+                ]);
+                $referrer->transactions()->create([
+                    'id' => Str::uuid(), 
+                    'transactionType' => 'credit', 
+                    'amount' => $bonus, 
+                    'reference' => $ref, 
+                    'status' => 'success', 
+                    'payment_method' => 'referral bonus',
+                    'time' => now(),
+                ]);
+            endif;
             session()->flash('success', 'You\'ve succesfully partnered with us for this package');
             return redirect()->route('partnerships');
         else:
