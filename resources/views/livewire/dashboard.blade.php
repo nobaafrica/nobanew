@@ -1,10 +1,12 @@
 @push('scripts')
 <script src="{{ asset('/assets/js/pages/dashboard.init.js') }}" defer></script>
+@if (empty(Auth::user()->firstName))
 <script type="module" defer>
     setTimeout(function () {
         $("#subscribeModal").modal("show");
     }, 1e3);
 </script>
+@endif
 @endpush
 <div>
     <x-slot name="header">

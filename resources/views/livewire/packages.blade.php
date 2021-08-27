@@ -59,12 +59,7 @@
                                         {{$package->profitPercentage}} %
                                     </span>
                                 </div>
-                                {{-- @if (!empty($package->headerPicture))
-                                <img src="{{$package->headerPicture}}" alt="" class="img-fluid mx-auto d-block">
-                                @else
-                                <img src="{{$package->pictures->last()->picture}}" alt="" class="img-fluid mx-auto d-block">
-                                @endif --}}
-                                <img src="assets/images/product/img-1.png" alt="" class="img-fluid mx-auto d-block">
+                                <img src="{{asset($package->frontPicture ?? $package->pictures->picture)}}" alt="" class="img-fluid mx-auto d-block">
                             </div>
                             <div class="mt-4 text-center">
                                 <h5 class="mb-3 text-truncate"><a href="{{route('package', $package)}}" class="text-dark">{{$package->name}}</a></h5>
