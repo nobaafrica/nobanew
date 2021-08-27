@@ -14,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class ProcessWebhook implements ShouldQueue
 {
@@ -40,11 +41,13 @@ class ProcessWebhook implements ShouldQueue
         $event = $this->event['event'];
         $data = $this->event['data'];
         if($event == 'customeridentification.success'):
-            $customer = empty($data['customer_code']) ? $data['customer']['customer_code'] : $data['customer_code'];
-            $wallet = Wallet::where('customerCode', $data['customer_code'])->first();
-            $wallet->verified = 1;
-            $wallet->save();
-            CustomerIdentified::dispatch($data['customer_code']);
+            $customer = $data['customer_code'];
+            $wallet = Wallet::where('customerCode', $customer)->update([
+                'verified' => 1
+            ]);
+            CustomerIdentified::dispatch($customer);
+        elseif($event == 'customeridentification.failed'):
+            Log::info("Customer identification failed");
         elseif($event == 'charge.success'):
             $customer = empty($data['customer_code']) ? $data['customer']['customer_code'] : $data['customer_code'];
             $wallet = Wallet::where('customerCode', $customer)->first();

@@ -50,7 +50,7 @@ class Wallet extends Component
 
     public function generateWallet()
     {
-        if(empty($this->wallet)):
+        if(is_null($this->wallet)):
             $url = "https://api.paystack.co/customer";
             $request = Http::withToken(config('app.paystack_secret'))->post($url, [
                 'first_name' => $this->user->firstName,
