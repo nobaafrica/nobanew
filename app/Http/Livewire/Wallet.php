@@ -82,15 +82,17 @@ class Wallet extends Component
             "last_name" => $this->user->lastName,
         ])->object();
 
-        if($verify->status == true):
-            CustomerIdentified::dispatch($customer);
-            session()->flash('success', $verify->message);
-            return redirect()->route('wallet');
-        elseif($verify->message == "Customer already identified"):
-            session()->flash('success', $verify->message);
-            CustomerIdentified::dispatch($customer);
-            return redirect()->route('wallet');
-        endif;
+        dd($verify);
+
+        // if($verify->status == true):
+        //     CustomerIdentified::dispatch($customer);
+        //     session()->flash('success', $verify->message);
+        //     return redirect()->route('wallet');
+        // elseif($verify->message == "Customer already identified"):
+        //     session()->flash('success', $verify->message);
+        //     CustomerIdentified::dispatch($customer);
+        //     return redirect()->route('wallet');
+        // endif;
     }
 
     public function fundWallet()
