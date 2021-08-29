@@ -7,6 +7,7 @@ use App\Models\Transactions;
 use App\Models\User;
 use App\Models\Wallet as ModelsWallet;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -51,28 +52,43 @@ class Wallet extends Component
     public function generateWallet()
     {
         if(is_null($this->wallet)):
-            $url = "https://api.paystack.co/customer";
-            $request = Http::withToken(config('app.paystack_secret'))->post($url, [
-                'first_name' => $this->user->firstName,
-                'last_name' => $this->user->lastName,
-                'phone' => $this->user->phoneNumber,
-                'email' => $this->user->email,
+            $fetchCustomer = Http::withToken(config('app.paystack_secret'))->get("https://api.paystack.co/customer/", [
+                'email' => Auth::user()->email,
             ])->object();
-            if($request->status == true):
-                $customer = $request->data->customer_code;
-                if(is_null($this->wallet)):
-                    $this->user->wallet()->create([
-                            'id' => Str::uuid(),
-                            'customerCode' => $customer
-                    ]);
+            if($fetchCustomer->status == true):
+                if($fetchCustomer->data->identified == true):
+                    CustomerIdentified::dispatch($fetchCustomer->data->customer_code);
+                    session()->flash('success', "Account is being generated");
+                    return redirect()->route('wallet');
+                else:
+                    return $this->verifyCustomer($fetchCustomer->data->customer_code);
                 endif;
             else:
-                session()->flash('error', $request->message);
+                $url = "https://api.paystack.co/customer";
+                $request = Http::withToken(config('app.paystack_secret'))->post($url, [
+                    'first_name' => $this->user->firstName,
+                    'last_name' => $this->user->lastName,
+                    'phone' => $this->user->phoneNumber,
+                    'email' => $this->user->email,
+                ])->object();
+                if($request->status == true):
+                    $customer = $request->data->customer_code;
+                    if(is_null($this->wallet)):
+                        $this->user->wallet()->create([
+                                'id' => Str::uuid(),
+                                'customerCode' => $customer
+                        ]);
+                    endif;
+                    return $this->verifyCustomer($customer);
+                else:
+                    session()->flash('error', $request->message);
+                endif;
             endif;
         endif;
-        $wallet = ModelsWallet::where('user_id', $this->user->id)->first();
-        $customer = $wallet->customerCode;
-        
+    }
+
+    public function verifyCustomer(string $customer)
+    {
         $validationUrl = "https://api.paystack.co/customer/$customer/identification";
         $verify = Http::withToken(config('app.paystack_secret'))->post($validationUrl, [
             "country" => "NG",
@@ -81,18 +97,15 @@ class Wallet extends Component
             "first_name" => $this->user->firstName,
             "last_name" => $this->user->lastName,
         ])->object();
-
-        dd($verify);
-
-        // if($verify->status == true):
-        //     CustomerIdentified::dispatch($customer);
-        //     session()->flash('success', $verify->message);
-        //     return redirect()->route('wallet');
-        // elseif($verify->message == "Customer already identified"):
-        //     session()->flash('success', $verify->message);
-        //     CustomerIdentified::dispatch($customer);
-        //     return redirect()->route('wallet');
-        // endif;
+        if($verify->status == true):
+            CustomerIdentified::dispatch($customer);
+            session()->flash('success', $verify->message);
+            return redirect()->route('wallet');
+        elseif($verify->message == "Customer already identified"):
+            session()->flash('success', $verify->message);
+            CustomerIdentified::dispatch($customer);
+            return redirect()->route('wallet');
+        endif;
     }
 
     public function fundWallet()
