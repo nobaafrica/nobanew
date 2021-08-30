@@ -52,59 +52,29 @@
                         <div class="col-7">
                             <div class="text-primary p-3">
                                 <h5 class="text-primary">Welcome Back !</h5>
-                                <p class="text-capitalize">{{Auth::user()->lastName ?? Auth::user()->email}}</p>
+                                <p class="text-capitalize">{{Auth::user()->lastName. " ". Auth::user()->firstName ?? Auth::user()->email}}</p>
                             </div>
                         </div>
                         <div class="col-5 align-self-end">
-                            <img src="{{asset(Auth::user()->profilePicture ?? "/assets/images/user.png")}}" alt="" class="img-fluid">
+                            {{-- <img src="{{asset(Auth::user()->profilePicture ?? "/assets/images/user.png")}}" alt="" class="img-fluid"> --}}
                         </div>
                     </div>
                 </div>
                 <div class="card-body pt-0">
                     <div class="row">
-                        <div class="col-sm-4">
-                            <div class="avatar-md profile-user-wid mb-4">
+                        <div class="col-sm-6">
+                            <div class="avatar-md profile-user-wid mb-4 align-self-end">
                                 <img src="{{asset(Auth::user()->profilePicture ?? "/assets/images/user.png")}}" alt="" class="img-thumbnail rounded-circle">
                             </div>
-                            <h5 class="font-size-15 text-truncate text-capitalize">{{Auth::user()->firstName ?? Auth::user()->email}}</h5>
+                            <p class="text-muted mb-0">Wallet Balance</p>
+                            <h5 class="font-size-15 text-truncate text-capitalize">₦{{number_format($withdrawableBalance)}}</h5>
                         </div>
 
-                        <div class="col-sm-8">
+                        <div class="col-sm-6">
                             <div class="pt-4">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <h5 class="font-size-15">{{$partnerships->count()}}</h5>
-                                        <p class="text-muted mb-0">Partnerships</p>
-                                    </div>
-                                    <div class="col-6">
-                                        <h5 class="font-size-15">₦{{number_format($cummulativePayout)}}</h5>
-                                        <p class="text-muted mb-0">Payouts</p>
-                                    </div>
+                                <div class="mt-5">
+                                    <a href="{{route('wallet')}}" class="btn btn-primary waves-effect waves-light btn-sm">Fund Wallet <i class="mdi mdi-arrow-right ms-1"></i></a>
                                 </div>
-                                <div class="mt-4">
-                                    <a href="{{route('profile')}}" class="btn btn-primary waves-effect waves-light btn-sm">View Profile <i class="mdi mdi-arrow-right ms-1"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-body">
-                    <h4 class="card-title mb-4">Monthly Payout</h4>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <p class="text-muted">This month</p>
-                            <h3>₦{{number_format($monthPayout)}}</h3>
-                            <p class="text-muted"><span class="text-success me-2"> 0% <i class="mdi mdi-arrow-up"></i> </span> From previous month</p>
-
-                            <div class="mt-4">
-                                <a href="{{route('wallet')}}" class="btn btn-primary waves-effect waves-light btn-sm">View Wallet <i class="mdi mdi-arrow-right ms-1"></i></a>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="mt-4 mt-sm-0">
-                                <div id="radialBar-chart" class="apex-charts"></div>
                             </div>
                         </div>
                     </div>
@@ -114,7 +84,7 @@
         <div class="col-xl-8">
             <div class="row">
                 <div class="col-md-4">
-                    <div class="card mini-stats-wid">
+                    <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
@@ -134,7 +104,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card mini-stats-wid">
+                    <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
@@ -154,7 +124,7 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <div class="card mini-stats-wid">
+                    <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
@@ -175,12 +145,16 @@
                 </div>
             </div>
             <!-- end row -->
-
-            <div class="card">
+        </div>
+    </div>
+    <!-- end row -->
+    <div class="row mb-4">
+        <div class="col-xl-6">
+            <div class="card h-100">
                 <div class="card-body">
                     <div class="d-sm-flex flex-wrap">
                         <h4 class="card-title mb-4">Transactions</h4>
-                        <div class="ms-auto">
+                        {{-- <div class="ms-auto">
                             <ul class="nav nav-pills">
                                 <li class="nav-item">
                                     <a class="nav-link" href="#">Week</a>
@@ -192,15 +166,44 @@
                                     <a class="nav-link active" href="#">Year</a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> --}}
                     </div>
                     <div id="overview-chart" class="apex-charts" dir="ltr"></div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- end row -->
+        <div class="col-xl-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title mb-4">Partnerships</h4>
 
+                    <div class="table-responsive mt-4">
+                        <table class="table align-middle table-nowrap">
+                            <tbody>
+                                @foreach ($partnerships as $partnership)
+                                <tr class="align-content-center">
+                                    <td class="text-center" style="width: 30%">
+                                        <h5 class="mb-0">{{$partnership->package->name}}</h5>
+                                        <p class="text-muted">Package</p>
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="progress bg-transparent progress-sm mb-2">
+                                            <div class="progress-bar bg-primary rounded" role="progressbar" style="width: 94%" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100"></div>
+                                        </div>
+                                        <div class="text-center">
+                                            <p class="text-muted">{{$partnership->package->duration * 30}} Days</p>
+                                        </div>
+                                    </td>
+                                </tr>   
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
     <!-- end row -->
 
     <div class="row">

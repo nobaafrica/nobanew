@@ -63,8 +63,8 @@
                                 <h6 class="text-muted mb-2">{{$bank}}</h6>
                                 <h5>{{$accountName}}</h5>
                                 <div class="d-flex justify-content-center">
-                                    <h5 id="nuban">{{$nuban ?? 111}}</h5>
-                                    <input type="text" class="d-none" id="account-number" value="{{$nuban ?? 11111}}">
+                                    <h5 id="nuban">{{$nuban}}</h5>
+                                    <input type="text" class="d-none" id="account-number" value="{{$nuban}}">
                                     <h5><span style="cursor: pointer" onclick="copyToClipBoard('account-number', 'nuban')"><i class="bx bx-copy"></i></span> </h5>
                                 </div>
                             </div>

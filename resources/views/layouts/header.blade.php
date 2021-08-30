@@ -51,7 +51,7 @@
                 </div>
             </div> --}}
 
-            <div class="dropdown d-inline-block">
+            {{-- <div class="dropdown d-inline-block">
                 <button type="button" class="btn header-item waves-effect"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img id="header-lang-img" src="/assets/images/flags/us.jpg" alt="Header Language" height="16">
@@ -82,7 +82,7 @@
                         <img src="/assets/images/flags/russia.jpg" alt="user-image" class="me-1" height="12"> <span class="align-middle">Russian</span>
                     </a>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="dropdown d-inline-block">
                 <div class="form-check form-switch header-item noti-icon toggle-mode d-none" id="toggle-light">

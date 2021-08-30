@@ -17,15 +17,18 @@ class Dashboard extends Component
     public $expectedPayout;
     public $monthPayout;
     public $trending;
+    public $withdrawableBalance;
 
     public function mount()
     {
         $this->user = User::find(Auth::user()->id);
-        $this->partnerships = Partnership::where('user_id', Auth::user()->id)->with('package')->orderBy('created_at', 'desc')->get();
+        $this->wallet = $this->user->wallet;
+        $this->withdrawableBalance = is_null($this->wallet) ? null : $this->wallet->withdrawableBalance;
+        $this->partnerships = Partnership::where('user_id', Auth::user()->id)->where('isRedeemed', '0')->with('package')->orderBy('created_at', 'desc')->get();
         $this->cummulativePayout = $this->partnerships->sum('estimatedPayout');
         $this->expectedPayout = $this->partnerships->where('payoutDate', '>=', now())->sum('estimatedPayout');
         $this->monthtPayout = Partnership::where('user_id', Auth::user()->id)->where(DB::raw('MONTH(payoutDate) = MONTH(CURRENT_DATE())'))->sum('estimatedPayout');
-        $this->trending =  Partnership::where('user_id', Auth::user()->id)->with('package')->groupBy('package_id')->orderBy('created_at', 'desc')->get();
+        $this->trending =  Partnership::with('package')->groupBy('package_id')->orderBy('created_at', 'desc')->get();
     }
 
     public function txs()

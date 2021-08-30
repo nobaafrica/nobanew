@@ -95,18 +95,24 @@
                                         </div>
                 
                                         <div class="mb-3">
-                                            <x-label for="userpassword" class="form-label" :value="__('Password')" />
-                                            <x-input id="userpassword" class="form-control" type="password" name="password" placeholder="Enter password" required autocomplete="new-password" />
+                                            <x-label class="form-label" for="userpassword" :value="__('Password')" />
+                                            <div class="input-group auth-pass-inputgroup">
+                                                <x-input id="userpassword" class="form-control" placeholder="Enter password" aria-label="Password" aria-describedby="password-addon" type="password" name="password" required autocomplete="new-password" />
+                                                <button class="btn btn-light " type="button" id="password-addon"><i class="mdi mdi-eye-outline"></i></button>
+                                            </div>
                                             @error('password')
                                                 <div class="invalid-feedback">
-                                                    {{$message}}
+                                                    {{$message}} 
                                                 </div>       
                                             @enderror      
                                         </div>
 
                                         <div class="mb-3">
-                                            <x-label for="password_confirmation" class="form-label" :value="__('Confirm Password')" />
-                                            <x-input id="password_confirmation" class="form-control" type="password" name="password_confirmation" placeholder="Confirm password" required autocomplete="confirm-password" />
+                                            <x-label class="form-label" for="password_confirmation" :value="__('Password')" />
+                                            <div class="input-group auth-pass-inputgroup">
+                                                <x-input id="password_confirmation" class="form-control" placeholder="Confirm password" aria-label="Confirm Password" aria-describedby="confirm_password-addon" type="password" name="password_confirmation" required autocomplete="confirm-password" />
+                                                <button class="btn btn-light " type="button" id="confirm_password-addon"><i class="mdi mdi-eye-outline"></i></button>
+                                            </div>
                                             @error('password')
                                                 <div class="invalid-feedback">
                                                     {{$message}}

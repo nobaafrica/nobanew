@@ -24,6 +24,10 @@ class Partnership extends Model
         'estimatedProfit',
     ];
 
+    public $casts = [
+        'isRedeemed' => 'boolean',
+    ];
+
     public function getIncrementing()
     {
         return false;
