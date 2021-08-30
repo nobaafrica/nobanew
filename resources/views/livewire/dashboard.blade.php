@@ -183,15 +183,18 @@
                                 @foreach ($partnerships as $partnership)
                                 <tr class="align-content-center">
                                     <td class="text-center" style="width: 30%">
-                                        <h5 class="mb-0">{{$partnership->package->name}}</h5>
+                                        <h5 class="mb-2">{{$partnership->package->name}}</h5>
                                         <p class="text-muted">Package</p>
                                     </td>
-                                    <td class="text-center">
-                                        <div class="progress bg-transparent progress-sm mb-2">
-                                            <div class="progress-bar bg-primary rounded" role="progressbar" style="width: 94%" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <td class="d-flex flex-column">
+                                        <div class="text-center">
+                                            <p class="text-muted">Interest Accrued ₦{{growthPecentage($partnership)}}/{{number_format($partnership->estimatedProfit, 2)}}</p>
+                                        </div>
+                                        <div class="progress mb-2">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary rounded" role="progressbar" style="width: {{completionPercentage($partnership)}}%" aria-valuenow="{{completionPercentage($partnership)}}" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                         <div class="text-center">
-                                            <p class="text-muted">{{$partnership->package->duration * 30}} Days</p>
+                                            <p class="text-muted">{{daysPercentage($partnership)}}/{{$partnership->package->duration * 30}} Days</p>
                                         </div>
                                     </td>
                                 </tr>   
@@ -205,7 +208,6 @@
         
     </div>
     <!-- end row -->
-
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
@@ -221,10 +223,12 @@
                                             <label class="form-check-label" for="transactionCheck01"></label>
                                         </div>
                                     </th>
-                                    <th class="align-middle">Package ID</th>
+                                    <th class="align-middle">Rank</th>
                                     <th class="align-middle">Package Name</th>
                                     <th class="align-middle">Duration</th>
+                                    <th class="align-middle">Partners</th>
                                     <th class="align-middle">Minimum Commitment</th>
+                                    <th class="align-middle">Amount Committed</th>
                                     <th class="align-middle">Profit Percentage</th>
                                     <th class="align-middle">View Details</th>
                                 </tr>
@@ -234,17 +238,23 @@
                                 <tr>
                                     <td>
                                         <div class="form-check font-size-16">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck02">
-                                            <label class="form-check-label" for="transactionCheck02"></label>
+                                            <input class="form-check-input" type="checkbox" id="transactionCheck{{$loop->iteration}}">
+                                            <label class="form-check-label" for="transactionCheck{{$loop->iteration}}"></label>
                                         </div>
                                     </td>
-                                    <td><a href="{{route('package', $trend->package)}}" class="text-body fw-bold">#{{Str::limit($trend->package->id, 7, '')}}</a> </td>
+                                    <td><a href="{{route('package', $trend->package)}}" class="text-body fw-bold">#{{$loop->iteration}}</a> </td>
                                     <td>{{$trend->package->name}}</td>
                                     <td>
                                         {{$trend->package->duration}} Months
                                     </td>
                                     <td>
+                                        {{number_format($trend->investors)}}
+                                    </td>
+                                    <td>
                                         ₦{{number_format($trend->package->price)}}
+                                    </td>
+                                    <td>
+                                        ₦{{number_format($trend->investment)}}
                                     </td>
                                     <td>
                                         <span class="badge badge-pill badge-soft-success font-size-13">{{$trend->package->profitPercentage}}%</span>
@@ -252,7 +262,7 @@
                                     <td>
                                         <!-- Button trigger modal -->
                                         <a href="{{route('package', $trend->package)}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
-                                            View Details
+                                            View Package
                                         </a>
                                     </td>
                                 </tr>

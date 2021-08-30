@@ -27,10 +27,8 @@
                         <div class="col-xl-4">
                             <div class="product-detai-imgs">
                                 <div class="row">
-                                    <div class="col-md-12 offset-md-1 col-sm-9 col-8">
-                                        <div class="text-center">
-                                            <img src="{{ asset($package->frontPicture ?? $package->pictures->picture) }}" width="300" alt="" class="img-fluid mx-auto d-block">
-                                        </div>
+                                    <div class="text-center mb-4">
+                                        <img src="{{ asset($package->frontPicture ?? $package->pictures->picture) }}" width="300" alt="" class="img-fluid mx-auto d-block">
                                     </div>
                                     <div class="text-center">
                                         <form wire:submit.prevent='partner'>
@@ -43,8 +41,8 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="duration" class="form-label">Duration</label>
-                                                        <input type="text" readonly wire:model='duration' class="form-control" id="duration">
+                                                        <label for="unit" class="form-label">Number Of Units</label>
+                                                        <input type="number" inputmode="numeric" wire:model='unit' class="form-control" id="unit">
                                                     </div>
                                                 </div>
                                             </div>
@@ -52,8 +50,8 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="unit" class="form-label">Number Of Units</label>
-                                                        <input type="number" inputmode="numeric" wire:model='unit' class="form-control" id="unit">
+                                                        <label for="duration" class="form-label">Duration</label>
+                                                        <input type="text" readonly wire:model='duration' class="form-control" id="duration">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
@@ -67,14 +65,14 @@
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="payout" class="form-label">Expected Payout</label>
-                                                        <input type="text" readonly wire:model='payout' class="form-control" id="payout">
+                                                        <label for="commitment" class="form-label">Total Commitment</label>
+                                                        <input type="text" readonly wire:model='commitment' class="form-control" id="commitment">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="mb-3">
-                                                        <label for="commitment" class="form-label">Total Commitment</label>
-                                                        <input type="text" readonly wire:model='commitment' class="form-control" id="commitment">
+                                                        <label for="payout" class="form-label">Expected Payout</label>
+                                                        <input type="text" readonly wire:model='payout' class="form-control" id="payout">
                                                     </div>
                                                 </div>
                                             </div>
@@ -92,17 +90,17 @@
                                 <a href="{{route('packages')}}" class="text-primary">Packages</a>
                                 <h4 class="mt-1 mb-3">{{$package->name}}</h4>
 
-                                <p class="text-muted float-start me-3">
+                                {{-- <p class="text-muted float-start me-3">
                                     <span class="bx bxs-star text-warning"></span>
                                     <span class="bx bxs-star text-warning"></span>
                                     <span class="bx bxs-star text-warning"></span>
                                     <span class="bx bxs-star text-warning"></span>
                                     <span class="bx bxs-star text-warning"></span>
-                                </p>
+                                </p> --}}
                                 {{-- <p class="text-muted mb-4">( 152 Customers Review )</p> --}}
 
-                                <h6 class="text-success text-uppercase">{{$package->profitPercentage}}% Profit Percentage</h6>
-                                <h5>Price : <b>₦{{number_format($package->price)}}</b></h5>
+                                <h6 class="text-success text-uppercase">{{$package->profitPercentage}}% Profit</h6>
+                                <h5>Minimum Commitment : <b>₦{{number_format($package->price)}}</b></h5>
                                 <h5 class="mb-4">Estimated Payout : <b>₦{{number_format($package->price + $package->price * ($package->profitPercentage/100))}}</b></h5>
                                 <p class="text-muted mb-4">{!! $package->info !!}</p>
                             </div>
@@ -116,4 +114,41 @@
         </div>
     </div>
     <!-- end row -->
+    <!-- instruction-modal -->
+    <div class="modal fade" id="instruction-modal" tabindex="-1" aria-labelledby="instructionmodalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-4">
+                        <div class="avatar-md mx-auto mb-4">
+                            <div class="avatar-title bg-light rounded-circle text-primary h1">
+                                <i class="mdi mdi-check-outline"></i>
+                            </div>
+                        </div>
+
+                        <div class="row justify-content-center">
+                            <div class="col-xl-10">
+                                <h4 class="text-primary">Hello, {{Auth::user()->firstName}}!</h4>
+                                <p class="text-muted font-size-14 mb-4">Here are the steps for you to partner with us</p>
+                                <div class="text-left d-flex flex-column justify-content-start">
+                                    <p class="text-muted font-size-14">1. Select the number of units you want for this package, as you do this the total would be calculated automatically to tell you how much you'll commit and earn in total.</p>
+                                    <p class="text-muted font-size-14">2. Click partner, to proceed and funds from your wallet would be commited to this package</p>
+                                    <p class="text-muted font-size-14">Start a partnership!!!</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end modal -->   
 </div>
+<script type="module" defer>
+    setTimeout(function () {
+        $("#instruction-modal").modal("show");
+    }, 1e3);
+</script>

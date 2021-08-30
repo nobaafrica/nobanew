@@ -16,6 +16,7 @@
             </div>
         </div>
     </x-slot> 
+    <x-alert />
     <div class="row">
         <div class="col-xl-4">
             <div class="card">
@@ -94,12 +95,12 @@
                                 <input readonly type="text" value='{{ Auth::user()->birthday }}' class="form-control" id="basicpill-dob-input">
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        {{-- <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="basicpill-bvn-input">BVN</label>
                                 <input readonly type="text" value='{{ Auth::user()->bank->first()->bvn }}' class="form-control" id="basicpill-bvn-input">
                             </div>
-                        </div>
+                        </div> --}}
                         <div class="col-lg-12">
                             <div class="mb-3">
                                 <label for="basicpill-address-input">Address</label>

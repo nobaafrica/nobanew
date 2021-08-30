@@ -50,27 +50,22 @@
             </div>
             <div class="row">
                 @foreach ($packages as $package)
-                <div class="col-xl-3 col-sm-6">
+                <div class="col-xl-4 col-sm-6">
                     <div class="card">
                         <div class="card-body">
                             <div class="product-img position-relative">
-                                <div class="avatar-sm product-ribbon">
+                                {{-- <div class="avatar-sm product-ribbon">
                                     <span class="avatar-title rounded-circle  bg-primary">
                                         {{$package->profitPercentage}} %
                                     </span>
-                                </div>
-                                <img src="{{asset($package->frontPicture ?? $package->pictures->picture)}}" alt="" class="img-fluid mx-auto d-block">
+                                </div> --}}
+                                <a href="{{route('package', $package)}}">
+                                    <img src="{{asset($package->frontPicture ?? $package->pictures->picture)}}" alt="" class="img-fluid mx-auto d-block">
+                                </a>
                             </div>
                             <div class="mt-4 text-center">
                                 <h5 class="mb-3 text-truncate"><a href="{{route('package', $package)}}" class="text-dark">{{$package->name}}</a></h5>
                                 
-                                <p class="text-muted">
-                                    <i class="bx bxs-star text-warning"></i>
-                                    <i class="bx bxs-star text-warning"></i>
-                                    <i class="bx bxs-star text-warning"></i>
-                                    <i class="bx bxs-star text-warning"></i>
-                                    <i class="bx bxs-star text-warning"></i>
-                                </p>
                                 <h5 class="my-0"><b>₦{{number_format($package->price)}}</b></h5>
 
                             </div>

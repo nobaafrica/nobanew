@@ -28,13 +28,19 @@ class Dashboard extends Component
         $this->cummulativePayout = $this->partnerships->sum('estimatedPayout');
         $this->expectedPayout = $this->partnerships->where('payoutDate', '>=', now())->sum('estimatedPayout');
         $this->monthtPayout = Partnership::where('user_id', Auth::user()->id)->where(DB::raw('MONTH(payoutDate) = MONTH(CURRENT_DATE())'))->sum('estimatedPayout');
-        $this->trending =  Partnership::with('package')->groupBy('package_id')->orderBy('created_at', 'desc')->get();
+        $this->trending =  $this->trendingPackages();
     }
 
     public function txs()
     {
         $query = DB::table('transactions')->select(DB::raw('DATE_FORMAT(time, "%b") AS x'), DB::raw('SUM(amount) as y'),)->where(['user_id' => $this->user->id])->groupByRaw(DB::raw('MONTH(time)'))->orderBy(DB::raw('MONTH(time)'))->get();
         return $query->toJson();
+    }
+
+    public function trendingPackages()
+    {
+        $query = Partnership::select(DB::raw('COUNT(*) as investors, package_id, package_name, amount * COUNT(*) as investment'))->where('isRedeemed', '0')->with('package')->groupBy('package_name')->orderByRaw(DB::raw('COUNT(*) desc'))->get();
+        return $query;
     }
 
     public function render()

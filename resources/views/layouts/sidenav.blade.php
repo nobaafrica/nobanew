@@ -18,20 +18,23 @@
 
                 <li>
                     <a href="{{route('wallet')}}" class="waves-effect">
-                        <i class="bx bx-user"></i>
+                        <i class="bx bx-wallet"></i>
                         <span key="t-wallet">Wallet</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="javascript: void(0);" class="has-arrow waves-effect">
-                        <i class="bx bx-box"></i>
-                        <span key="t-portfolio">Portfolio</span>
+                    <a href="{{route('packages')}}" class="waves-effect">
+                        <i class="bx bx-basket"></i>
+                        <span key="t-packages">Packages</span>
                     </a>
-                    <ul class="sub-menu" aria-expanded="false">
-                        <li><a href="{{route('packages')}}" key="t-packages">Packages</a></li>
-                        <li><a href="{{route('partnerships')}}" key="t-partnerships">Partnerships</a></li>
-                    </ul>
+                </li>
+
+                <li>
+                    <a href="{{route('partnerships')}}" class="waves-effect">
+                        <i class="bx bx-box"></i>
+                        <span key="t-partnerships">Partnerships</span>
+                    </a>
                 </li>
                 
                 <li>

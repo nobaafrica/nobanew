@@ -42,13 +42,7 @@
                         <table id="datatable" class="table align-middle table-nowrap table-check text-center">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width: 20px;" class="align-middle">
-                                        <div class="form-check font-size-16">
-                                            <input class="form-check-input" type="checkbox" id="checkAll">
-                                            <label class="form-check-label" for="checkAll"></label>
-                                        </div>
-                                    </th>
-                                    <th class="align-middle">Order ID</th>
+                                    <th class="align-middle">Agreement</th>
                                     <th class="align-middle">Package Name</th>
                                     <th class="align-middle">Date</th>
                                     <th class="align-middle">Package Unit</th>
@@ -62,12 +56,10 @@
                                 @foreach ($partnerships as $partnership)
                                 <tr>
                                     <td>
-                                        <div class="form-check font-size-16">
-                                            <input class="form-check-input" type="checkbox" id="orderidcheck01">
-                                            <label class="form-check-label" for="orderidcheck01"></label>
-                                        </div>
+                                        <a href="{{route('agreement', $partnership)}}" class="btn btn-primary btn-sm btn-rounded">
+                                            Download Agreement
+                                        </a>
                                     </td>
-                                    <td><a href="{{route('partnership',$partnership)}}" class="text-body fw-bold">#{{Str::limit($partnership->id, 7, '')}}</a> </td>
                                     <td><a href="{{route('package',$partnership->package)}}" class="text-body fw-bold">{{$partnership->package_name}}</a> </td>
                                     <td>
                                        {{\Carbon\Carbon::parse($partnership->created_at)->format('d F, Y')}}

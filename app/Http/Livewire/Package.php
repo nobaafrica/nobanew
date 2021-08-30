@@ -64,7 +64,7 @@ class Package extends Component
                 'payment_method' => 'wallet balance',
                 'time' => now(),
             ]);
-            if (!empty($this->user->referralCode)):
+            if (!empty($this->user->referralCode) && $this->user->partnerships->count() < 1):
                 $referrer = User::where('refCode', $this->user->referralCode)->first();
                 $bonus = $this->commitment * 2/100;
                 $referrer->wallet()->update([
