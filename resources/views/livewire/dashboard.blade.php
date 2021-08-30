@@ -108,8 +108,8 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Cumulative Payout</p>
-                                    <h4 class="mb-0">₦{{number_format($cummulativePayout)}}</h4>
+                                    <p class="text-muted fw-medium">Cumulative Partnership</p>
+                                    <h4 class="mb-0">₦{{number_format($cummulativePartnership)}}</h4>
                                 </div>
 
                                 <div class="flex-shrink-0 align-self-center ">
@@ -128,8 +128,8 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Expected Payout</p>
-                                    <h4 class="mb-0">₦{{number_format($expectedPayout)}}</h4>
+                                    <p class="text-muted fw-medium">Cummulative Payout</p>
+                                    <h4 class="mb-0">₦{{number_format($cummulativePayout)}}</h4>
                                 </div>
 
                                 <div class="flex-shrink-0 align-self-center">
@@ -188,7 +188,7 @@
                                     </td>
                                     <td class="d-flex flex-column">
                                         <div class="text-center">
-                                            <p class="text-muted">Interest Accrued ₦{{growthPecentage($partnership)}}/{{number_format($partnership->estimatedProfit, 2)}}</p>
+                                            <p class="text-muted">Investment value ₦{{number_format(growthPecentage($partnership))}}</p>
                                         </div>
                                         <div class="progress mb-2">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary rounded" role="progressbar" style="width: {{completionPercentage($partnership)}}%" aria-valuenow="{{completionPercentage($partnership)}}" aria-valuemin="0" aria-valuemax="100"></div>
@@ -214,19 +214,12 @@
                 <div class="card-body">
                     <h4 class="card-title mb-4">Trending Packages</h4>
                     <div class="table-responsive">
-                        <table class="table align-middle table-nowrap mb-0">
+                        <table class="table align-middle text-center table-nowrap mb-0">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width: 20px;">
-                                        <div class="form-check font-size-16 align-middle">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck01">
-                                            <label class="form-check-label" for="transactionCheck01"></label>
-                                        </div>
-                                    </th>
                                     <th class="align-middle">Rank</th>
                                     <th class="align-middle">Package Name</th>
                                     <th class="align-middle">Duration</th>
-                                    <th class="align-middle">Partners</th>
                                     <th class="align-middle">Minimum Commitment</th>
                                     <th class="align-middle">Amount Committed</th>
                                     <th class="align-middle">Profit Percentage</th>
@@ -236,19 +229,10 @@
                             <tbody>
                                 @foreach ($trending as $trend)
                                 <tr>
-                                    <td>
-                                        <div class="form-check font-size-16">
-                                            <input class="form-check-input" type="checkbox" id="transactionCheck{{$loop->iteration}}">
-                                            <label class="form-check-label" for="transactionCheck{{$loop->iteration}}"></label>
-                                        </div>
-                                    </td>
                                     <td><a href="{{route('package', $trend->package)}}" class="text-body fw-bold">#{{$loop->iteration}}</a> </td>
                                     <td>{{$trend->package->name}}</td>
                                     <td>
                                         {{$trend->package->duration}} Months
-                                    </td>
-                                    <td>
-                                        {{number_format($trend->investors)}}
                                     </td>
                                     <td>
                                         ₦{{number_format($trend->package->price)}}

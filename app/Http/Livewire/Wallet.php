@@ -181,8 +181,8 @@ class Wallet extends Component
                         $this->user->transactions()->create([
                             'id' => Str::uuid(), 
                             'transactionType' => 'debit', 
-                            'amount' => $this->withdrawalAmount, 
-                            'reference' => $initTransfer->data->reference, 
+                            'amount' => $this->withdrawalAmount + 100, 
+                            'reference' => $initTransfer->data->reference. "withdrawal + transfer charges 100NGN", 
                             'status' => 'success', 
                             'time' => now(),
                         ]);
@@ -196,8 +196,8 @@ class Wallet extends Component
                         $this->user->transactions()->create([
                             'id' => Str::uuid(), 
                             'transactionType' => 'debit', 
-                            'amount' => $this->withdrawalAmount, 
-                            'reference' => $initTransfer->data->reference, 
+                            'amount' => $this->withdrawalAmount + 100, 
+                            'reference' => $initTransfer->data->reference. "withdrawal + transfer charges 100NGN", 
                             'status' => 'pending', 
                             'time' => now(),
                         ]);

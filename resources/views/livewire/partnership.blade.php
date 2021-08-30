@@ -343,7 +343,7 @@
                                   </div>
                                 </div>
                                 <div class="text-center">
-                                    <a href="{{route('agreement', $partnership)}}" class="btn btn-primary">Download Agreement</a>
+                                    <a href="{{route('agreement', $partnership)}}" target="_blank" class="btn btn-primary">Download Agreement</a>
                                 </div>
                             </div>
                         </div> 

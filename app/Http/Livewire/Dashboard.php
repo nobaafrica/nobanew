@@ -14,7 +14,7 @@ class Dashboard extends Component
     public $user;
     public $partnerships;
     public $cummulativePayout;
-    public $expectedPayout;
+    public $cummulativePartnership;
     public $monthPayout;
     public $trending;
     public $withdrawableBalance;
@@ -26,7 +26,7 @@ class Dashboard extends Component
         $this->withdrawableBalance = is_null($this->wallet) ? null : $this->wallet->withdrawableBalance;
         $this->partnerships = Partnership::where('user_id', Auth::user()->id)->where('isRedeemed', '0')->with('package')->orderBy('created_at', 'desc')->get();
         $this->cummulativePayout = $this->partnerships->sum('estimatedPayout');
-        $this->expectedPayout = $this->partnerships->where('payoutDate', '>=', now())->sum('estimatedPayout');
+        $this->cummulativePartnership = $this->partnerships->sum('amount');
         $this->monthtPayout = Partnership::where('user_id', Auth::user()->id)->where(DB::raw('MONTH(payoutDate) = MONTH(CURRENT_DATE())'))->sum('estimatedPayout');
         $this->trending =  $this->trendingPackages();
     }
@@ -39,7 +39,7 @@ class Dashboard extends Component
 
     public function trendingPackages()
     {
-        $query = Partnership::select(DB::raw('COUNT(*) as investors, package_id, package_name, amount * COUNT(*) as investment'))->where('isRedeemed', '0')->with('package')->groupBy('package_name')->orderByRaw(DB::raw('COUNT(*) desc'))->get();
+        $query = Partnership::select(DB::raw('COUNT(*) as investors, package_id, package_name, amount * COUNT(*) as investment'))->where('isRedeemed', '0')->with('package')->groupBy('package_name')->orderByRaw(DB::raw('investment desc'))->limit(5)->get();
         return $query;
     }
 

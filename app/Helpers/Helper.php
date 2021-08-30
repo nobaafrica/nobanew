@@ -11,9 +11,9 @@ function numberToWord($number)
 function growthPecentage(object $partnership) 
 {
     $partnership_duration = $partnership->package->duration * 30;
-    $dailyInterest = $partnership->percentageProfit/$partnership_duration;
+    $dailyInterest = $partnership->estimatedProfit/$partnership_duration;
     $interestAccrued = $dailyInterest *  Carbon::parse($partnership->created_at)->diffInDays(now());
-    return round($interestAccrued, PHP_ROUND_HALF_UP);
+    return $partnership->amount + round($interestAccrued, PHP_ROUND_HALF_UP);
 }
 
 function daysPercentage(object $partnership) :int

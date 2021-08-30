@@ -134,8 +134,9 @@
                                 <h4 class="text-primary">Hello, {{Auth::user()->firstName}}!</h4>
                                 <p class="text-muted font-size-14 mb-4">Here are the steps for you to partner with us</p>
                                 <div class="text-left d-flex flex-column justify-content-start">
-                                    <p class="text-muted font-size-14">1. Select the number of units you want for this package, as you do this the total would be calculated automatically to tell you how much you'll commit and earn in total.</p>
-                                    <p class="text-muted font-size-14">2. Click partner, to proceed and funds from your wallet would be commited to this package</p>
+                                    <p class="text-muted font-size-14">1. Select your preferred number of units and click “Partner”</p>
+                                    <p class="text-muted font-size-14">2. The amount to be committed will be automatically calculated</p>
+                                    <p class="text-muted font-size-14">3. Click partner, to proceed and funds from your wallet would be committed to this package</p>
                                     <p class="text-muted font-size-14">Start a partnership!!!</p>
                                 </div>
                             </div>

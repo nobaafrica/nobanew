@@ -56,7 +56,7 @@
                                 @foreach ($partnerships as $partnership)
                                 <tr>
                                     <td>
-                                        <a href="{{route('agreement', $partnership)}}" class="btn btn-primary btn-sm btn-rounded">
+                                        <a href="{{route('agreement', $partnership)}}" target="_blank" class="btn btn-primary btn-sm btn-rounded">
                                             Download Agreement
                                         </a>
                                     </td>

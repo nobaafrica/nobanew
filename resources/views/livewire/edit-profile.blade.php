@@ -54,7 +54,7 @@
                 </div>
                 <div class="col-xl-8">
                     <div class="card">
-                        <form wire:submit.prevent='updateProfile' class="card-body">
+                        <form wire:submit.prevent='updateProfileInfo' class="card-body">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="mb-3">

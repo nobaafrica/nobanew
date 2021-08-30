@@ -65,7 +65,7 @@
                                 <div class="d-flex justify-content-center">
                                     <h5 id="nuban">{{$nuban}}</h5>
                                     <input type="text" class="d-none" id="account-number" value="{{$nuban}}">
-                                    <h5><span style="cursor: pointer" onclick="copyToClipBoard('account-number', 'nuban')"><i class="bx bx-copy"></i></span> </h5>
+                                    <button onclick="copyToClipBoard('account-number', 'nuban')" class="btn btn-primary btn-sm">Copy</button>
                                 </div>
                             </div>
                         </div>
