@@ -153,7 +153,7 @@
             <div class="card h-100">
                 <div class="card-body">
                     <div class="d-sm-flex flex-wrap">
-                        <h4 class="card-title mb-4">Transactions</h4>
+                        <h4 class="card-title mb-4">Transaction Volume</h4>
                         {{-- <div class="ms-auto">
                             <ul class="nav nav-pills">
                                 <li class="nav-item">
