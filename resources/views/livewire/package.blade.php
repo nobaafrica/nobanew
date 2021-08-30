@@ -132,12 +132,9 @@
                         <div class="row justify-content-center">
                             <div class="col-xl-10">
                                 <h4 class="text-primary">Hello, {{Auth::user()->firstName}}!</h4>
-                                <p class="text-muted font-size-14 mb-4">Here are the steps for you to partner with us</p>
                                 <div class="text-left d-flex flex-column justify-content-start">
-                                    <p class="text-muted font-size-14">1. Select your preferred number of units and click “Partner”</p>
-                                    <p class="text-muted font-size-14">2. The amount to be committed will be automatically calculated</p>
-                                    <p class="text-muted font-size-14">3. Click partner, to proceed and funds from your wallet would be committed to this package</p>
-                                    <p class="text-muted font-size-14">Start a partnership!!!</p>
+                                    <p class="text-muted font-size-14">To partner with us, please select your preferred number of units and click “Partner”</p>
+                                    <p class="text-muted font-size-14">The amount to be committed and your payout will be automatically calculated</p>
                                 </div>
                             </div>
                         </div>
