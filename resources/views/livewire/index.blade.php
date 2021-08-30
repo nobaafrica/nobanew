@@ -28,10 +28,10 @@
                                                 <div class="owl-carousel owl-theme auth-review-carousel" id="auth-review-carousel">
                                                     <div class="item">
                                                         <div class="py-3">
-                                                            <h4 class="font-size-24 text-white mb-4">" Enhancing Africa’s food systems. "</h4>
+                                                            <h4 class="font-size-24  mb-4">" Enhancing Africa’s food systems "</h4>
 
                                                             {{-- <div>
-                                                                <h4 class="font-size-24 text-white text-primary">Abs1981</h4>
+                                                                <h4 class="font-size-24  text-primary">Abs1981</h4>
                                                                 <p class="font-size-14 mb-0">- Skote User</p>
                                                             </div> --}}
                                                         </div>
@@ -40,7 +40,7 @@
 
                                                     <div class="item">
                                                         <div class="py-3">
-                                                            <h4 class="font-size-24 text-white mb-4">" Enhancing Africa’s food systems. "</h4>
+                                                            <h4 class="font-size-24  mb-4">" Enhancing Africa’s food systems "</h4>
 
                                                             {{-- <div>
                                                                 <h4 class="font-size-16 text-primary">nezerious</h4>
@@ -124,7 +124,7 @@
                             </div>
 
                             <div class="mt-4 mt-md-5 text-center">
-                                <p class="mb-0">© <script>document.write(new Date().getFullYear());</script> {{config('app.name')}}. Crafted with <i class="mdi mdi-heart text-danger"></i> by Themesbrand</p>
+                                <p class="mb-0">© <script>document.write(new Date().getFullYear());</script> {{config('app.name')}}. </p>
                             </div>
                         </div>
                         

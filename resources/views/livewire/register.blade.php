@@ -28,7 +28,7 @@
                                                 <div class="owl-carousel owl-theme auth-review-carousel" id="auth-review-carousel">
                                                     <div class="item">
                                                         <div class="py-3">
-                                                            <h4 class="font-size-24 text-white mb-4">" Enhancing Africa’s food systems. "</h4>
+                                                            <h4 class="font-size-24  mb-4">" Enhancing Africa’s food systems "</h4>
 
                                                             {{-- <div>
                                                                 <h4 class="font-size-16 text-primary">Abs1981</h4>
@@ -40,7 +40,7 @@
 
                                                     <div class="item">
                                                         <div class="py-3">
-                                                            <h4 class="font-size-24 text-white mb-4">" Enhancing Africa’s food systems. "</h4>
+                                                            <h4 class="font-size-24  mb-4">" Enhancing Africa’s food systems "</h4>
 
                                                             {{-- <div>
                                                                 <h4 class="font-size-16 text-primary">nezerious</h4>
