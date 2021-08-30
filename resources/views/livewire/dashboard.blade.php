@@ -64,7 +64,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="avatar-md profile-user-wid mb-4 align-self-end">
-                                <img src="{{asset(Auth::user()->profilePicture ?? "/assets/images/user.png")}}" alt="" class="img-thumbnail rounded-circle">
+                                <img src="{{asset("storage/".Auth::user()->profilePicture ?? "/assets/images/user.png")}}" alt="" class="img-thumbnail rounded-circle">
                             </div>
                             <p class="text-muted mb-0">Wallet Balance</p>
                             <h5 class="font-size-15 text-truncate text-capitalize">₦{{number_format($withdrawableBalance)}}</h5>

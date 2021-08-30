@@ -24,7 +24,7 @@
                     <div class="row mt-4">
                         <div class="col-sm-4">
                             <div class="avatar-md profile-user-wid mb-4">
-                                <img src="{{asset(Auth::user()->profilePicture ?? "/assets/images/user.png")}}" alt="" class="img-thumbnail rounded-circle">
+                                <img src="{{asset("storage/".Auth::user()->profilePicture ?? "/assets/images/user.png")}}" alt="" class="img-thumbnail rounded-circle">
                             </div>
                             <h5 class="font-size-15 text-capitalize">{{auth()->user()->firstName. " ". auth()->user()->lastName}}</h5>
                             <p class="mb-1">{{auth()->user()->email}}</p>
