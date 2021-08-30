@@ -67,7 +67,6 @@
         </div>
     </body>
     <!-- JAVASCRIPT -->
-    {{-- <script src="{{ asset('/js/app.js') }}" defer></script> --}}
     <script src="{{ asset('/assets/libs/jquery/jquery.min.js') }}" defer></script>
     <script src="{{ asset('/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
     <script src="{{ asset('/assets/libs/metismenu/metisMenu.min.js') }}" defer></script>
@@ -78,5 +77,6 @@
     <script src="{{ ('/assets/libs/apexcharts/apexcharts.min.js') }}" defer></script>
     <!-- App js -->
     <script src="{{ ('/assets/js/app.js') }}" defer></script>
+    <script src="{{ asset('/js/app.js') }}" defer></script>
     @stack('scripts')
 </html>

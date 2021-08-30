@@ -65,13 +65,18 @@ class ProcessWebhook implements ShouldQueue
             $wallet->withdrawableBalance = $wallet->withdrawableBalance + $data['amount']/100;
             $wallet->save();
         elseif($event == 'transfer.success'): 
-            Transactions::where('reference', $data['reference'])->update(['status' => $data['status'], 'payment_method' => 'transfer']);
-            $user = Bank::where('nuban', $data['recipient']['details']['account_number'])->first();
-            $wallet = Wallet::where('user_id', $user->user->id)->first();
-            $wallet->accountBalance = $wallet->accountBalance - $data['amount']/100;
-            $wallet->withdrawableBalance = $wallet->withdrawableBalance - $data['amount']/100;
-            $wallet->save();
+            Log::info($data);
+            $tx = Transactions::where('reference', $data['reference'])->first();
+            if($tx->status == 'pending'):
+                $tx->update(['status' => $data['status'], 'payment_method' => 'transfer']);
+                $user = Bank::where('nuban', $data['recipient']['details']['account_number'])->first();
+                $wallet = Wallet::where('user_id', $user->user->id)->first();
+                $wallet->accountBalance = $wallet->accountBalance - $data['amount']/100;
+                $wallet->withdrawableBalance = $wallet->withdrawableBalance - $data['amount']/100;
+                $wallet->save();
+            endif;
         elseif($event == 'transfer.failed'): 
+            Log::info($data);
             Transactions::where('reference', $data['reference'])->update(['status' => $data['status']]);
         endif;
     }

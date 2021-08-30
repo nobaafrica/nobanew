@@ -10,7 +10,7 @@ class Withdrawal extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'recipient_code', 'bank_code', 'bank_name'];
+    protected $fillable = ['user_id', 'recipient_code', 'bank_code', 'bank_name', 'amount', 'status'];
 
     public function user()
     {

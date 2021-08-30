@@ -31,6 +31,7 @@ class Wallet extends Component
     public $withdrawalAmount;
     public $userBank;
     public $userAccount;
+    public $totalWithdrawn;
     
 
     public function mount()
@@ -47,6 +48,7 @@ class Wallet extends Component
         $this->debitTx = $this->transactions->where('transactionType', 'debit');
         $this->userBank = is_null($this->user->bank()->first()) ? null : $this->user->bank()->first()->bank;
         $this->userAccount = is_null($this->user->bank()->first()) ? null : $this->user->bank()->first()->nuban;
+        $this->totalWithdrawn = is_null($this->user->withdrawal) ? null : $this->user->withdrawal()->where('status', '!=', 'pending')->sum('amount');
     }
 
     public function generateWallet()
@@ -153,10 +155,16 @@ class Wallet extends Component
                 $account = is_null($this->user->bank()->first()->nuban) ? null : $this->user->bank()->first()->nuban;
                 $userBank = is_null($this->user->bank()->first()->nuban) ? null : $this->user->bank()->first()->bank;
                 // get transfer info
-                if($this->user->withdrawal()->count() < 1):
-                    $withdrawalInfo = $this->firstWithdrawal($account, $userBank);
+                if($this->user->withdrawal->count() < 1):
+                    $withdrawalInfo = $this->firstWithdrawal($account, $userBank, $this->withdrawalAmount);
                 else:
                     $withdrawalInfo = $this->user->withdrawal->last();
+                    $this->user->withdrawal()->create([
+                        'recipient_code' => $withdrawalInfo->recipient_code, 
+                        'bank_code' => $withdrawalInfo->bank_code, 
+                        'bank_name' => $withdrawalInfo->bank_name,
+                        'amount' => $this->withdrawalAmount,
+                    ]);
                 endif;
                 $initTransfer = Http::withToken(config('app.paystack_secret'))->post('https://api.paystack.co/transfer', [
                     'source' => 'balance',
@@ -166,22 +174,42 @@ class Wallet extends Component
                 ])->object();
                 // initialize transfer
                 if($initTransfer->status == true):
-                    $this->user->transactions()->create([
-                        'id' => Str::uuid(), 
-                        'transactionType' => 'debit', 
-                        'amount' => $this->withdrawalAmount, 
-                        'reference' => $initTransfer->data->reference, 
-                        'status' => 'pending', 
-                        'time' => now(),
-                    ]);
-                    session()->flash('success', 'Withdrawal initiated successfully');
-                    return redirect()->route('wallet');
+                    $verifyTransfer = Http::withToken(config('app.paystack_secret'))->get('https://api.paystack.co/transfer/verify/:reference', [
+                        'reference' => $initTransfer->data->reference
+                    ])->object();
+                    if($verifyTransfer->status == true && $verifyTransfer->message == 'Transfer retrieved'):
+                        $this->user->transactions()->create([
+                            'id' => Str::uuid(), 
+                            'transactionType' => 'debit', 
+                            'amount' => $this->withdrawalAmount, 
+                            'reference' => $initTransfer->data->reference, 
+                            'status' => 'success', 
+                            'time' => now(),
+                        ]);
+                        $wallet = Wallet::where('user_id', $this->user->id)->first();
+                        $wallet->accountBalance = $wallet->accountBalance - $verifyTransfer->data->amount/100;
+                        $wallet->withdrawableBalance = $wallet->withdrawableBalance - $verifyTransfer->data->amount/100;
+                        $wallet->save();
+                        session()->flash('success', 'Withdrawal successful');
+                        return redirect()->route('wallet');
+                    else:
+                        $this->user->transactions()->create([
+                            'id' => Str::uuid(), 
+                            'transactionType' => 'debit', 
+                            'amount' => $this->withdrawalAmount, 
+                            'reference' => $initTransfer->data->reference, 
+                            'status' => 'pending', 
+                            'time' => now(),
+                        ]);
+                        session()->flash('success', 'Withdrawal initiated successfully');
+                        return redirect()->route('wallet');
+                    endif;
                 endif;
             endif;
         endif;
     }
 
-    protected function firstWithdrawal($account, $userBank)
+    protected function firstWithdrawal($account, $userBank, $amount)
     {
         // fetch banks list from paystack
         $getBanks = Cache::remember('paystack-banks', now()->addDays(30), function () {
@@ -210,6 +238,7 @@ class Wallet extends Component
                     'recipient_code' => $createRecipient->data->recipient_code, 
                     'bank_code' => $createRecipient->data->details->bank_code, 
                     'bank_name' => $createRecipient->data->details->bank_name,
+                    'amount' => $amount,
                 ]);
                 return $this->user->withdrawal->last();
             endif;
@@ -219,6 +248,6 @@ class Wallet extends Component
     public function render()
     {
        
-        return view('livewire.wallet')->with(['txs' => $this->txs()]);
+        return view('livewire.wallet')->with(['txs' => $this->txs(), 'credits' => $this->creditTx]);
     }
 }

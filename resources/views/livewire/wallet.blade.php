@@ -37,7 +37,6 @@
                                 <h5>{{auth()->user()->firstName. " ". auth()->user()->lastName}}</h5>
                                 <p class="mb-1">{{auth()->user()->email}}</p>
                                 <p class="mb-0">Id no: #{{Str::limit(auth()->user()->id, 7, '')}}</p>
-                                <p class="mb-0">Referral Code: {{auth()->user()->refCode}}</p>
                             </div>
                             
                         </div>
@@ -63,18 +62,22 @@
                             <div class="text-center">
                                 <h6 class="text-muted mb-2">{{$bank}}</h6>
                                 <h5>{{$accountName}}</h5>
-                                <h5>{{$nuban}}</h5>
+                                <div class="d-flex justify-content-center">
+                                    <h5 id="nuban">{{$nuban ?? 111}}</h5>
+                                    <input type="text" class="d-none" id="account-number" value="{{$nuban ?? 11111}}">
+                                    <h5><span style="cursor: pointer" onclick="copyToClipBoard('account-number', 'nuban')"><i class="bx bx-copy"></i></span> </h5>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="card-body border-top">
-                    <p class="text-muted mb-4">Manage Wallet</p>
-                    <div class="text-center">
-                        <div class="row justify-content-between p-2">
+                <div class="card-body border-top p-0">
+                    <p class="text-muted mb-4 ps-4 pt-4">Manage Wallet</p>
+                    <div class="text-center overflow-hidden">
+                        <div class="d-flex flex-sm-column flex-md-row flex-lg-row justify-content-sm-center justify-content-lg-between p-2">
                             @if (is_null($wallet) || is_null($wallet->accountNumber))
-                            <div class="col-sm-4">
+                            <div class="w-50 me-1">
                                 <div>
                                     <div class="font-size-24 text-primary mb-2">
                                         <i class="bx bx-plus"></i>
@@ -87,7 +90,7 @@
                             </div>
                             @endif
                             
-                            <div class="col-sm-4">
+                            <div class="w-50 me-1">
                                 <div>
                                     <div class="font-size-24 text-primary mb-2">
                                         <i class="bx bx-wallet"></i>
@@ -98,7 +101,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="w-50 me-1">
                                 <div>
                                     <div class="font-size-24 text-primary mb-2">
                                         <i class="bx bx-import"></i>
@@ -124,7 +127,7 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3 align-self-center">
-                                    <i class="mdi mdi-bitcoin h2 text-warning mb-0"></i>
+                                    {{-- <i class="mdi mdi-bitcoin h2 text-warning mb-0"></i> --}}
                                 </div>
                                 <div class="flex-grow-1">
                                     <p class="text-muted mb-2">Withdrawable Balance</p>
@@ -139,7 +142,7 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3 align-self-center">
-                                    <i class="mdi mdi-ethereum h2 text-primary mb-0"></i>
+                                    {{-- <i class="mdi mdi-ethereum h2 text-primary mb-0"></i> --}}
                                 </div>
                                 <div class="flex-grow-1">
                                     <p class="text-muted mb-2">Referral Bonus</p>
@@ -154,11 +157,11 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3 align-self-center">
-                                    <i class="mdi mdi-litecoin h2 text-info mb-0"></i>
+                                    {{-- <i class="mdi mdi-litecoin h2 text-info mb-0"></i> --}}
                                 </div>
                                 <div class="flex-grow-1">
-                                    <p class="text-muted mb-2">Cumulative Payout</p>
-                                    <h5 class="mb-0">0</span></h5>
+                                    <p class="text-muted mb-2">Total Withdrawn</p>
+                                    <h5 class="mb-0">₦ {{number_format($totalWithdrawn)}}</span></h5>
                                 </div>
                             </div>
                         </div>
@@ -169,10 +172,36 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-3">Overview</h4>
+                    <h4 class="card-title mb-3">Referral</h4>
+                    <div class="row">
+                        <div class="col">
+                            <div class="border p-3 rounded mt-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="avatar-xs me-3">
+                                        <span class="avatar-title rounded-circle bg-primary bg-soft text-primary font-size-18">
+                                            <i class="mdi mdi-share"></i>
+                                        </span>
+                                    </div>
+                                    <h5 class="font-size-14 mb-0">Share with friends and earn 2% of their first partnership with us</h5>
+                                </div>
 
-                    <div>
-                        <div id="overview-chart" class="apex-charts" dir="ltr"></div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="text-muted mt-3">
+                                            <p>Referral Code</p>
+                                            <input type="text" class="d-none" id="ref-code" value="{{Auth::user()->refCode}}">
+                                            <h4 id="refcode">{{Auth::user()->refCode}}</h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 align-self-end">
+                                        <div class="float-end mt-3">
+                                            <button onclick="copyToClipBoard('ref-code', 'refcode')" class="btn btn-primary">Copy</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -188,7 +217,6 @@
                             <table id="datatable" class="table table-hover dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                 <thead>
                                     <tr>
-                                        <th>ID No</th>
                                         <th>Date</th>
                                         <th>Amount</th>
                                         <th>Transaction Status</th>
@@ -198,9 +226,8 @@
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($transactions as $tx)
+                                    @foreach ($credits as $tx)
                                     <tr class="text-capitalize">
-                                        <td><a href="javascript: void(0);" class="text-body fw-bold">#{{$tx->reference}}</a></td>
                                         <td>{{\Carbon\Carbon::parse($tx->time)->format('d F, Y')}}</td>
                                         <td>₦{{number_format($tx->amount)}}</td>
                                         <td>
@@ -307,23 +334,9 @@
 <script src="{{ asset ('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}" defer></script>
 <script type="module" defer>
     document.addEventListener('DOMContentLoaded', function () {
-        let txs = {!!$txs!!}
-        var options = {
-            series: [
-                { type: "area", name: "Transactions", data: txs },
-            ],
-            chart: { height: 240, type: "line", toolbar: { show: !1 } },
-            dataLabels: { enabled: !1 },
-            stroke: { curve: "smooth", width: 2, dashArray: [0, 0, 3] },
-            fill: { type: "solid", opacity: [0.15, 0.05, 1] },
-            xaxis: { type: 'category' },
-            colors: ["#8ebf49", "#3452e1", "#50a5f1"],
-        },
-        chartOverview = new ApexCharts(document.querySelector("#overview-chart"), options);
-        chartOverview.render(),
         $(function () {
             $("#datatable").DataTable(), $(".dataTables_length select").addClass("form-select form-select-sm");
         });
-    })
+    });
 </script>
 @endpush
