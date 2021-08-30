@@ -266,14 +266,81 @@
                                                 </ol>
                                             </li>
                                             <li>
-                                                <h6><u>SCOPE OF WORK</u></h6>
-                                                <p>The Scope of work fully encapsulated in the project proposal.</p>
+                                                <h6><u>ENTRY INTO FORCE, DURATION AND TERMINATION</u></h6>
+                                                <ol>
+                                                    <li>This MOU shall come into force on the date of signing and shall remain in force for a period of {{numberToWord($partnership->package->duration)}} ({{$partnership->package->duration}}) Calendar months.</li>
+                                                    <li>Extension of the MOU for any duration of time shall be by mutual agreement of both parties.</li>
+                                                    <li>Notwithstanding anything in this Article, either Party may terminate this MOU by notifying the other Party in writing at least thirty (30) days prior to its intention to do so.</li>
+                                                    <li>Upon termination, cancellation or expiration of this Agreement, the MANAGING PARTY shall, without delay upon request of the INVESTING PARTY, return or refund all the money invested with its accruing interest within a period of 1(One) Month as stipulated above.</li>
+                                                    <li>Unless otherwise agreed by the Parties in writing, the termination of this MOU shall not affect the implementation of any activity undertaken under this MOU and not yet completed at the time of the termination of this MOU. Either party may give the other One Month’s notice to terminate investment.</li>
+                                                </ol>
                                             </li>
                                             <li>
-                                                <h6><u>SCOPE OF WORK</u></h6>
-                                                <p>The Scope of work fully encapsulated in the project proposal.</p>
+                                                <h6><u>CONFIDENTIALITY</u></h6>
+                                                <p>The contents of this Memorandum is strictly confidential and intended only for the parties mentioned therein and shall not be reproduced or used in whole or in part, for any purpose other than that contemplated by this proposal. All copies of this Memorandum of Understanding and any further information provided in connection with it, whether in paper or electronic format be kept confidential.</p>
+                                            </li>
+                                            <li>
+                                                <h6><u>FORCE MAJERE</u></h6>
+                                                <p>Neither the MANAGING PARTY nor the INVESTING PARTY shall be liable for delay or Failure in performance of any obligation herein, or interfered with by reason or any cause beyond the control of the party affected thereby includes but not limited to such act as war, strike, riots, government-imposed lock-down or restriction, civil commotion, storm, flood, earthquakes of subsistent or any happening by act of God beyond the reasonable control of the party affected thereby.</p>
+                                                <p>It is understood that the enumeration of the particular of the cause in this is for the purposes of illustrations only, and are deemed to be excluded by the parties for a reason or any other cause beyond its reasonable control.</p>
+                                                <p>If any such an event of force majeure occurs and such event continues for ninety (90) days or more, the Party delayed or unable to perform shall give immediate notice to the other party, and the party affected by the other's delay or inability to perform may elect at its sole discretion to:</p>
+                                                <ol>
+                                                    <li>terminate this Agreement; or</li>
+                                                    <li>permit the other party to resume performance of its obligations once the condition ceases with the option of the affected party extending the period of this Agreement up to the length of time the condition endured; or</li>
+                                                    <li>permit a substitute to be provided in place of the Solution, other Solution Products, or Services comparable to the Solution, Solution Products, or Services licensed under this MOU (where possible);</li>
+                                                </ol>
+                                                <p>Unless written notice is given within thirty (30) days after the affected party is notified of the condition, option (2) shall be deemed selected.</p>
+                                            </li>
+                                            <li>
+                                                <h6><u>GOVERNING LAW</u></h6>
+                                                <p>This agreement shall be constructed and governed in accordance with the 	laws of the Federal Republic of Nigeria.</p>
+                                                <h5><b>ADR OR ARBITRATION</b></h5>
+                                                <ol type="i">
+                                                    <li>All disputes, claims or proceedings between the parties relating to the 	validity, construction or performance of this agreement shall first be 	resolved through amicable negotiations in good faith between the parties 	failing which it shall then be referred to and resolved through arbitration, on 	the initiation of either party and which shall be in accordance with the 	provisions of the ARBITRATION AND CONCILIATION ACT CAP A18, 	LAWS OF THE FEDERATION OF NIGERIA 2004.</li>
+                                                    <li>There shall be a panel of three arbitrators, one each to be appointed by each 	party and the third to be jointly appointed by the two other arbitrators. 	Proceedings shall be made in a summary manner without reference or 	adherence to strict rules of legal procedure or Evidence Act in order that the 	matter may be resolved promptly and simply in a commercial manner. The 	arbitrator’s award or arbitral award as to the dispute and cost of arbitration 	shall be final and binding upon the parties. The venue of the arbitration shall 	be in Abuja, Nigeria</li>
+                                                </ol>
+                                            </li>
+                                            <li>
+                                                <h6><u>ANTI-CORRUPTION</u></h6>
+                                                <p>Each Party shall comply with all applicable anti-bribery and anti-corruption Laws in any relevant jurisdiction and all applicable anti-bribery and anti-corruption regulations and codes of practice.</p>
+                                                <p>Each Party shall ensure that it shall use its best endeavors to ensure compliance with anti-money laundering laws and best practices and it shall set up structures to track, prevent and detect such violations including breaches of all such laws, regulations and conventions.</p>
+                                            </li>
+                                            <li>
+                                                <h6><u>ENTIRETY, ALTERATION or MODIFICATION</u></h6>
+                                                <p>This agreement constitutes the terms and conditions in contract between the 	parties and no modifications; waivers or other changes will be binding on 	either party unless assented to in writing by authorized representatives of 	both parties hereby agree that this agreement shall become valid and 	operational.</p>
+                                                <p>By this memorandum provided here-in, parties agree to be bound by the 	provision there-of.</p>
+                                                <p>Any modification or addition to this memorandum shall be in writing and it 	must be signed by both parties.</p>
+                                            </li>
+                                            <li>
+                                                <h6><u>SEVERABILITY</u></h6>
+                                                <p>In the event any provision or part of this Agreement is found to be invalid or unenforceable, only that particular provision or part so found, and not the entire Agreement, will be inoperative.</p>
+                                            </li>
+                                            <li>
+                                                <h6><u>NOTICES</u></h6>
+                                                <p>Any notice or other communication given to a Party under or in connection with this MOU shall be deemed given when, delivered personally, sent by commercial courier with written verification or receipt, upon receipt or refusal of receipt if sent by registered or certified mail, postage prepaid, facsimile or email.</p>
                                             </li>
                                         </ol>
+                                        <h5><b>IN WITNESS WHEREOF THE PARTIES HAVE HEREUNTO SET THEIR HANDS AND SEAL THE DAY AND YEAR FIRST ABOVE WRITTEN </b></h5>
+                                        <h6><b>The common seal of the within named MANAGING PARTY hereby affixed </b></h6>
+                                        <h5><b>IN THE PRESENCE OF:</b></h5>
+                                        <h5><b>{{$partnership->user->name}}</b></h5>
+                                        <h6><b>The common seal of the within named INVESTING PARTY is hereby affixed in the presence of:</b></h6>
+                                        <div class="d-flex justify-content-between px-5 mt-3 mb-3">
+                                            <div class="d-flex flex-column">
+                                                <img src="{{asset('/assets/images/signature1.jpg')}}" class="img-fluid" style="height: 100px" alt="">
+                                                <h5><u>NAJIM ABDULRAZAK</u></h5>
+                                                <h5>DIRECTOR</h5>
+                                            </div>
+                                            <div class="d-flex flex-column">
+                                                <img src="{{asset('/assets/images/signature2.png')}}" class="img-fluid" style="height: 100px" alt="">
+                                                <h5><u>SEMIU ADEGBAJU</u></h5>
+                                                <h5>SECRETARY</h5>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <h5>BEFORE ME</h5>
+                                            <h5>COMMISSIONER FOR OATHS/NOTARY PUBLIC</h5>
+                                        </div>
                                     </div>
                                   </div>
                                 </div>
