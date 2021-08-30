@@ -93,9 +93,9 @@
                                         </div>
                 
                                         <div class="mb-3">
-                                            @if (Route::has('password.request'))
+                                            @if (Route::has('password-reset'))
                                             <div class="float-end">
-                                                <a  href="{{ route('password.request') }}" class="text-muted">Forgot password?</a>
+                                                <a  href="{{ route('password-reset') }}" class="text-muted">Forgot password?</a>
                                             </div>
                                             @endif
                                             <x-label class="form-label" for="password" :value="__('Password')" />

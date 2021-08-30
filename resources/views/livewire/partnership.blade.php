@@ -27,12 +27,10 @@
                         <div class="col-xl-4">
                             <div class="product-detai-imgs">
                                 <div class="row">
-                                    <div class="col-md-12 offset-md-1 col-sm-9 col-8">
-                                        <div>
-                                            <img src="{{ asset($partnership->package->frontPicture ?? $partnership->package->package->pictures->picture) }}" width="300" alt="" class="img-fluid mx-auto d-block">
-                                        </div>
-                                    </div>
                                     <div class="text-center">
+                                        <img src="{{ asset($partnership->package->frontPicture ?? $partnership->package->package->pictures->picture) }}" width="300" alt="" class="img-fluid mx-auto d-block">
+                                    </div>
+                                    <div class="text-center mt-4">
                                         <form wire:submit.prevent='partner'>
                                             <div class="row">
                                                 <div class="col-md-6">

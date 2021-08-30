@@ -25,7 +25,7 @@ class Wallet extends Component
     public $referralBonus;
     public $fundingAmount;
     public $transactions;
-    protected $creditTx;
+    public $creditTx;
     protected $debitTx;
     public $banks;
     public $withdrawalAmount;

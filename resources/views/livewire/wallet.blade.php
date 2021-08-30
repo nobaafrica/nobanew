@@ -226,7 +226,7 @@
                                 </thead>
 
                                 <tbody>
-                                    @foreach ($credits as $tx)
+                                    @foreach ($creditTx as $tx)
                                     <tr class="text-capitalize">
                                         <td>{{\Carbon\Carbon::parse($tx->time)->format('d F, Y')}}</td>
                                         <td>₦{{number_format($tx->amount)}}</td>

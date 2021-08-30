@@ -4,6 +4,7 @@ use App\Http\Controllers\Webhook;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\DownloadAgreement;
 use App\Http\Livewire\EditProfile;
+use App\Http\Livewire\ForgotPassword;
 use App\Http\Livewire\Index;
 use App\Http\Livewire\Package;
 use App\Http\Livewire\Packages;
@@ -50,5 +51,5 @@ Route::get('/verify-mail/{id}/{hash}', function (EmailVerificationRequest $reque
 
     return redirect('/verify-account');
 })->middleware(['auth', 'signed'])->name('verification.verify');
-
+Route::get('/reset-password', ForgotPassword::class)->name('password-reset')->middleware('guest');
 require __DIR__.'/auth.php';
