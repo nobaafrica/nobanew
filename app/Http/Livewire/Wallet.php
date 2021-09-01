@@ -58,7 +58,7 @@ class Wallet extends Component
                 'email' => Auth::user()->email,
             ])->object();
             if($fetchCustomer->status == true):
-                if($fetchCustomer->data->identified == true):
+                if($fetchCustomer->data['identified']== true):
                     CustomerIdentified::dispatch($fetchCustomer->data->customer_code);
                     session()->flash('success', "Account is being generated");
                     return redirect()->route('wallet');

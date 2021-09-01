@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Webhook;
+use App\Http\Livewire\Admin\Package as AdminPackage;
+use App\Http\Livewire\Admin\Packages as AdminPackages;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\DownloadAgreement;
 use App\Http\Livewire\EditProfile;
@@ -51,5 +53,10 @@ Route::get('/verify-mail/{id}/{hash}', function (EmailVerificationRequest $reque
 
     return redirect('/verify-account');
 })->middleware(['auth', 'signed'])->name('verification.verify');
+
+// Admin Routes
+Route::get('/admin/packages', AdminPackages::class)->name('admin-packages')->middleware(['auth', 'verified', 'isAdmin']);
+Route::get('/admin/package/{package}', AdminPackage::class)->name('admin-package')->middleware(['auth', 'verified', 'isAdmin']);
+
 Route::get('/reset-password', ForgotPassword::class)->name('password-reset')->middleware('guest');
 require __DIR__.'/auth.php';

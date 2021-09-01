@@ -43,7 +43,24 @@
                         <span key="t-calendar">Profile</span>
                     </a>
                 </li>
-
+                @if (Auth::user()->isAdmin)
+                <li>
+                    <a href="javascript: void(0);" class="has-arrow waves-effect" aria-expanded="true">
+                        <i class="bx bxs-user-badge"></i>
+                        <span key="t-admin">Admin</span>
+                    </a>
+                    <ul class="sub-menu mm-collapse mm-show" aria-expanded="true" style="">
+                        <li><a href="{{route('admin-packages')}}" key="t-level-packages" aria-expanded="false">Packages</a></li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow" key="t-level-users" aria-expanded="true">Users</a>
+                            <ul class="sub-menu mm-collapse mm-show" aria-expanded="true" style="">
+                                <li><a href="javascript: void(0);" key="t-level-users-clients">Clients</a></li>
+                                <li><a href="javascript: void(0);" key="t-level-users-admins">Admins</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                @endif
             </ul>
         </div>
         <!-- Sidebar -->
