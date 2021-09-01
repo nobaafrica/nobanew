@@ -3,11 +3,12 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0 font-size-18">Packages</h4>
+                    <h4 class="mb-sm-0 font-size-18">Package</h4>
 
                     <div class="page-title-right">
                         <ol class="breadcrumb m-0">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Admin</a></li>
                             <li class="breadcrumb-item"><a href="{{route('packages')}}">Packages</a></li>
                             <li class="breadcrumb-item active">Package</li>
                         </ol>
@@ -41,7 +42,7 @@
 
                         <div class="col-xl-8">
                             <div class="mt-4 mt-xl-3">
-                                <a href="{{route('packages')}}" class="text-primary">Packages</a>
+                                <a href="{{route('packages')}}" class="text-primary">Package</a>
                                 <h4 class="mt-1 mb-3">{{$package->name}}</h4>
 
                                 {{-- <p class="text-muted float-start me-3">

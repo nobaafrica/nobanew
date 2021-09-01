@@ -1,3 +1,5 @@
+require('alpinejs');
+
 window.copyToClipBoard = function (elId, popId) {
     /* Get the text field */
     var copyText = document.getElementById(elId);

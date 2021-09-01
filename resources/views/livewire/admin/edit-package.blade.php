@@ -31,33 +31,80 @@
                                         <img src="{{ asset($package->frontPicture ?? $package->pictures->picture) }}" width="300" alt="" class="img-fluid mx-auto d-block">
                                     </div>
                                     <div class="text-center">
-                                        <div>
-                                            <a class="btn btn-primary w-md">Edit Package</a>
-                                        </div>
+                                        <form wire:submit.prevent='updatePicture'>
+                                            <div class="col">
+                                                <div class="mb-3">
+                                                    <label for="profile-pic" class="form-label">Change Package Picture</label>
+                                                    <input class="form-control" wire:model='picture' type="file" id="profile-pic">
+                                                </div>
+                                            </div>
+                                            <div class="mt-4 text-center">
+                                                <button type="submit" class="btn btn-primary waves-effect waves-light btn-sm">Update Picture <i class="mdi mdi-arrow-right ms-1"></i></button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-xl-8">
-                            <div class="mt-4 mt-xl-3">
-                                <a href="{{route('packages')}}" class="text-primary">Packages</a>
-                                <h4 class="mt-1 mb-3">{{$package->name}}</h4>
-
-                                {{-- <p class="text-muted float-start me-3">
-                                    <span class="bx bxs-star text-warning"></span>
-                                    <span class="bx bxs-star text-warning"></span>
-                                    <span class="bx bxs-star text-warning"></span>
-                                    <span class="bx bxs-star text-warning"></span>
-                                    <span class="bx bxs-star text-warning"></span>
-                                </p> --}}
-                                {{-- <p class="text-muted mb-4">( 152 Customers Review )</p> --}}
-
-                                <h6 class="text-success text-uppercase">{{$package->profitPercentage}}% Profit</h6>
-                                <h5>Minimum Commitment : <b>₦{{number_format($package->price)}}</b></h5>
-                                <h5 class="mb-4">Estimated Payout : <b>₦{{number_format($package->price + $package->price * ($package->profitPercentage/100))}}</b></h5>
-                                <p class="text-muted mb-4">{!! $package->info !!}</p>
-                            </div>
+                            <form class="mt-4 mt-xl-3" wire:submit.prevent='editPackage'>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="name">Package Name</label>
+                                            <input type="text" wire:model='name' class="form-control" id="name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="code">Commodity Code</label>
+                                            <input type="text" wire:model='code' class="form-control" id="code">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-3">
+                                            <label for="price">Minimum Commitment</label>
+                                            <input type="text" wire:model='price' class="form-control" id="price">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-3">
+                                            <label for="duration">Duration (months)</label>
+                                            <input type="number" inputmode="numeric" wire:model='duration' class="form-control" id="duration">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-3">
+                                            <label for="profit">Profit (%)</label>
+                                            <input type="number" inputmode="numeric" wire:model='profit' class="form-control" id="profit">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" wire:ignore>
+                                    <div 
+                                        class="text-muted mb-4" 
+                                        id="description"
+                                        x-data
+                                        name="description"
+                                        x-ref="quillEditor"
+                                        x-init="
+                                            quill = new Quill($refs.quillEditor, {theme: 'snow'});
+                                            quill.on('text-change', function () {
+                                                $dispatch('input', quill.root.innerHTML);
+                                                @this.set('description', quill.root.innerHTML)
+                                            });
+                                        "
+                                    >
+                                        {!! $package->info !!}
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Update Package Info</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <!-- end row -->
@@ -69,3 +116,29 @@
     </div>
     <!-- end row --> 
 </div>
+
+@push('scripts')
+<script src="//cdn.quilljs.com/1.3.6/quill.min.js" defer></script>
+<script type="module" defer>
+    // var editor = new Quill('#description', {
+    //     theme: 'snow'
+    // }); 
+    // document.addEventListener('livewire:load', function () {
+    //     let content  = "{!! $package->info !!}"
+    //     editor.clipboard.dangerouslyPasteHTML(content);
+    //     let htmlContent = document.getElementById('packageInfo')
+    //     editor.on('text-change', function(params) {
+    //         let htmlText = editor.root.innerHTML
+    //         htmlContent.innerHTML = htmlText
+    //         $dispatch('input', editor.root.innerHTML);
+    //         @this.set('description', editor.root.innerHTML)
+    //     })
+    // });
+    
+</script>
+@endpush
+
+@push('styles')
+<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+@endpush
