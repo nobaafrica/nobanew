@@ -52,6 +52,14 @@ class EditPackage extends Component
         session()->flash('success', 'Package picture changed successfully');
         return redirect()->route('admin-package', $this->package);
     }
+
+    public function deletePackage()
+    {
+        $package = Package::find($this->package->id);
+        $package->delete();
+        session()->flash('success', 'Package deleted successfully');
+        return redirect()->route('admin-packages', $this->package);
+    }
     
     public function render()
     {

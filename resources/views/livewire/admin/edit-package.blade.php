@@ -105,6 +105,9 @@
                                     <button type="submit" class="btn btn-primary">Update Package Info</button>
                                 </div>
                             </form>
+                            <div class="text-center mt-4">
+                                <button wire:click='deletePackage()' class="btn btn-danger waves-effect waves-light">Delete Package <i class="mdi mdi-trash-can-outline ms-1"></i></button>
+                            </div>
                         </div>
                     </div>
                     <!-- end row -->
