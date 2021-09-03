@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\Webhook;
+use App\Http\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Http\Livewire\Admin\EditPackage;
 use App\Http\Livewire\Admin\Package as AdminPackage;
 use App\Http\Livewire\Admin\Packages as AdminPackages;
 use App\Http\Livewire\Admin\Partnership as AdminPartnership;
 use App\Http\Livewire\Admin\Partnerships as AdminPartnerships;
+use App\Http\Livewire\Admin\Users\Admins;
 use App\Http\Livewire\Admin\Users\Clients;
 use App\Http\Livewire\Admin\Users\User;
 use App\Http\Livewire\Dashboard;
@@ -60,6 +62,7 @@ Route::get('/verify-mail/{id}/{hash}', function (EmailVerificationRequest $reque
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // Admin Routes
+Route::get('/admin/dashboard', AdminDashboard::class)->name('admin-dashboard')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/packages', AdminPackages::class)->name('admin-packages')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/package/{package}', AdminPackage::class)->name('admin-package')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/edit-package/{package}', EditPackage::class)->name('edit-package')->middleware(['auth', 'verified', 'isAdmin']);
@@ -67,6 +70,7 @@ Route::get('/admin/partnerships', AdminPartnerships::class)->name('admin-partner
 Route::get('/admin/partnership/{partnership}', AdminPartnership::class)->name('admin-partnership')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/users/clients', Clients::class)->name('clients')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/clients/{user}', User::class)->name('client')->middleware(['auth', 'verified', 'isAdmin']);
+Route::get('/admin/users/admins', Admins::class)->name('admins')->middleware(['auth', 'verified', 'isAdmin']);
 
 Route::get('/reset-password', ForgotPassword::class)->name('password-reset')->middleware('guest');
 require __DIR__.'/auth.php';
