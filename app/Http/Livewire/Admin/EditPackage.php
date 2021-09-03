@@ -56,8 +56,18 @@ class EditPackage extends Component
     public function deletePackage()
     {
         $package = Package::find($this->package->id);
+        $package->partnerships()->delete();
         $package->delete();
         session()->flash('success', 'Package deleted successfully');
+        return redirect()->route('admin-packages', $this->package);
+    }
+
+    public function disablePackage()
+    {
+        $package = Package::find($this->package->id);
+        $package->status = 'disabled';
+        $package->save();
+        session()->flash('success', 'Package disabled successfully');
         return redirect()->route('admin-packages', $this->package);
     }
     

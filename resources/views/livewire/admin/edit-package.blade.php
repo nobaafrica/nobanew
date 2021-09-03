@@ -105,7 +105,8 @@
                                     <button type="submit" class="btn btn-primary">Update Package Info</button>
                                 </div>
                             </form>
-                            <div class="text-center mt-4">
+                            <div class="d-flex justify-content-between col-xl-8 mx-auto mt-4">
+                                <button wire:click='disablePackage()' class="btn btn-warning waves-effect waves-light">Disable Package <i class="mdi mdi-stop ms-1"></i></button>
                                 <button wire:click='deletePackage()' class="btn btn-danger waves-effect waves-light">Delete Package <i class="mdi mdi-trash-can-outline ms-1"></i></button>
                             </div>
                         </div>
@@ -122,23 +123,6 @@
 
 @push('scripts')
 <script src="//cdn.quilljs.com/1.3.6/quill.min.js" defer></script>
-<script type="module" defer>
-    // var editor = new Quill('#description', {
-    //     theme: 'snow'
-    // }); 
-    // document.addEventListener('livewire:load', function () {
-    //     let content  = "{!! $package->info !!}"
-    //     editor.clipboard.dangerouslyPasteHTML(content);
-    //     let htmlContent = document.getElementById('packageInfo')
-    //     editor.on('text-change', function(params) {
-    //         let htmlText = editor.root.innerHTML
-    //         htmlContent.innerHTML = htmlText
-    //         $dispatch('input', editor.root.innerHTML);
-    //         @this.set('description', editor.root.innerHTML)
-    //     })
-    // });
-    
-</script>
 @endpush
 
 @push('styles')

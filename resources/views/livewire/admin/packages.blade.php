@@ -18,6 +18,7 @@
     </x-slot> 
     <!-- end header -->
     <x-alert />
+    <x-auth-validation-errors />
     <div class="row">
         <div class="col-lg-12">
                 
@@ -28,24 +29,9 @@
                     </div>
                 </div>
                 <div class="col-lg-8 col-sm-6">
-                    <form class="mt-4 mt-sm-0 float-sm-end d-sm-flex align-items-center">
-                        <div class="search-box me-2">
-                            <div class="position-relative">
-                                <input type="text" class="form-control border-0" placeholder="Search...">
-                                <i class="bx bx-search-alt search-icon"></i>
-                            </div>
-                        </div>
-                        <ul class="nav nav-pills product-view-nav justify-content-end mt-3 mt-sm-0">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#"><i class="bx bx-grid-alt"></i></a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#"><i class="bx bx-list-ul"></i></a>
-                            </li>
-                        </ul>
-                        
-                        
-                    </form>
+                    <div class="text-sm-end">
+                        <a href="#" data-bs-target="#new-package" data-bs-toggle="modal" class="btn btn-primary btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Add New Package</a>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -54,11 +40,6 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="product-img position-relative">
-                                {{-- <div class="avatar-sm product-ribbon">
-                                    <span class="avatar-title rounded-circle  bg-primary">
-                                        {{$package->profitPercentage}} %
-                                    </span>
-                                </div> --}}
                                 <a href="{{route('admin-package', $package)}}">
                                     <img src="{{asset($package->frontPicture ?? $package->pictures->picture)}}" alt="" class="img-fluid mx-auto d-block">
                                 </a>
@@ -79,4 +60,84 @@
         </div>
     </div>
     <!-- end row -->
+    <div class="modal fade" id="new-package" tabindex="-1" aria-labelledby="new-package" aria-hidden="true" wire:ignore.self>
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="transaction-detailModalLabel">New Package</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="mt-4 mt-xl-3 p-3" wire:submit.prevent='addPackage'>
+                        <div class="col-lg">
+                            <div class="mb-3">
+                                <label for="name">Package Name</label>
+                                <input type="text" wire:model='name' class="form-control" id="name">
+                            </div>
+                        </div>
+                        <div class="col-lg">
+                            <div class="mb-3">
+                                <label for="code">Commodity Code</label>
+                                <input type="text" wire:model='code' class="form-control" id="code">
+                            </div>
+                        </div>
+                    
+                        <div class="col-lg">
+                            <div class="mb-3">
+                                <label for="price">Minimum Commitment</label>
+                                <input type="text" wire:model='price' class="form-control" id="price">
+                            </div>
+                        </div>
+                        <div class="col-lg">
+                            <div class="mb-3">
+                                <label for="duration">Duration (months)</label>
+                                <input type="number" inputmode="numeric" wire:model='duration' class="form-control" id="duration">
+                            </div>
+                        </div>
+                        <div class="col-lg">
+                            <div class="mb-3">
+                                <label for="profit">Profit (%)</label>
+                                <input type="number" inputmode="numeric" wire:model='profit' class="form-control" id="profit">
+                            </div>
+                        </div>
+                        <div class="row" wire:ignore>
+                            <div 
+                                class="text-muted mb-4" 
+                                id="description"
+                                x-data
+                                name="description"
+                                x-ref="quillEditor"
+                                x-init="
+                                    quill = new Quill($refs.quillEditor, {theme: 'snow'});
+                                    quill.on('text-change', function () {
+                                        $dispatch('input', quill.root.innerHTML);
+                                        @this.set('description', quill.root.innerHTML)
+                                    });
+                                "
+                            >
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="mb-3">
+                                <label for="package-pic" class="form-label">Change Package Picture</label>
+                                <input class="form-control" wire:model='picture' type="file" id="package-pic">
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary">Add Package</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@push('scripts')
+<script src="//cdn.quilljs.com/1.3.6/quill.min.js" defer></script>
+@endpush
+
+@push('styles')
+<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
+@endpush

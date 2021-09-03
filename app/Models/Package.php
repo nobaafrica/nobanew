@@ -10,7 +10,7 @@ class Package extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['id', 'name', 'commodityCode', 'info', 'price', 'duration', 'profitPercentage', 'headerPicture', 'backPicture', 'frontPricture'];
+    protected $fillable = ['id', 'name', 'commodityCode', 'info', 'price', 'duration', 'profitPercentage', 'headerPicture', 'backPicture', 'frontPricture', 'status'];
 
     public function getIncrementing()
     {

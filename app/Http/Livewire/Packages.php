@@ -20,7 +20,7 @@ class Packages extends Component
     public function render()
     {
         return view('livewire.packages', [
-            'packages' => Package::paginate(12),
+            'packages' => Package::where('status', 'active')->paginate(12),
         ]);
     }
 }
