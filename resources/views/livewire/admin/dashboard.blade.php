@@ -109,7 +109,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-2">
+                <div class="col-md-3 mb-2">
                     <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-2">
+                <div class="col-md-3 mb-2">
                     <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
@@ -149,7 +149,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4 mb-2">
+                <div class="col-md-3 mb-2">
                     <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
@@ -162,6 +162,26 @@
                                     <div class="avatar-sm rounded-circle bg-primary mini-stat-icon">
                                         <span class="avatar-title rounded-circle bg-primary">
                                             <i class="bx bx-purchase-tag-alt font-size-24"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card mini-stats-wid h-100">
+                        <div class="card-body">
+                            <div class="d-flex">
+                                <div class="flex-grow-1">
+                                    <p class="text-muted fw-medium">Conversion</p>
+                                    <h4 class="mb-0">%{{round($conversion, PHP_ROUND_HALF_UP)}}</h4>
+                                </div>
+
+                                <div class="flex-shrink-0 align-self-center">
+                                    <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
+                                        <span class="avatar-title">
+                                            <i class="bx bx-copy-alt font-size-24"></i>
                                         </span>
                                     </div>
                                 </div>
@@ -192,12 +212,13 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Trending Packages</h4>
+                    <h4 class="card-title mb-4">Top 10 Investing Clients</h4>
                     <div class="table-responsive">
                         <table class="table align-middle text-center table-nowrap mb-0">
                             <thead class="table-light">
                                 <tr>
                                     <th class="align-middle">Rank</th>
+                                    <th class="align-middle">Name</th>
                                     <th class="align-middle">Package Name</th>
                                     <th class="align-middle">Duration</th>
                                     <th class="align-middle">Minimum Commitment</th>
@@ -210,6 +231,7 @@
                                 @foreach ($trending as $trend)
                                 <tr>
                                     <td><a href="{{route('package', $trend->package)}}" class="text-body fw-bold">#{{$loop->iteration}}</a> </td>
+                                    <td>{{$trend->user->firstName?? "No Name"}} {{$trend->user->lastName?? ""}}</td>
                                     <td>{{$trend->package->name}}</td>
                                     <td>
                                         {{$trend->package->duration}} Months
@@ -225,8 +247,8 @@
                                     </td>
                                     <td>
                                         <!-- Button trigger modal -->
-                                        <a href="{{route('package', $trend->package)}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
-                                            View Package
+                                        <a href="{{route('client', $trend->user_id)}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
+                                            View User
                                         </a>
                                     </td>
                                 </tr>

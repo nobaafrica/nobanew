@@ -19,6 +19,7 @@ class Dashboard extends Component
     public $users;
     public $partnered;
     public $activePartnerships;
+    public $conversion;
 
     public function mount()
     {
@@ -30,6 +31,7 @@ class Dashboard extends Component
         $this->cummulativePayout = $this->partnerships->where('isRedeemed', '1')->sum('estimatedPayout');
         $this->cummulativePartnership = $this->partnerships->sum('amount');
         $this->trending =  $this->trendingPackages();
+        $this->conversion = $this->partnered->count()/$this->users->count();
     }
 
     public function investments()
@@ -46,7 +48,7 @@ class Dashboard extends Component
 
     public function trendingPackages()
     {
-        $query = Partnership::select(DB::raw('COUNT(*) as investors, package_id, package_name, amount * COUNT(*) as investment'))->where('isRedeemed', '0')->with('package')->groupBy('package_name')->orderByRaw(DB::raw('investment desc'))->limit(5)->get();
+        $query = Partnership::select(DB::raw('COUNT(DISTINCT user_id) as investors, user_id, package_id, package_name, amount * COUNT(*) as investment'))->where('isRedeemed', '0')->with('user', 'package')->groupBy('user_id')->orderByRaw(DB::raw('investment desc'))->limit(10)->get();
         return $query;
     }
 
