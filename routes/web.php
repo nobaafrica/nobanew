@@ -40,17 +40,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Index::class)->middleware('guest')->name('/');
 Route::get('/register', Register::class)->name('register')->middleware('guest');
-Route::get('/dashboard', Dashboard::class)->name('dashboard')->middleware(['auth', 'verified']);
-Route::get('/verify-account', VerifyAccount::class)->name('verify-account')->middleware(['auth', 'verified']);
-Route::get('/wallet', Wallet::class)->name('wallet')->middleware(['auth', 'verified']);
-Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'verified']);
-Route::get('/packages', Packages::class)->name('packages')->middleware(['auth', 'verified']);
-Route::get('/package/{package}', Package::class)->name('package')->middleware(['auth', 'verified']);
-Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'verified']);
-Route::get('/partnership/{partnership}', Partnership::class)->name('partnership')->middleware(['auth', 'verified']);
+Route::get('/dashboard', Dashboard::class)->name('dashboard')->middleware(['auth']);
+Route::get('/verify-account', VerifyAccount::class)->name('verify-account')->middleware(['auth']);
+Route::get('/wallet', Wallet::class)->name('wallet')->middleware(['auth']);
+Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth']);
+Route::get('/packages', Packages::class)->name('packages')->middleware(['auth']);
+Route::get('/package/{package}', Package::class)->name('package')->middleware(['auth']);
+Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth']);
+Route::get('/partnership/{partnership}', Partnership::class)->name('partnership')->middleware(['auth']);
 Route::get('/print-agreement/{partnership}', DownloadAgreement::class)->name('agreement');
-Route::get('/profile', Profile::class)->name('profile')->middleware(['auth', 'verified']);
-Route::get('/edit-profile/{user}', EditProfile::class)->name('edit-profile')->middleware(['auth', 'verified']);
+Route::get('/profile', Profile::class)->name('profile')->middleware(['auth']);
+Route::get('/edit-profile/{user}', EditProfile::class)->name('edit-profile')->middleware(['auth']);
 
 Route::get('/payment/callback', [Webhook::class, 'verifyPayment']);
 
@@ -62,15 +62,15 @@ Route::get('/verify-mail/{id}/{hash}', function (EmailVerificationRequest $reque
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // Admin Routes
-Route::get('/admin/dashboard', AdminDashboard::class)->name('admin-dashboard')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/packages', AdminPackages::class)->name('admin-packages')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/package/{package}', AdminPackage::class)->name('admin-package')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/edit-package/{package}', EditPackage::class)->name('edit-package')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/partnerships', AdminPartnerships::class)->name('admin-partnerships')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/partnership/{partnership}', AdminPartnership::class)->name('admin-partnership')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/users/clients', Clients::class)->name('clients')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/clients/{user}', User::class)->name('client')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/users/admins', Admins::class)->name('admins')->middleware(['auth', 'verified', 'isAdmin']);
+Route::get('/admin/dashboard', AdminDashboard::class)->name('admin-dashboard')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/packages', AdminPackages::class)->name('admin-packages')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/package/{package}', AdminPackage::class)->name('admin-package')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/edit-package/{package}', EditPackage::class)->name('edit-package')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/partnerships', AdminPartnerships::class)->name('admin-partnerships')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/partnership/{partnership}', AdminPartnership::class)->name('admin-partnership')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/users/clients', Clients::class)->name('clients')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/clients/{user}', User::class)->name('client')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/users/admins', Admins::class)->name('admins')->middleware(['auth', 'isAdmin']);
 
 Route::get('/reset-password', ForgotPassword::class)->name('password-reset')->middleware('guest');
 require __DIR__.'/auth.php';
