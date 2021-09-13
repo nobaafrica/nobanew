@@ -84,6 +84,16 @@
                                     <form class="needs-validation" novalidate method="POST" action="{{ route('register') }}">
                                         @csrf
                                         <div class="mb-3">
+                                            <x-label for="phone" class="form-label" :value="__('Phone Number')" />
+                                            <x-input id="phone" class="form-control" type="text" inputmode="numeric" placeholder="Enter phone"  name="phone" :value="old('phone')" required />
+                                            @error('phone')
+                                                <div class="invalid-feedback">
+                                                    {{$message}}
+                                                </div>       
+                                            @enderror      
+                                        </div>
+
+                                        <div class="mb-3">
                                             <x-label for="useremail" class="form-label" :value="__('Email')" />
                                             <x-input id="useremail" class="form-control" type="email" placeholder="Enter email"  name="email" :value="old('email')" required />
                                             @error('email')
