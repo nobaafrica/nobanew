@@ -31,7 +31,7 @@ class SendCustomerIdentificationNotification implements ShouldQueue
                 'bank' => $data->bank->name,
                 'accountNumber' => $data->account_number,
                 'accountName' => $data->account_name,
-                'bank' => $data->bank['name'],
+                'bank' => $data->bank->name,
                 'accountNumber' => $data->account_number,
                 'accountName' => $data->account_name,
             ]);

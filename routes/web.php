@@ -40,7 +40,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Index::class)->middleware('guest')->name('/');
 Route::get('/register', Register::class)->name('register')->middleware('guest');
-Route::get('/auth/register', Register::class)->name('register')->middleware('guest');
+Route::get('/auth/register', Register::class)->name('guest-register')->middleware('guest');
 Route::get('/dashboard', Dashboard::class)->name('dashboard')->middleware(['auth', 'verified', 'bank-verified']);
 Route::get('/verify-account', VerifyAccount::class)->name('verify-account')->middleware(['auth', 'verified']);
 Route::get('/wallet', Wallet::class)->name('wallet')->middleware(['auth', 'verified', 'bank-verified']);

@@ -10,7 +10,7 @@ class Bank extends Model
 {
     use HasFactory, SoftDeletes;
     
-    protected $fillable = ['user_id', 'nuban', 'bank', 'bank_id', 'bvn_verified', 'bvn'];
+    protected $fillable = ['user_id', 'nuban', 'bank', 'bank_id', 'bvn_verified', 'bvn', 'bank_code'];
 
     protected $casts = [
         'bvn_verified' => 'boolean',
