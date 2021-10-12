@@ -9,18 +9,10 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
-class SendCustomerIdentificationNotification
+class SendCustomerIdentificationNotification implements ShouldQueue
 {
-    /**
-     * Create the event listener.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        //
-    }
-
+    public $delay = 90;
+    public $tries = 3;
     /**
      * Handle the event.
      *
@@ -39,7 +31,15 @@ class SendCustomerIdentificationNotification
                 'bank' => $data->bank->name,
                 'accountNumber' => $data->account_number,
                 'accountName' => $data->account_name,
+                'bank' => $data->bank['name'],
+                'accountNumber' => $data->account_number,
+                'accountName' => $data->account_name,
             ]);
         endif;
+    }
+
+    public function failed(CustomerIdentified $event, $exception)
+    {
+        Log::debug($exception);
     }
 }

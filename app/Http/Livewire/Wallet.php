@@ -6,6 +6,7 @@ use App\Events\CustomerIdentified;
 use App\Models\Transactions;
 use App\Models\User;
 use App\Models\Wallet as ModelsWallet;
+use App\Traits\PaystackCustomerTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +17,8 @@ use Livewire\Component;
 
 class Wallet extends Component
 {
+    use PaystackCustomerTrait;
+
     public $wallet;
     public $user;
     public $nuban;
@@ -53,62 +56,37 @@ class Wallet extends Component
 
     public function generateWallet()
     {
-        if(is_null($this->wallet)):
-            $fetchCustomer = Http::withToken(config('app.paystack_secret'))->get("https://api.paystack.co/customer/", [
-                'email' => Auth::user()->email,
-            ])->object();
-            if($fetchCustomer->status == true):
-                if($fetchCustomer->data['identified']== true):
-                    CustomerIdentified::dispatch($fetchCustomer->data->customer_code);
-                    session()->flash('success', "Account is being generated");
-                    return redirect()->route('wallet');
-                else:
-                    return $this->verifyCustomer($fetchCustomer->data->customer_code);
-                endif;
-            else:
-                $url = "https://api.paystack.co/customer";
-                $request = Http::withToken(config('app.paystack_secret'))->post($url, [
-                    'first_name' => $this->user->firstName,
-                    'last_name' => $this->user->lastName,
-                    'phone' => $this->user->phoneNumber,
-                    'email' => $this->user->email,
-                ])->object();
-                if($request->status == true):
-                    $customer = $request->data->customer_code;
-                    if(is_null($this->wallet)):
-                        $this->user->wallet()->create([
-                                'id' => Str::uuid(),
-                                'customerCode' => $customer
-                        ]);
-                    endif;
-                    return $this->verifyCustomer($customer);
-                else:
-                    session()->flash('error', $request->message);
-                endif;
+        $wallet = ModelsWallet::where('user_id', $this->user->id)->first();
+        $customerRequest = Http::withToken(config('app.paystack_secret'))->get("https://api.paystack.co/customer/".Auth::user()->email);
+        $fetchCustomer = $customerRequest->object();
+        if($fetchCustomer->status == 'true'):
+            if($fetchCustomer->data->identified== 'true' && !empty($fetchCustomer->data->dedicated_account)):
+                $wallet ? $wallet->update([
+                    'bank' => $fetchCustomer->data->dedicated_account->bank->name,
+                    'customerCode' => $fetchCustomer->data->customer_code,
+                    'accountNumber' => $fetchCustomer->data->dedicated_account->account_number,
+                    'accountName' => $fetchCustomer->data->dedicated_account->account_name,
+                ]) : $this->user->wallet()->create([
+                        'id' => Str::uuid(),
+                        'bank' => $fetchCustomer->data->dedicated_account->bank->name,
+                        'customerCode' => $fetchCustomer->data->customer_code,
+                        'accountNumber' => $fetchCustomer->data->dedicated_account->account_number,
+                        'accountName' => $fetchCustomer->data->dedicated_account->account_name,
+                ]);
+                session()->flash('success', "Account generated successfully");
+                return redirect()->route('wallet');
+            elseif($fetchCustomer->data->identified == 'true' && empty($fetchCustomer->data->dedicated_account)):
+                CustomerIdentified::dispatch($fetchCustomer->data->customer_code);
+                session()->flash('success', "Account is being generated");
+                return redirect()->route('wallet');
+            elseif($fetchCustomer->data['identified'] == 'false'):
+                return $this->verifyCustomer($fetchCustomer->data->customer_code, $this->user);
             endif;
+        elseif($customerRequest->status == 404):
+            return $this->createCustomerProfile($this->user);
         endif;
     }
 
-    public function verifyCustomer(string $customer)
-    {
-        $validationUrl = "https://api.paystack.co/customer/$customer/identification";
-        $verify = Http::withToken(config('app.paystack_secret'))->post($validationUrl, [
-            "country" => "NG",
-            "type" => "bvn",
-            "value" => $this->user->bank()->first()->bvn,
-            "first_name" => $this->user->firstName,
-            "last_name" => $this->user->lastName,
-        ])->object();
-        if($verify->status == true):
-            CustomerIdentified::dispatch($customer);
-            session()->flash('success', $verify->message);
-            return redirect()->route('wallet');
-        elseif($verify->message == "Customer already identified"):
-            session()->flash('success', $verify->message);
-            CustomerIdentified::dispatch($customer);
-            return redirect()->route('wallet');
-        endif;
-    }
 
     public function fundWallet()
     {
@@ -186,7 +164,7 @@ class Wallet extends Component
                             'status' => 'success', 
                             'time' => now(),
                         ]);
-                        $wallet = Wallet::where('user_id', $this->user->id)->first();
+                        $wallet = ModelsWallet::where('user_id', $this->user->id)->first();
                         $wallet->accountBalance = $wallet->accountBalance - $verifyTransfer->data->amount/100;
                         $wallet->withdrawableBalance = $wallet->withdrawableBalance - $verifyTransfer->data->amount/100;
                         $wallet->save();

@@ -3,13 +3,17 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use App\Traits\PaystackCustomerTrait;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
 use Livewire\Component;
 
 class VerifyAccount extends Component
 {
+    use PaystackCustomerTrait;
+
     public $nuban;
     public $bank;
     public $bankId;
@@ -23,6 +27,7 @@ class VerifyAccount extends Component
     public $birthday;
     public $bvnVerified;
     public $bvn;
+    public $bankCode;
 
     public function mount()
     {
@@ -39,6 +44,7 @@ class VerifyAccount extends Component
                         "id" => $this->bankId,
                     ])->object();
         $this->bank = $getbank->data->name;
+        $this->bankCode = is_null($getbank->data->alt_sortcode) ? $getbank->data->sortcode : $getbank->data->alt_sortcode;
         $this->banks = Cache::get('banks')->data->banks;
     }
 
@@ -72,7 +78,7 @@ class VerifyAccount extends Component
         $user->update([
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
-            'phoneNumber' => $this->phone,
+            'phoneNumber' => is_null($user->phone) ? $this->phone : $user->phone,
             'address' => $this->address,
             'birthday' => $this->birthday,
         ]);
@@ -84,8 +90,10 @@ class VerifyAccount extends Component
                 'bank_id' => $this->bankId,
                 'bvn_verified' => $this->bvnVerified,
                 'bvn' => $this->bvn,
+                'bank_code' => $this->bankCode,
             ]
         );
+        $this->createCustomerProfile($user);
         session()->flash('status', 'Account verified successfully');
         redirect()->route('wallet');
     }

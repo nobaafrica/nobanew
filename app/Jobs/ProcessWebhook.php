@@ -34,38 +34,34 @@ class ProcessWebhook implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @return void
+     * @return void 
      */
     public function handle()
     {
         $event = $this->event['event'];
         $data = $this->event['data'];
-        if($event == 'customeridentification.success'):
-            $customer = $data['customer_code'];
-            $wallet = Wallet::where('customerCode', $customer)->update([
-                'verified' => 1
-            ]);
-            CustomerIdentified::dispatch($customer);
-        elseif($event == 'customeridentification.failed'):
-            Log::info("Customer identification failed");
-        elseif($event == 'charge.success'):
-            $customer = empty($data['customer_code']) ? $data['customer']['customer_code'] : $data['customer_code'];
-            $wallet = Wallet::where('customerCode', $customer)->first();
-            $user = User::find($wallet->user_id);
-            $user->transactions()->create([
+        $customer = empty($data['customer_code']) ? $data['customer']['customer_code'] : $data['customer_code'];
+        $wallet = Wallet::where('customerCode', $customer)->first();
+        Log::info($data);
+        match ($event) {
+            'customeridentification.success' => $wallet->update(['verified' => 1]),
+            'customeridentification.failed' =>  Log::info("Customer identification failed"),
+            'charge.success' => Transactions::create([
                 'id' => Str::uuid(), 
+                'user_id' => $wallet->user_id,
                 'transactionType' => 'credit', 
                 'amount' => $data['amount']/100, 
                 'reference' => $data['reference'], 
                 'status' => $data['status'], 
                 'time' => $data['paid_at'],
                 'payment_method' => $data['channel'],
-            ]);
+            ]),
+        };
+        if($event == 'charge.success'):
             $wallet->accountBalance = $wallet->accountBalance + $data['amount']/100;
             $wallet->withdrawableBalance = $wallet->withdrawableBalance + $data['amount']/100;
             $wallet->save();
         elseif($event == 'transfer.success'): 
-            Log::info($data);
             $tx = Transactions::where('reference', $data['reference'])->first();
             if($tx->status == 'pending'):
                 $tx->update(['status' => $data['status'], 'payment_method' => 'transfer']);
@@ -76,7 +72,6 @@ class ProcessWebhook implements ShouldQueue
                 $wallet->save();
             endif;
         elseif($event == 'transfer.failed'): 
-            Log::info($data);
             Transactions::where('reference', $data['reference'])->update(['status' => $data['status']]);
         endif;
     }

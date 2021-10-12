@@ -40,17 +40,18 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', Index::class)->middleware('guest')->name('/');
 Route::get('/register', Register::class)->name('register')->middleware('guest');
-Route::get('/dashboard', Dashboard::class)->name('dashboard')->middleware(['auth', 'verified']);
+Route::get('/auth/register', Register::class)->name('register')->middleware('guest');
+Route::get('/dashboard', Dashboard::class)->name('dashboard')->middleware(['auth', 'verified', 'bank-verified']);
 Route::get('/verify-account', VerifyAccount::class)->name('verify-account')->middleware(['auth', 'verified']);
-Route::get('/wallet', Wallet::class)->name('wallet')->middleware(['auth', 'verified']);
-Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'verified']);
-Route::get('/packages', Packages::class)->name('packages')->middleware(['auth', 'verified']);
-Route::get('/package/{package}', Package::class)->name('package')->middleware(['auth', 'verified']);
-Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'verified']);
-Route::get('/partnership/{partnership}', Partnership::class)->name('partnership')->middleware(['auth', 'verified']);
+Route::get('/wallet', Wallet::class)->name('wallet')->middleware(['auth', 'verified', 'bank-verified']);
+Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'verified', 'bank-verified']);
+Route::get('/packages', Packages::class)->name('packages')->middleware(['auth', 'verified', 'bank-verified']);
+Route::get('/package/{package}', Package::class)->name('package')->middleware(['auth', 'verified', 'bank-verified']);
+Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'verified', 'bank-verified']);
+Route::get('/partnership/{partnership}', Partnership::class)->name('partnership')->middleware(['auth', 'verified', 'bank-verified']);
 Route::get('/print-agreement/{partnership}', DownloadAgreement::class)->name('agreement');
-Route::get('/profile', Profile::class)->name('profile')->middleware(['auth', 'verified']);
-Route::get('/edit-profile/{user}', EditProfile::class)->name('edit-profile')->middleware(['auth', 'verified']);
+Route::get('/profile', Profile::class)->name('profile')->middleware(['auth', 'verified', 'bank-verified']);
+Route::get('/edit-profile/{user}', EditProfile::class)->name('edit-profile')->middleware(['auth', 'verified', 'bank-verified']);
 
 Route::get('/payment/callback', [Webhook::class, 'verifyPayment']);
 
