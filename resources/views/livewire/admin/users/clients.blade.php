@@ -36,34 +36,25 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="align-middle">#ID</th>
-                                    <th class="align-middle">First Name</th>
-                                    <th class="align-middle">Last Name</th>
+                                    <th class="align-middle">Full Name</th>
                                     <th class="align-middle">Email</th>
                                     <th class="align-middle">Phone Number</th>
-                                    <th class="align-middle">Address</th>
-                                    <th class="align-middle">Birthday</th>
                                     <th class="align-middle">Partnerships</th>
                                     <th class="align-middle">Total Commitment</th>
                                     <th class="align-middle">Expected Payout</th>
                                     <th class="align-middle">Total Payout</th>
-                                    <th class="align-middle">View Partnerships</th>
+                                    <th class="align-middle">Joined On</th>
+                                    <th class="align-middle">View</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($clients as $client)
                                 <tr>
                                     <td><a href="#" class="text-body fw-bold">{{$loop->iteration}}</a></td>
-                                    <td>{{$client->firstName ?? " "}}</td>
-                                    <td>{{$client->lastName ?? " "}}</td>
+                                    <td>{{$client->firstName ?? " "}} {{$client->lastName ?? " "}}</td>
                                     <td>{{$client->email}}</td>
                                     <td>
                                         {{$client->phoneNumber}}
-                                    </td>
-                                    <td>
-                                        {{$client->address}}
-                                    </td>
-                                    <td>
-                                        {{$client->birthday}}
                                     </td>
                                     <td>
                                         {{number_format($client->partnerships->count())}}
@@ -76,6 +67,9 @@
                                     </td>
                                     <td>
                                         ₦{{number_format($client->partnerships->where('isRedeemed', 1)->sum('estimatedPayout'))}}
+                                    </td>
+                                    <td>
+                                        {{\Carbon\Carbon::parse($client->created_at)->format('Y-m-d')}}
                                     </td>
                                     <td>
                                         <a href="{{route('client', $client)}}" class="btn btn-primary btn-sm btn-rounded">View Partnerships</a>
@@ -95,43 +89,14 @@
 @push('scripts')
 <script src="{{ asset ('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}" defer></script>
 <script src="{{ asset ('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}" defer></script>
-<script src="{{ asset ('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}" defer></script>
-<script src="{{ asset ('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}" defer></script>
+
+<script src="{{ asset ('assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/jszip/jszip.min.js') }}" defer></script>
 <script src="{{ asset ('assets/libs/pdfmake/build/pdfmake.min.js') }}" defer></script>
-<script src="{{ asset ('assets/libs/pdfmake/build/vfs_fonts.js' ) }}" defer></script>
-<script src="https://cdn.datatables.net/v/dt/jszip-2.5.0/dt-1.11.0/b-2.0.0/b-html5-2.0.0/b-print-2.0.0/datatables.min.js" defer></script>
-<script type="module" defer>
-    $(function () {
-        let table = $("#datatable").DataTable({
-            dom: "<'row mb-3'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4 search-div text-center'f><'col-sm-12 col-md-4'B>>" +
-        "<'row'<'col-sm-12'tr>>" +
-        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-            buttons: {
-                buttons : [
-                    {extend: 'csv', className: 'btn btn-primary btn-sm'},
-                    {extend: 'excel', className: 'btn btn-primary btn-sm'},
-                    {extend: 'pdf', className: 'btn btn-primary btn-sm'},
-                    {extend: 'print', className: 'btn btn-primary btn-sm'},
-                ],
-            }
-        });
-        $(".search-div").append("<div class='search-box me-2 mb-2 d-inline-block'>"
-                        + "<div class='position-relative'>"
-                            + "<input id='client-search' type='text' class='form-control' placeholder='Search...'>"
-                            + "<i class='bx bx-search-alt search-icon'></i>"
-                        + "</div>"
-                    + "</div>"
-        );
-        $('#client-search').on( 'keyup', function () {
-            table.search( this.value ).draw();
-        });
-        $(".dataTables_length select").addClass("form-select form-select-sm w-75");
-        $(".dataTables_filter").addClass("d-none");
-        $(".dataTables_length label").addClass("d-flex align-items-center justify-content-between align-content-center");
-        $(".dt-buttons").addClass("d-flex align-items-center justify-content-between align-content-center");
-        $(".dt-button").addClass("btn-md");
-        $(".dataTables_paginate").addClass("pagination");
-        $(".paginate_button").addClass("page-item");
-    });
-</script>
+<script src="{{ asset ('assets/libs/pdfmake/build/vfs_fonts.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}" defer></script>
+<script src="{{ asset ('assets/js/pages/datatables.init.js') }}" defer></script>  
 @endpush

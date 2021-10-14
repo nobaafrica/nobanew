@@ -31,8 +31,8 @@ class Package extends Component
 
     public function updatedUnit()
     {
-        $this->commitment = $this->price * $this->unit;
-        $this->payout = $this->commitment + ($this->commitment * ($this->package->profitPercentage/100));
+        $this->commitment = (int) $this->price * (int) $this->unit;
+        $this->payout = (int) $this->commitment + ((int) $this->commitment * ( (int) $this->package->profitPercentage/100));
     }
 
     public function partner()
