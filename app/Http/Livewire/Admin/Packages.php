@@ -12,7 +12,6 @@ class Packages extends Component
 {
     use WithPagination, WithFileUploads;
 
-    protected $packages;
     protected $paginationTheme = 'bootstrap';
     public $name;
     public $code;
@@ -30,14 +29,6 @@ class Packages extends Component
         'profit' => 'integer|required',
         'picture' => 'image|max:4096|required',
     ];
-
-    public function mount()
-    {
-        $this->packages = tap(Package::where('status', 'active')->paginate(10))->map(function ($item) {
-                                $item->picture = $item->frontPicture ?? $item->pictures->picture;
-                                return $item;
-                            });
-    }
 
     public function addPackage()
     {
@@ -65,7 +56,10 @@ class Packages extends Component
     public function render()
     {
         return view('livewire.admin.packages', [
-            'packages' =>$this->packages,
+            'packages' => tap(Package::where('status', 'active')->paginate(10))->map(function ($item) {
+                $item->picture = $item->frontPicture ?? $item->pictures->picture;
+                return $item;
+            }),
         ]);
     }
 }
