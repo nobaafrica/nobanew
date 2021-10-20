@@ -9,12 +9,13 @@ use Illuminate\Support\Facades\Auth;
 
 class User extends Component
 { 
-    public ModelsUser $user;
+    public $user;
     public $partnerships;
      
-    public function mount()
+    public function mount($user)
     {
-        $this->partnerships = Partnership::where('user_id', $this->user->id)->get();
+        $this->user = ModelsUser::withTrashed()->find($user);
+        $this->partnerships = Partnership::where('user_id', $user)->get();
     }
 
     public function suspend()
@@ -22,6 +23,18 @@ class User extends Component
         if (Auth::user()->isAdmin == 1):
             $this->user->delete();
             session()->flash('success', 'User suspended successfully');
+            return redirect()->route('clients');
+        else:
+            session()->flash('error', 'You\'re not authorized to perform this action');
+            return redirect()->route('clients');
+        endif;
+    }
+
+    public function revokeSuspension()
+    {
+        if (Auth::user()->isAdmin == 1):
+            $this->user->restore();
+            session()->flash('success', 'User unsuspended successfully');
             return redirect()->route('clients');
         else:
             session()->flash('error', 'You\'re not authorized to perform this action');

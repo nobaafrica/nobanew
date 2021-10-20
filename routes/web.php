@@ -9,6 +9,7 @@ use App\Http\Livewire\Admin\Partnership as AdminPartnership;
 use App\Http\Livewire\Admin\Partnerships as AdminPartnerships;
 use App\Http\Livewire\Admin\Users\Admins;
 use App\Http\Livewire\Admin\Users\Clients;
+use App\Http\Livewire\Admin\Users\SuspendedUsers;
 use App\Http\Livewire\Admin\Users\User;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\DownloadAgreement;
@@ -70,6 +71,7 @@ Route::get('/admin/edit-package/{package}', EditPackage::class)->name('edit-pack
 Route::get('/admin/partnerships', AdminPartnerships::class)->name('admin-partnerships')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/partnership/{partnership}', AdminPartnership::class)->name('admin-partnership')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/users/clients', Clients::class)->name('clients')->middleware(['auth', 'verified', 'isAdmin']);
+Route::get('/admin/users/suspended-clients', SuspendedUsers::class)->name('suspended-clients')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/clients/{user}', User::class)->name('client')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/users/admins', Admins::class)->name('admins')->middleware(['auth', 'verified', 'isAdmin']);
 

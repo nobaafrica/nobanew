@@ -32,7 +32,11 @@
             
                         <div class="col-sm-4">
                             <div class="mt-4 text-right">
+                                @if (is_null($user->deleted_at))
                                 <button wire:click='suspend' class="btn btn-primary waves-effect waves-light btn-sm">Suspend User</button>
+                                @else
+                                <button wire:click='revokeSuspension' class="btn btn-primary waves-effect waves-light btn-sm">Revoke Suspension</button>  
+                                @endif
                             </div>
                         </div>
                     </div>

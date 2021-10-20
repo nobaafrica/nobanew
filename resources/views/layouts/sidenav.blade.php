@@ -66,8 +66,9 @@
                         <li>
                             <a href="javascript: void(0);" class="has-arrow" key="t-level-users" aria-expanded="true">Users</a>
                             <ul class="sub-menu mm-collapse mm-show" aria-expanded="true" style="">
-                                <li><a href="{{route('clients')}}" key="t-level-users-clients">Clients</a></li>
                                 <li><a href="{{route('admins')}}" key="t-level-users-admins">Admins</a></li>
+                                <li><a href="{{route('clients')}}" key="t-level-users-clients">Clients</a></li>
+                                <li><a href="{{route('suspended-clients')}}" key="t-level-users-clients">Suspended Clients</a></li>
                             </ul>
                         </li>
                     </ul>
