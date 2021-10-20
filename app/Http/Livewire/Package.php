@@ -21,12 +21,17 @@ class Package extends Component
 
     public function mount()
     {
+        $this->package = $this->package->map(function ($item) {
+                            $item->picture = $item->frontPicture ?? $item->pictures->picture;
+                            return $item;
+                        });
         $this->duration = $this->package->duration;
         $this->price = $this->package->price;
         $this->profit = $this->package->profitPercentage;
         $this->payout = $this->price + ($this->price * ($this->package->profitPercentage/100));
         $this->commitment = $this->price * $this->unit;
         $this->user = User::find(Auth::user()->id);
+        
     }
 
     public function updatedUnit()

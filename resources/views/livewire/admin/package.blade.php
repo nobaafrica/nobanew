@@ -29,7 +29,7 @@
                             <div class="product-detai-imgs">
                                 <div class="row">
                                     <div class="text-center mb-4">
-                                        <img src="{{ asset($package->frontPicture ?? $package->pictures->picture) }}" width="300" alt="" class="img-fluid mx-auto d-block">
+                                        <img src="{{url_exists($package->picture) ? asset($package->picture) : asset('storage/'. $package->picture)}}" width="300" alt="" class="img-fluid mx-auto d-block">
                                     </div>
                                     <div class="text-center">
                                         <div>
