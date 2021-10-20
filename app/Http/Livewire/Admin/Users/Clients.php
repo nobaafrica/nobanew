@@ -11,7 +11,7 @@ class Clients extends Component
 
     public function mount()
     {
-        $this->clients = User::where('isAdmin', 0)->with('partnerships')->get();
+        $this->clients = User::where('isAdmin', 0)->with('partnerships', 'wallet')->get();
     }
     
     public function render()

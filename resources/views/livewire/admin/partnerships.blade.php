@@ -43,9 +43,9 @@
                             <thead class="table-light">
                                 <tr>
                                     <th class="align-middle">Agreement</th>
-                                    <th class="align-middle">User</th>
+                                    <th class="align-middle">Client</th>
                                     <th class="align-middle">Package Name</th>
-                                    <th class="align-middle">Date</th>
+                                    <th class="align-middle">Payment Date</th>
                                     <th class="align-middle">Package Unit</th>
                                     <th class="align-middle">Total Commitment</th>
                                     <th class="align-middle">Estimated Payout</th>
@@ -61,7 +61,7 @@
                                             Agreement
                                         </a>
                                     </td>
-                                    <td><a href="{{route('package',$partnership->package)}}" class="text-body fw-bold">{{$partnership->user->firstName ?? " "}}</a> </td>
+                                    <td><a href="{{route('package',$partnership->package)}}" class="text-body fw-bold">{{$partnership->user->firstName ?? " "}} {{$partnership->user->lastName ?? " "}}</a> </td>
                                     <td><a href="{{route('package',$partnership->package)}}" class="text-body fw-bold">{{$partnership->package_name}}</a> </td>
                                     <td>
                                        {{\Carbon\Carbon::parse($partnership->created_at)->format('d F, Y')}}
@@ -99,11 +99,43 @@
 @push('scripts')
 <script src="{{ asset ('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}" defer></script>
 <script src="{{ asset ('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}" defer></script>
-<script src="{{ asset ('assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js') }}" defer></script>
-<script src="{{ asset ('assets/libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js') }}" defer></script>
+
+<script src="{{ asset ('assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/jszip/jszip.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/pdfmake/build/pdfmake.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/pdfmake/build/vfs_fonts.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}" defer></script>
+<script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}" defer></script>
 <script type="module" defer>
     $(function () {
-        $("#datatable").DataTable(), $(".dataTables_length select").addClass("form-select form-select-sm");
+    $("#datatable").DataTable({
+            dom:"<'row mb-3'<'col-sm-12 col-md-4'l><'col-sm-12 col-md-4 search-div text-center'f><'col-sm-12 col-md-4'B>>" +
+                    "<'row'<'col-sm-12'tr>>" +
+                "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+            order: [[7, 'desc']],
+        })
+        $(".search-div").append("<div class='search-box me-2 mb-2 d-inline-block'>"
+                            + "<div class='position-relative'>"
+                                + "<input id='client-search' type='text' class='form-control' placeholder='Search...'>"
+                                + "<i class='bx bx-search-alt search-icon'></i>"
+                            + "</div>"
+                        + "</div>"
+        )
+        $('#client-search').on( 'keyup', function () {
+            table.search( this.value ).draw();
+        });
+        $(".dataTables_length select").addClass("form-select form-select-sm w-75");
+        $(".dataTables_filter").addClass("d-none");
+        $(".dataTables_length label").addClass("d-flex align-items-center justify-content-between align-content-center");
+        $("#datatable").DataTable(),
+            $("#datatable-buttons")
+                .DataTable({ lengthChange: !1, buttons: ["copy", "excel", "pdf", "colvis"] })
+                .buttons()
+                .container()
+                .appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)"),
+            $(".dataTables_length select").addClass("form-select form-select-sm");
     });
 </script>
 @endpush

@@ -40,6 +40,7 @@
                                     <th class="align-middle">Email</th>
                                     <th class="align-middle">Phone Number</th>
                                     <th class="align-middle">Partnerships</th>
+                                    <th class="align-middle">Wallet Balance</th>
                                     <th class="align-middle">Total Commitment</th>
                                     <th class="align-middle">Expected Payout</th>
                                     <th class="align-middle">Total Payout</th>
@@ -58,7 +59,10 @@
                                     </td>
                                     <td>
                                         {{number_format($client->partnerships->count())}}
-                                     </td>
+                                    </td>
+                                    <td>
+                                        ₦{{number_format($client->wallet->accountBalance)}}
+                                    </td>
                                     <td>
                                         ₦{{number_format($client->partnerships->sum('amount'))}}
                                     </td>
@@ -99,4 +103,9 @@
 <script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}" defer></script>
 <script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}" defer></script>
 <script src="{{ asset ('assets/js/pages/datatables.init.js') }}" defer></script>  
+<script type="module" defer>
+    $("#datatable").DataTable({
+        order: [[8, 'desc']],
+    })
+</script>
 @endpush
