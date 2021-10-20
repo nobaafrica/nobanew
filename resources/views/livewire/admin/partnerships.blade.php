@@ -80,7 +80,7 @@
                                      </td>
                                     <td>
                                         <!-- Button trigger modal -->
-                                        <a href="{{$partnership->isRedeemed == 1 ? route('agreement', $partnership) : route('partnership', $partnership) }}" class="btn btn-primary btn-sm btn-rounded">
+                                        <a href="{{$partnership->isRedeemed == 1 ? route('agreement', $partnership) : ( Auth::user()->isAdmin ? route('admin-partnership', $partnership) : route('partnership', $partnership) )}}" class="btn btn-primary btn-sm btn-rounded">
                                             View Details
                                         </a>
                                     </td>
