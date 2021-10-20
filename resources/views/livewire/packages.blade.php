@@ -60,7 +60,7 @@
                                     </span>
                                 </div> --}}
                                 <a href="{{route('package', $package)}}">
-                                    <img src="/storage/{{asset($package->frontPicture ?? $package->pictures->picture)}}" alt="" class="img-fluid mx-auto d-block">
+                                    <img src="{{asset('storage/'. $package->frontPicture ?? 'storage/'. $package->pictures->picture)}}" alt="" class="img-fluid mx-auto d-block">
                                 </a>
                             </div>
                             <div class="mt-4 text-center">
