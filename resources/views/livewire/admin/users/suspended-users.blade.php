@@ -60,7 +60,7 @@
                                         {{number_format($client->partnerships->count())}}
                                     </td>
                                     <td>
-                                        ₦{{number_format($client->wallet->accountBalance)}}
+                                        ₦{{number_format($client->wallet->accountBalance ?? 0)}}
                                     </td>
                                     <td>
                                         ₦{{number_format($client->partnerships->sum('amount'))}}
