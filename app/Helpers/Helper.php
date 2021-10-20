@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Http;
 
 function numberToWord($number)
 {
@@ -30,11 +31,8 @@ function completionPercentage(object $partnership)
 }
 
 function url_exists($url){
-    $ch = curl_init($url);    
-    curl_setopt($ch, CURLOPT_NOBODY, true);
-    curl_exec($ch);
-    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
-
-   return ($code == 200);
+    $response = Http::get(config('app.url').'/'.$url)->status();
+    if($response == 200):
+        return true;
+    endif;
 }
