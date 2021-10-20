@@ -56,7 +56,10 @@ class Packages extends Component
     public function render()
     {
         return view('livewire.admin.packages', [
-            'packages' => Package::where('status', 'active')->paginate(12),
+            'packages' => Package::where('status', 'active')->paginate(12)->map(function ($item) {
+                $item->picture = $item->frontPicture ?? $item->pictures->picture;
+                return $item;
+            }),
         ]);
     }
 }

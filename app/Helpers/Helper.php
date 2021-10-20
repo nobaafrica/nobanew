@@ -28,3 +28,13 @@ function completionPercentage(object $partnership)
     $percentage = $number * 100;
     return $percentage;
 }
+
+function url_exists($url){
+    $ch = curl_init($url);    
+    curl_setopt($ch, CURLOPT_NOBODY, true);
+    curl_exec($ch);
+    $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+   return ($code == 200);
+}
