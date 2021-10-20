@@ -10,7 +10,7 @@ use Livewire\Component;
 
 class Package extends Component
 {
-    public ModelsPackage $package;
+    public $package;
     public $user;
     public $duration;
     public $price;
@@ -19,12 +19,12 @@ class Package extends Component
     public $payout;
     public $commitment;
 
-    public function mount()
+    public function mount($package)
     {
-        $this->package = $this->package->map(function ($item) {
+        $this->package = ModelsPackage::where('id', $package)->get()->map(function ($item) {
                             $item->picture = $item->frontPicture ?? $item->pictures->picture;
                             return $item;
-                        });
+                        })->first();
         $this->duration = $this->package->duration;
         $this->price = $this->package->price;
         $this->profit = $this->package->profitPercentage;
