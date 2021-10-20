@@ -41,7 +41,7 @@
                         <div class="card-body">
                             <div class="product-img position-relative">
                                 <a href="{{route('admin-package', $package)}}">
-                                    <img src="{{url_exists($package->picture) ? asset('storage/'. $package->picture) : asset($package->picture)}}" alt="" class="img-fluid mx-auto d-block">
+                                    <img src="{{url_exists($package->picture) ? asset($package->picture) : asset('storage/'. $package->picture)}}" alt="" class="img-fluid mx-auto d-block">
                                 </a>
                             </div>
                             <div class="mt-4 text-center">
