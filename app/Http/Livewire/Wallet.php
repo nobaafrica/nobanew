@@ -35,7 +35,7 @@ class Wallet extends Component
     public $userBank;
     public $userAccount;
     public $totalWithdrawn;
-    
+
 
     public function mount()
     {
@@ -79,7 +79,7 @@ class Wallet extends Component
                 CustomerIdentified::dispatch($fetchCustomer->data->customer_code);
                 session()->flash('success', "Account is being generated");
                 return redirect()->route('wallet');
-            elseif($fetchCustomer->data['identified'] == 'false'):
+            elseif($fetchCustomer->data->identified == 'false'):
                 return $this->verifyCustomer($fetchCustomer->data->customer_code, $this->user);
             endif;
         elseif($customerRequest->status == 404):
@@ -101,11 +101,11 @@ class Wallet extends Component
 
         if($initpayment->status == 'true'):
             $this->user->transactions()->create([
-                'id' => Str::uuid(), 
-                'transactionType' => 'credit', 
-                'amount' => $this->fundingAmount, 
-                'reference' => $ref, 
-                'status' => 'pending', 
+                'id' => Str::uuid(),
+                'transactionType' => 'credit',
+                'amount' => $this->fundingAmount,
+                'reference' => $ref,
+                'status' => 'pending',
                 'time' => now(),
             ]);
             return redirect($initpayment->data->authorization_url);
@@ -138,8 +138,8 @@ class Wallet extends Component
                 else:
                     $withdrawalInfo = $this->user->withdrawal->last();
                     $this->user->withdrawal()->create([
-                        'recipient_code' => $withdrawalInfo->recipient_code, 
-                        'bank_code' => $withdrawalInfo->bank_code, 
+                        'recipient_code' => $withdrawalInfo->recipient_code,
+                        'bank_code' => $withdrawalInfo->bank_code,
                         'bank_name' => $withdrawalInfo->bank_name,
                         'amount' => $this->withdrawalAmount,
                     ]);
@@ -157,11 +157,11 @@ class Wallet extends Component
                     ])->object();
                     if($verifyTransfer->status == true && $verifyTransfer->message == 'Transfer retrieved'):
                         $this->user->transactions()->create([
-                            'id' => Str::uuid(), 
-                            'transactionType' => 'debit', 
-                            'amount' => $this->withdrawalAmount + 100, 
-                            'reference' => $initTransfer->data->reference. "withdrawal + transfer charges 100NGN", 
-                            'status' => 'success', 
+                            'id' => Str::uuid(),
+                            'transactionType' => 'debit',
+                            'amount' => $this->withdrawalAmount + 100,
+                            'reference' => $initTransfer->data->reference. "withdrawal + transfer charges 100NGN",
+                            'status' => 'success',
                             'time' => now(),
                         ]);
                         $wallet = ModelsWallet::where('user_id', $this->user->id)->first();
@@ -172,11 +172,11 @@ class Wallet extends Component
                         return redirect()->route('wallet');
                     else:
                         $this->user->transactions()->create([
-                            'id' => Str::uuid(), 
-                            'transactionType' => 'debit', 
-                            'amount' => $this->withdrawalAmount + 100, 
-                            'reference' => $initTransfer->data->reference. "withdrawal + transfer charges 100NGN", 
-                            'status' => 'pending', 
+                            'id' => Str::uuid(),
+                            'transactionType' => 'debit',
+                            'amount' => $this->withdrawalAmount + 100,
+                            'reference' => $initTransfer->data->reference. "withdrawal + transfer charges 100NGN",
+                            'status' => 'pending',
                             'time' => now(),
                         ]);
                         session()->flash('success', 'Withdrawal initiated successfully');
@@ -205,16 +205,16 @@ class Wallet extends Component
         // create transfer recipient
         if($verifyAccount->status == 'true'):
             $createRecipient = Http::withToken(config('app.paystack_secret'))->post('https://api.paystack.co/transferrecipient', [
-                "type" => "nuban", 
-                "name" => $verifyAccount->data->account_name, 
-                "account_number" => $verifyAccount->data->account_number, 
-                "bank_code" => $bankcode, 
+                "type" => "nuban",
+                "name" => $verifyAccount->data->account_name,
+                "account_number" => $verifyAccount->data->account_number,
+                "bank_code" => $bankcode,
                 "currency" => "NGN"
             ])->object();
             if($createRecipient->status == true):
                 $this->user->withdrawal()->create([
-                    'recipient_code' => $createRecipient->data->recipient_code, 
-                    'bank_code' => $createRecipient->data->details->bank_code, 
+                    'recipient_code' => $createRecipient->data->recipient_code,
+                    'bank_code' => $createRecipient->data->details->bank_code,
                     'bank_name' => $createRecipient->data->details->bank_name,
                     'amount' => $amount,
                 ]);
@@ -225,7 +225,7 @@ class Wallet extends Component
 
     public function render()
     {
-       
+
         return view('livewire.wallet')->with(['txs' => $this->txs(), 'credits' => $this->creditTx]);
     }
 }
