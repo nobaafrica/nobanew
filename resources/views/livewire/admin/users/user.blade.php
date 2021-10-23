@@ -62,6 +62,16 @@
                         <div class="col">
                             <h5 class="mb-2 text-muted">Wallet Balance</h5>
                             <div class="text-center">
+                                <h4>₦{{number_format($accountBalance)}}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body border-top">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="mb-2 text-muted">Withdrawable Balance</h5>
+                            <div class="text-center">
                                 <h4>₦{{number_format($withdrawableBalance)}}</h4>
                             </div>
                         </div>
