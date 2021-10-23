@@ -42,7 +42,7 @@ class RegisteredUserController extends Controller
         $user = User::create([
             'id' => Str::uuid(),
             'email' => $request->email,
-            'phone' => $request->phone,
+            'phoneNumber' => $request->phone,
             'password' => Hash::make($request->password),
             'refCode' => Str::limit(uniqid('NA'), 8, ''),
             'referralCode' => $request->referral_code,
