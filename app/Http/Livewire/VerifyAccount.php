@@ -34,7 +34,7 @@ class VerifyAccount extends Component
         $this->email = auth()->user()->email;
         Cache::remember('banks', now()->addDays(30), function () {
             return Http::get(config('app.okra_url')."banks/list")->object();
-        }); 
+        });
         $this->banks = Cache::get('banks')->data->banks;
     }
 

@@ -8,7 +8,7 @@
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0 font-size-18">Verify Account</h4>
                     <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
+                        <ol class="m-0 breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item active">Verify Account</li>
                         </ol>
@@ -17,19 +17,19 @@
                 </div>
             </div>
         </div>
-    </x-slot> 
+    </x-slot>
     <div class="row" wire:ignore>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body" wire:ignore.self>
-                    <h4 class="card-title mb-4">Account Information</h4>
+                    <h4 class="mb-4 card-title">Account Information</h4>
 
                     <div id="account-verification-steps" wire:ignore.self>
                         <!-- Seller Details -->
                         <h3>Bank Information</h3>
                         <section wire:ignore>
                             @if (session()->has('error'))
-                            <div class = 'font-medium text-sm text-warning'>
+                            <div class = 'text-sm font-medium text-warning'>
                                 {{ session('error') }}
                             </div>
                             @endif
@@ -39,8 +39,8 @@
                                         <label>Select Bank</label>
                                         <select class="form-control" id="select-bank" wire:model='bankId' wire:ignore>
                                             <option selected>Select Bank</option>
-                                            @foreach ($allbanks as $bank)
-                                            <option value="{{$bank->id}}">{{$bank->name}}</option>
+                                            @foreach ($allbanks as $bnk)
+                                            <option value="{{$bnk->id}}">{{$bnk->name}}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -63,7 +63,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </section>
 
                         <!-- Company Document -->
@@ -138,15 +138,15 @@
 @push('scripts')
 <script src="{{ asset ('/assets/libs/jquery-steps/build/jquery.steps.min.js') }}" defer></script>
 <script type="module" defer>
-    $("#account-verification-steps").steps({ 
-        headerTag: "h3", 
-        bodyTag: "section", 
+    $("#account-verification-steps").steps({
+        headerTag: "h3",
+        bodyTag: "section",
         transitionEffect: "slide",
         onFinished: function (event, currentIndex) {
             @this.submit()
         }
     });
-    
+
     $("#select-bank").select2({
         placeholder: "Select your bank"
     })
@@ -154,6 +154,6 @@
         let data = $('#select-bank').select2("val");
         @this.set('bankId', data)
     })
-    
+
 </script>
 @endpush
