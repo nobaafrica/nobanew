@@ -136,7 +136,7 @@ class Wallet extends Component
                 if($this->user->withdrawal->count() < 1):
                     $withdrawalInfo = $this->firstWithdrawal($account, $userBank, $this->withdrawalAmount);
                 else:
-                    $withdrawalInfo = $this->user->withdrawal->last();
+                    $withdrawalInfo = $this->user->withdrawal->first();
                     $this->user->withdrawal()->create([
                         'recipient_code' => $withdrawalInfo->recipient_code,
                         'bank_code' => $withdrawalInfo->bank_code,
