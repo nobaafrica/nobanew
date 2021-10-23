@@ -15,6 +15,7 @@ class User extends Component
     public $bank;
     public $accountName;
     public $transactions;
+    public $withdrawableBalance;
 
     public function mount($user)
     {
@@ -24,6 +25,7 @@ class User extends Component
         $this->bank = is_null($this->user->wallet) ? null : $this->user->wallet->bank;
         $this->accountName = is_null($this->user->wallet) ? null : $this->user->wallet->accountName;
         $this->transactions = $this->user->transactions;
+        $this->withdrawableBalance = is_null($this->user->wallet) ? null : $this->user->wallet->withdrawableBalance;
     }
 
     public function suspend()

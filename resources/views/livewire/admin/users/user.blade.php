@@ -42,7 +42,6 @@
                     </div>
                 </div>
                 <div class="card-body border-top">
-
                     <div class="row">
                         <div class="col">
                             <p class="mb-2 text-muted">Virtual Account</p>
@@ -54,6 +53,16 @@
                                     <input type="text" class="d-none" id="account-number" value="{{$nuban}}">
                                     <button onclick="copyToClipBoard('account-number', 'nuban')" class="btn btn-primary btn-sm">Copy</button>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body border-top">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="mb-2 text-muted">Wallet Balance</h5>
+                            <div class="text-center">
+                                <h4>₦{{number_format($withdrawableBalance)}}</h4>
                             </div>
                         </div>
                     </div>
@@ -129,7 +138,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title mb-4">Transactions</h4>
+                    <h4 class="mb-4 card-title">Transactions</h4>
                     <div class="mt-4">
                         <div class="table-responsive">
                             <table id="datatable" class="table table-hover dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
