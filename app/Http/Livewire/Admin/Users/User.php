@@ -8,14 +8,22 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 
 class User extends Component
-{ 
+{
     public $user;
     public $partnerships;
-     
+    public $nuban;
+    public $bank;
+    public $accountName;
+    public $transactions;
+
     public function mount($user)
     {
         $this->user = ModelsUser::withTrashed()->find($user);
         $this->partnerships = Partnership::where('user_id', $user)->get();
+        $this->nuban = is_null($this->user->wallet) ? null : $this->user->wallet->accountNumber;
+        $this->bank = is_null($this->user->wallet) ? null : $this->user->wallet->bank;
+        $this->accountName = is_null($this->user->wallet) ? null : $this->user->wallet->accountName;
+        $this->transactions = $this->user->transactions;
     }
 
     public function suspend()
