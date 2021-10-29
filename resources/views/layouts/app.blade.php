@@ -67,6 +67,7 @@
         </div>
     </body>
     <!-- JAVASCRIPT -->
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
     <script src="{{ asset('/assets/libs/jquery/jquery.min.js') }}" defer></script>
     <script src="{{ asset('/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}" defer></script>
     <script src="{{ asset('/assets/libs/metismenu/metisMenu.min.js') }}" defer></script>

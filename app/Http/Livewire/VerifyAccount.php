@@ -28,6 +28,10 @@ class VerifyAccount extends Component
     public $bvnVerified;
     public $bvn;
     public $bankCode;
+    public $selectBank;
+    public $getAccountInfo;
+
+    protected $listeners = ['bankStateUpdated' => 'bankStateUpdated', 'accountStateUpdated' => 'accountStateUpdated'];
 
     public function mount()
     {
@@ -35,6 +39,18 @@ class VerifyAccount extends Component
         Cache::remember('banks', now()->addDays(30), function () {
             return Http::get(config('app.okra_url')."banks/list")->object();
         });
+        $this->banks = Cache::get('banks')->data->banks;
+    }
+
+    public function bankStateUpdated()
+    {
+        $this->selectBank = 'true';
+        $this->banks = Cache::get('banks')->data->banks;
+    }
+
+    public function accountStateUpdated()
+    {
+        $this->getAccountInfo = 'true';
         $this->banks = Cache::get('banks')->data->banks;
     }
 
@@ -46,10 +62,12 @@ class VerifyAccount extends Component
         $this->bank = $getbank->data->name;
         $this->bankCode = is_null($getbank->data->alt_sortcode) ? $getbank->data->sortcode : $getbank->data->alt_sortcode;
         $this->banks = Cache::get('banks')->data->banks;
+        $this->emit('bankStateUpdated');
     }
 
     public function updatedNuban()
     {
+        $this->selectBank = false;
         $url = config('app.okra_url')."products/kyc/nuban-verify";
         $request = Http::withToken(config('app.okra_secret'))->post($url, [
             'nuban' => $this->nuban,
@@ -70,6 +88,7 @@ class VerifyAccount extends Component
             session()->flash('error', 'Invalid Account Number');
         endif;
         $this->banks = Cache::get('banks')->data->banks;
+        $this->emit('accountStateUpdated');
     }
 
     public function submit()

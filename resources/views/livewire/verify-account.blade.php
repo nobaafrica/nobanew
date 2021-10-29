@@ -50,18 +50,18 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="account-number">Account Number</label>
-                                        <input type="text" wire:model.lazy='nuban' class="form-control" id="account-number">
+                                        <input type="text" wire:model.lazy='nuban' class="form-control bank-field" id="account-number" disabled>
                                     </div>
                                 </div>
                             </div>
                             <div wire:loading class="mb-3">
-                                <h4><i class="bx bx-loader-alt bx-spin"></i> Fetching data</h4>
+                                <h4><i class="bx bx-loader-alt bx-spin"></i>Please wait, while we get your account information</h4>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label for="account-name">Account Name</label>
-                                        <input type="text" class="form-control" wire:model='accountName' id="account-name">
+                                        <input type="text" class="form-control account-fields" wire:model='accountName' id="account-name" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -75,13 +75,13 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="first-name">First Name</label>
-                                        <input type="text" wire:model='firstName' class="form-control" id="first-name">
+                                        <input type="text" wire:model='firstName' class="form-control account-fields" id="first-name" disabled>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="last-name">Last name</label>
-                                        <input type="text" wire:model='lastName' class="form-control" id="last-name">
+                                        <input type="text" wire:model='lastName' class="form-control account-fields" id="last-name" disabled>
                                     </div>
                                 </div>
                             </div>
@@ -90,13 +90,13 @@
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="basicpill-phoneno-input">Phone</label>
-                                        <input type="text" wire:model='phone' class="form-control" id="basicpill-phoneno-input">
+                                        <input type="text" wire:model='phone' class="form-control account-fields" disabled id="basicpill-phoneno-input">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3">
                                         <label for="basicpill-email-input">Email</label>
-                                        <input type="email" wire:model='email' class="form-control" id="basicpill-email-input">
+                                        <input type="email" wire:model='email' class="form-control account-fields" disabled id="basicpill-email-input">
                                     </div>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                                 <div class="col-lg-12">
                                     <div class="mb-3">
                                         <label for="basicpill-address-input">Address</label>
-                                        <textarea id="basicpill-address-input" wire:model='address' class="form-control" rows="2"></textarea>
+                                        <textarea id="basicpill-address-input" wire:model='address' class="form-control account-fields" disabled rows="2"></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -156,6 +156,20 @@
         let data = $('#select-bank').select2("val");
         @this.set('bankId', data)
     })
-
+    document.addEventListener("DOMContentLoaded", () => {
+        Livewire.hook('element.updated', function(el, component) {
+            if(@this.selectBank == 'true') {
+                var element =  document.getElementById("account-number")
+                element.removeAttribute("disabled")
+            }
+            else if (@this.getAccountInfo == 'true') {
+                var elements = document.getElementsByClassName("account-fields");
+                for (var e = 0; e < elements.length; e++) { // For each element
+                    var element = elements[e];
+                    element.removeAttribute("disabled");
+                }
+            }
+        })
+    })
 </script>
 @endpush
