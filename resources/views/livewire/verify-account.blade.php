@@ -34,7 +34,7 @@
                             </div>
                             @endif
                             <div class="row" wire:ignore>
-                                <span>Our system us currently unable to verify access bank accounts, please use any other alternative</span>
+                                <span>Our system us currently unable to verify access diamond bank accounts, please use any other alternative</span>
                                 <span class="mb-4">Fetching your account information takes a minute, please wait for our systems to complete the process.</span>
                                 <div class="col-lg-6" wire:ignore>
                                     <div class="mb-3" wire:ignore>
