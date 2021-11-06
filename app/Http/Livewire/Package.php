@@ -31,7 +31,7 @@ class Package extends Component
         $this->payout = $this->price + ($this->price * ($this->package->profitPercentage/100));
         $this->commitment = $this->price * $this->unit;
         $this->user = User::find(Auth::user()->id);
-        
+
     }
 
     public function updatedUnit()
@@ -47,7 +47,6 @@ class Package extends Component
             $profit = $this->commitment * $this->package->profitPercentage/100;
             $this->user->wallet()->update([
                 'accountBalance' => $this->user->wallet->accountBalance - $this->commitment,
-                'withdrawableBalance' => $this->user->wallet->withdrawableBalance - $this->commitment
             ]);
             $this->user->partnerships()->create([
                 'id' => $ref,
@@ -61,11 +60,11 @@ class Package extends Component
                 'estimatedProfit' => $profit,
             ]);
             $this->user->transactions()->create([
-                'id' => Str::uuid(), 
-                'transactionType' => 'debit', 
-                'amount' => $this->commitment, 
-                'reference' => $ref, 
-                'status' => 'success', 
+                'id' => Str::uuid(),
+                'transactionType' => 'debit',
+                'amount' => $this->commitment,
+                'reference' => $ref,
+                'status' => 'success',
                 'payment_method' => 'wallet balance',
                 'time' => now(),
             ]);
@@ -77,11 +76,11 @@ class Package extends Component
                     'withdrawableBalance' => $this->user->wallet->withdrawableBalance + $bonus
                 ]);
                 $referrer->transactions()->create([
-                    'id' => Str::uuid(), 
-                    'transactionType' => 'credit', 
-                    'amount' => $bonus, 
-                    'reference' => $ref, 
-                    'status' => 'success', 
+                    'id' => Str::uuid(),
+                    'transactionType' => 'credit',
+                    'amount' => $bonus,
+                    'reference' => $ref,
+                    'status' => 'success',
                     'payment_method' => 'referral bonus',
                     'time' => now(),
                 ]);
@@ -93,7 +92,7 @@ class Package extends Component
             return redirect()->route('wallet');
         endif;
     }
-    
+
     public function render()
     {
         return view('livewire.package');

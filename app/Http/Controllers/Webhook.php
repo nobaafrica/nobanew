@@ -56,7 +56,6 @@ class Webhook extends Controller
         if($request->data->status == 'success'):
             $user = User::find(Auth::user()->id);
             $user->wallet()->update([
-                'withdrawableBalance' =>  $user->wallet->withdrawableBalance + $request->data->amount/100,
                 'accountBalance' =>  $user->wallet->accountBalance + $request->data->amount/100,
             ]);
             Transactions::where('reference', $tref)->update([
