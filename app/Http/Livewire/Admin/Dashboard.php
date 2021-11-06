@@ -26,7 +26,11 @@ class Dashboard extends Component
         $this->user = User::find(Auth::user()->id);
         $this->users = User::where('isAdmin', 0)->with('partnerships')->get();
         $this->partnered = Partnership::where('isRedeemed', 0)->groupBy('user_id')->get();
-        $this->partnerships = Partnership::orderBy('created_at', 'desc')->get();
+        $this->partnerships = Partnership::orderBy('created_at', 'desc')->get()->filter(function ($item) {
+            if(!empty($item->package) && $item->package->status != 'disabled'):
+                return $item;
+            endif;
+        });
         $this->activePartnerships = $this->partnerships->where('isRedeemed', '0');
         $this->cummulativePayout = $this->partnerships->where('isRedeemed', '1')->sum('estimatedPayout');
         $this->cummulativePartnership = $this->partnerships->sum('amount');
@@ -49,7 +53,11 @@ class Dashboard extends Component
     public function trendingPackages()
     {
         $query = Partnership::select(DB::raw('COUNT(DISTINCT user_id) as investors, user_id, package_id, package_name, amount * COUNT(*) as investment'))->where('isRedeemed', '0')->with('user', 'package')->groupBy('user_id')->orderByRaw(DB::raw('investment desc'))->limit(10)->get();
-        return $query;
+        return $query->filter(function ($item) {
+            if(!empty($item->package) && $item->package->status != 'disabled'):
+                return $item;
+            endif;
+        });
     }
 
     public function render()
