@@ -40,12 +40,7 @@ class Dashboard extends Component
     public function trendingPackages()
     {
         $query = Partnership::select(DB::raw('COUNT(*) as investors, package_id, package_name, amount * COUNT(*) as investment'))->where('isRedeemed', '0')->with('package')->groupBy('package_name')->orderByRaw(DB::raw('investment desc'))->limit(5)->get();
-        return $query->filter(function ($item) {
-            if(is_null($item->package)):
-            elseif(!empty($item->package) && $item->package->status != 'disabled'):
-                return $item;
-            endif;
-        });
+        return $query;
     }
 
     public function render()
