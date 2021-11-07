@@ -26,7 +26,7 @@ class AddStatusToWithdrawal extends Migration
     public function down()
     {
         Schema::table('withdrawals', function (Blueprint $table) {
-            //
+            $table->dropColumn('status');
         });
     }
 }

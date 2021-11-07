@@ -66,7 +66,7 @@ class ProcessWebhook implements ShouldQueue
                 $tx->update(['status' => $data['status'], 'payment_method' => 'transfer']);
                 $user = Bank::where('nuban', $data['recipient']['details']['account_number'])->first();
                 $wallet = Wallet::where('user_id', $user->user->id)->first();
-                $wallet->withdrawableBalance = $wallet->withdrawableBalance - $data['amount']/100;
+                $wallet->accountBalance = ($wallet->withdrawableBalance - $wallet->referralBonus) - $data['amount']/100;
                 $wallet->save();
             endif;
         elseif($event == 'transfer.failed'):

@@ -25,6 +25,7 @@ class Wallet extends Component
     public $bank;
     public $accountName;
     public $withdrawableBalance;
+    public $walletBalance;
     public $referralBonus;
     public $fundingAmount;
     public $transactions;
@@ -44,7 +45,8 @@ class Wallet extends Component
         $this->nuban = is_null($this->wallet) ? null : $this->wallet->accountNumber;
         $this->bank = is_null($this->wallet) ? null : $this->wallet->bank;
         $this->accountName = is_null($this->wallet) ? null : $this->wallet->accountName;
-        $this->withdrawableBalance = is_null($this->wallet) ? null : $this->wallet->withdrawableBalance;
+        $this->withdrawableBalance = is_null($this->wallet) ? null : $this->wallet->accountBalance - $this->wallet->referralBonus;
+        $this->walletBalance = is_null($this->wallet) ? null : $this->wallet->accountBalance;
         $this->referralBonus = is_null($this->wallet) ? null : $this->wallet->referralBonus;
         $this->transactions = $this->user->transactions;
         $this->creditTx = $this->transactions->where('transactionType', 'credit');
@@ -66,7 +68,9 @@ class Wallet extends Component
                     'customerCode' => $fetchCustomer->data->customer_code,
                     'accountNumber' => $fetchCustomer->data->dedicated_account->account_number,
                     'accountName' => $fetchCustomer->data->dedicated_account->account_name,
-                ]) : $this->user->wallet()->create([
+                ]) : $this->user->wallet()->updateOrCreate(
+                    ['user_id' => $this->user->id],
+                    [
                         'id' => Str::uuid(),
                         'bank' => $fetchCustomer->data->dedicated_account->bank->name,
                         'customerCode' => $fetchCustomer->data->customer_code,
@@ -166,7 +170,6 @@ class Wallet extends Component
                         ]);
                         $wallet = ModelsWallet::where('user_id', $this->user->id)->first();
                         $wallet->accountBalance = $wallet->accountBalance - $verifyTransfer->data->amount/100;
-                        $wallet->withdrawableBalance = $wallet->withdrawableBalance - $verifyTransfer->data->amount/100;
                         $wallet->save();
                         session()->flash('success', 'Withdrawal successful');
                         return redirect()->route('wallet');

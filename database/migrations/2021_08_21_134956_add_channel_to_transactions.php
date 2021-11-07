@@ -26,7 +26,7 @@ class AddChannelToTransactions extends Migration
     public function down()
     {
         Schema::table('transactions', function (Blueprint $table) {
-            //
+            $table->dropColumn('payment_method');
         });
     }
 }

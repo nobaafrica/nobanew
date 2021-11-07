@@ -65,15 +65,15 @@ class Package extends Component
                 'amount' => $this->commitment,
                 'reference' => $ref,
                 'status' => 'success',
-                'payment_method' => 'wallet balance',
+                'payment_method' => 'partnered using wallet balance',
                 'time' => now(),
             ]);
             if (!empty($this->user->referralCode) && $this->user->partnerships->count() < 1):
                 $referrer = User::where('refCode', $this->user->referralCode)->first();
                 $bonus = $this->commitment * 2/100;
                 $referrer->wallet()->update([
-                    'referralBonus' => $bonus,
-                    'withdrawableBalance' => $this->user->wallet->withdrawableBalance + $bonus
+                    'referralBonus' => $this->user->wallet->referralBonus + $bonus,
+                    'accountBalance' => $this->user->wallet->accountBalance + $bonus
                 ]);
                 $referrer->transactions()->create([
                     'id' => Str::uuid(),

@@ -26,7 +26,7 @@ class AddBankCodeColumnToBanksTable extends Migration
     public function down()
     {
         Schema::table('banks', function (Blueprint $table) {
-            //
+            $table->dropColumn('bank_code');
         });
     }
 }

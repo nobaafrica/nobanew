@@ -47,7 +47,7 @@
                         <span key="t-partnerships">Partnerships</span>
                     </a>
                 </li>
-                
+
                 <li>
                     <a href="{{route('profile')}}" class="waves-effect">
                         <i class="bx bx-user"></i>
@@ -69,6 +69,22 @@
                                 <li><a href="{{route('admins')}}" key="t-level-users-admins">Admins</a></li>
                                 <li><a href="{{route('clients')}}" key="t-level-users-clients">Clients</a></li>
                                 <li><a href="{{route('suspended-clients')}}" key="t-level-users-clients">Suspended Clients</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow" key="t-level-finance" aria-expanded="true">Finance</a>
+                            <ul class="sub-menu mm-collapse mm-show" aria-expanded="true" style="">
+                                <li><a href="{{route('deposits')}}" key="t-level-finance-deposits">Deposits</a></li>
+                                <li><a href="{{route('payouts')}}" key="t-level-finance-payouts">Payouts</a></li>
+                                <li><a href="{{route('transfers')}}" key="t-level-finance-transfers">Transfers</a></li>
+                                <li><a href="{{route('withdrawal-requests')}}" key="t-level-finance-withdrawal-requests">Withdrawal Requests</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="javascript: void(0);" class="has-arrow" key="t-level-crm" aria-expanded="true">CRM</a>
+                            <ul class="sub-menu mm-collapse mm-show" aria-expanded="true" style="">
+                                <li><a href="{{route('deposits')}}" key="t-level-crm-sms">SMS</a></li>
+                                <li><a href="{{route('payouts')}}" key="t-level-crm-emails">Emails</a></li>
                             </ul>
                         </li>
                     </ul>

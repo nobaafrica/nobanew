@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddStatusToPackagesTable extends Migration
+class AddPaymentScheduleToPackagesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddStatusToPackagesTable extends Migration
     public function up()
     {
         Schema::table('packages', function (Blueprint $table) {
-            $table->string('status')->default('active');
+            $table->string('payment_schedule')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddStatusToPackagesTable extends Migration
     public function down()
     {
         Schema::table('packages', function (Blueprint $table) {
-            $table->dropColumn('status');
+            $table->dropColumn('payment_schedule');
         });
     }
 }

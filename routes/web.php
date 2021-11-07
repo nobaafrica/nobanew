@@ -3,6 +3,10 @@
 use App\Http\Controllers\Webhook;
 use App\Http\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Http\Livewire\Admin\EditPackage;
+use App\Http\Livewire\Admin\Finance\Deposits;
+use App\Http\Livewire\Admin\Finance\Payouts;
+use App\Http\Livewire\Admin\Finance\Transfers;
+use App\Http\Livewire\Admin\Finance\WithdrawalRequests;
 use App\Http\Livewire\Admin\Package as AdminPackage;
 use App\Http\Livewire\Admin\Packages as AdminPackages;
 use App\Http\Livewire\Admin\Partnership as AdminPartnership;
@@ -74,6 +78,12 @@ Route::get('/admin/users/clients', Clients::class)->name('clients')->middleware(
 Route::get('/admin/users/suspended-clients', SuspendedUsers::class)->name('suspended-clients')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/clients/{user}', User::class)->name('client')->middleware(['auth', 'verified', 'isAdmin']);
 Route::get('/admin/users/admins', Admins::class)->name('admins')->middleware(['auth', 'verified', 'isAdmin']);
+
+// Admin Finance Routes
+Route::get('/admin/finance/deposits', Deposits::class)->name('deposits')->middleware(['auth', 'verified', 'isAdmin']);
+Route::get('/admin/finance/payouts', Payouts::class)->name('payouts')->middleware(['auth', 'verified', 'isAdmin']);
+Route::get('/admin/finance/transfers', Transfers::class)->name('transfers')->middleware(['auth', 'verified', 'isAdmin']);
+Route::get('/admin/finance/withdrawal-requests', WithdrawalRequests::class)->name('withdrawal-requests')->middleware(['auth', 'verified', 'isAdmin']);
 
 Route::get('/reset-password', ForgotPassword::class)->name('password-reset')->middleware('guest');
 require __DIR__.'/auth.php';

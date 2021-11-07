@@ -11,7 +11,11 @@ class Partnerships extends Component
 
     public function mount()
     {
-        $this->partnerships = Partnership::where('isRedeemed', 0)->with('package', 'user')->get();
+        $this->partnerships = Partnership::where('isRedeemed', 0)->with('package', 'user')->get()->filter(function ($item) {
+            if(!empty($item->package) && $item->package->status != 'disabled'):
+                return $item;
+            endif;
+        });
     }
 
     public function render()

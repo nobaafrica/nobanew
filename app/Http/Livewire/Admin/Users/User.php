@@ -21,7 +21,11 @@ class User extends Component
     public function mount($user)
     {
         $this->user = ModelsUser::withTrashed()->find($user);
-        $this->partnerships = Partnership::where('user_id', $user)->get();
+        $this->partnerships = Partnership::where('user_id', $user)->get()->filter(function ($item) {
+            if(!empty($item->package) && $item->package->status != 'disabled'):
+                return $item;
+            endif;
+        });
         $this->nuban = is_null($this->user->wallet) ? null : $this->user->wallet->accountNumber;
         $this->bank = is_null($this->user->wallet) ? null : $this->user->wallet->bank;
         $this->accountName = is_null($this->user->wallet) ? null : $this->user->wallet->accountName;

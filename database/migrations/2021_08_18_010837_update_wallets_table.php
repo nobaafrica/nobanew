@@ -26,7 +26,7 @@ class UpdateWalletsTable extends Migration
     public function down()
     {
         Schema::table('wallets', function (Blueprint $table) {
-            //
+            $table->dropColumn('verified');
         });
     }
 }

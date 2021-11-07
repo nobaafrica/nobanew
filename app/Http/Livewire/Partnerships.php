@@ -12,7 +12,11 @@ class Partnerships extends Component
 
     public function mount()
     {
-        $this->partnerships = Partnership::where('user_id', Auth::user()->id)->with('package', 'user')->get();
+        $this->partnerships = Partnership::where('user_id', Auth::user()->id)->with('package', 'user')->get()->filter(function ($item) {
+            if(!empty($item->package) && $item->package->status != 'disabled'):
+                return $item;
+            endif;
+        });
     }
 
     public function render()

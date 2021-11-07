@@ -26,7 +26,7 @@ class UpdateWithdrawalTable extends Migration
     public function down()
     {
         Schema::table('withdrawals', function (Blueprint $table) {
-            //
+            $table->dropColumn('amount');
         });
     }
 }

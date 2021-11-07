@@ -13,6 +13,7 @@ $(function () {
                     + "</div>"
     )
     $('#client-search').on( 'keyup', function () {
+        let table = $('#datatable').DataTable();
         table.search( this.value ).draw();
     });
     $(".dataTables_length select").addClass("form-select form-select-sm w-75");

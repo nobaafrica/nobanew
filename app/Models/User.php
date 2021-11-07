@@ -86,4 +86,14 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Partnership::class);
     }
+
+    public function deposit()
+    {
+        return $this->hasMany(Deposit::class);
+    }
+
+    public function depositBy()
+    {
+        return $this->hasMany(Deposit::class, 'deposit_by', 'id');
+    }
 }
