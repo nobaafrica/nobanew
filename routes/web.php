@@ -46,17 +46,17 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', Index::class)->middleware('guest')->name('/');
 Route::get('/register', Register::class)->name('register')->middleware('guest');
 Route::get('/auth/register', Register::class)->name('guest-register')->middleware('guest');
-Route::get('/dashboard', Dashboard::class)->name('dashboard')->middleware(['auth', 'verified', 'bank-verified']);
-Route::get('/verify-account', VerifyAccount::class)->name('verify-account')->middleware(['auth', 'verified']);
-Route::get('/wallet', Wallet::class)->name('wallet')->middleware(['auth', 'verified', 'bank-verified']);
-Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'verified', 'bank-verified']);
-Route::get('/packages', Packages::class)->name('packages')->middleware(['auth', 'verified', 'bank-verified']);
-Route::get('/package/{package}', Package::class)->name('package')->middleware(['auth', 'verified', 'bank-verified']);
-Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'verified', 'bank-verified']);
-Route::get('/partnership/{partnership}', Partnership::class)->name('partnership')->middleware(['auth', 'verified', 'bank-verified']);
+Route::get('/dashboard', Dashboard::class)->name('dashboard')->middleware(['auth', 'bank-verified']);
+Route::get('/verify-account', VerifyAccount::class)->name('verify-account')->middleware(['auth']);
+Route::get('/wallet', Wallet::class)->name('wallet')->middleware(['auth', 'bank-verified']);
+Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'bank-verified']);
+Route::get('/packages', Packages::class)->name('packages')->middleware(['auth', 'bank-verified']);
+Route::get('/package/{package}', Package::class)->name('package')->middleware(['auth', 'bank-verified']);
+Route::get('/partnerships', Partnerships::class)->name('partnerships')->middleware(['auth', 'bank-verified']);
+Route::get('/partnership/{partnership}', Partnership::class)->name('partnership')->middleware(['auth', 'bank-verified']);
 Route::get('/print-agreement/{partnership}', DownloadAgreement::class)->name('agreement');
-Route::get('/profile', Profile::class)->name('profile')->middleware(['auth', 'verified', 'bank-verified']);
-Route::get('/edit-profile/{user}', EditProfile::class)->name('edit-profile')->middleware(['auth', 'verified', 'bank-verified']);
+Route::get('/profile', Profile::class)->name('profile')->middleware(['auth', 'bank-verified']);
+Route::get('/edit-profile/{user}', EditProfile::class)->name('edit-profile')->middleware(['auth', 'bank-verified']);
 
 Route::get('/payment/callback', [Webhook::class, 'verifyPayment']);
 
@@ -68,22 +68,22 @@ Route::get('/verify-mail/{id}/{hash}', function (EmailVerificationRequest $reque
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 // Admin Routes
-Route::get('/admin/dashboard', AdminDashboard::class)->name('admin-dashboard')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/packages', AdminPackages::class)->name('admin-packages')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/package/{package}', AdminPackage::class)->name('admin-package')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/edit-package/{package}', EditPackage::class)->name('edit-package')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/partnerships', AdminPartnerships::class)->name('admin-partnerships')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/partnership/{partnership}', AdminPartnership::class)->name('admin-partnership')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/users/clients', Clients::class)->name('clients')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/users/suspended-clients', SuspendedUsers::class)->name('suspended-clients')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/clients/{user}', User::class)->name('client')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/users/admins', Admins::class)->name('admins')->middleware(['auth', 'verified', 'isAdmin']);
+Route::get('/admin/dashboard', AdminDashboard::class)->name('admin-dashboard')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/packages', AdminPackages::class)->name('admin-packages')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/package/{package}', AdminPackage::class)->name('admin-package')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/edit-package/{package}', EditPackage::class)->name('edit-package')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/partnerships', AdminPartnerships::class)->name('admin-partnerships')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/partnership/{partnership}', AdminPartnership::class)->name('admin-partnership')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/users/clients', Clients::class)->name('clients')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/users/suspended-clients', SuspendedUsers::class)->name('suspended-clients')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/clients/{user}', User::class)->name('client')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/users/admins', Admins::class)->name('admins')->middleware(['auth', 'isAdmin']);
 
 // Admin Finance Routes
-Route::get('/admin/finance/deposits', Deposits::class)->name('deposits')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/finance/payouts', Payouts::class)->name('payouts')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/finance/transfers', Transfers::class)->name('transfers')->middleware(['auth', 'verified', 'isAdmin']);
-Route::get('/admin/finance/withdrawal-requests', WithdrawalRequests::class)->name('withdrawal-requests')->middleware(['auth', 'verified', 'isAdmin']);
+Route::get('/admin/finance/deposits', Deposits::class)->name('deposits')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/finance/payouts', Payouts::class)->name('payouts')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/finance/transfers', Transfers::class)->name('transfers')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/finance/withdrawal-requests', WithdrawalRequests::class)->name('withdrawal-requests')->middleware(['auth', 'isAdmin']);
 
 Route::get('/reset-password', ForgotPassword::class)->name('password-reset')->middleware('guest');
 require __DIR__.'/auth.php';
