@@ -11,7 +11,7 @@
 <div>
     <div class="container-fluid p-0">
         <div class="row g-0">
-            
+
             <div class="col-xl-8">
                 <div class="auth-full-bg pt-lg-5 p-4">
                     <div class="w-100">
@@ -22,8 +22,8 @@
                                 <div class="row justify-content-center">
                                     <div class="col-lg-7">
                                         <div class="text-center">
-                                            
-                                            
+
+
                                             <div dir="ltr">
                                                 <div class="owl-carousel owl-theme auth-review-carousel" id="auth-review-carousel">
                                                     <div class="item">
@@ -35,7 +35,7 @@
                                                                 <p class="font-size-14 mb-0">- Skote User</p>
                                                             </div> --}}
                                                         </div>
-                                                        
+
                                                     </div>
 
                                                     <div class="item">
@@ -47,7 +47,7 @@
                                                                 <p class="font-size-14 mb-0">- Skote User</p>
                                                             </div> --}}
                                                         </div>
-                                                        
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -73,24 +73,24 @@
                                 </a>
                             </div>
                             <div class="my-auto">
-                                
+
                                 <div>
                                     <h5 class="text-primary">Register account</h5>
                                     <p class="text-muted">Let's earn sustainably.</p>
                                 </div>
-    
+
                                 <div class="mt-4">
                                     <x-auth-validation-errors class="mb-4" :errors="$errors" />
                                     <form class="needs-validation" novalidate method="POST" action="{{ route('register') }}">
                                         @csrf
                                         <div class="mb-3">
-                                            <x-label for="phone" class="form-label" :value="__('Phone Number')" />
-                                            <x-input id="phone" class="form-control" type="text" inputmode="numeric" placeholder="Enter phone"  name="phone" :value="old('phone')" required />
-                                            @error('phone')
+                                            <x-label for="phoneNumber" class="form-label" :value="__('Phone Number')" />
+                                            <x-input id="phoneNumber" class="form-control" type="text" inputmode="numeric" placeholder="Enter phone number"  name="phoneNumber" :value="old('phoneNumber')" required />
+                                            @error('phoneNumber')
                                                 <div class="invalid-feedback">
                                                     {{$message}}
-                                                </div>       
-                                            @enderror      
+                                                </div>
+                                            @enderror
                                         </div>
 
                                         <div class="mb-3">
@@ -99,10 +99,10 @@
                                             @error('email')
                                                 <div class="invalid-feedback">
                                                     {{$message}}
-                                                </div>       
-                                            @enderror      
+                                                </div>
+                                            @enderror
                                         </div>
-                
+
                                         <div class="mb-3">
                                             <x-label class="form-label" for="userpassword" :value="__('Password')" />
                                             <div class="input-group auth-pass-inputgroup">
@@ -111,9 +111,9 @@
                                             </div>
                                             @error('password')
                                                 <div class="invalid-feedback">
-                                                    {{$message}} 
-                                                </div>       
-                                            @enderror      
+                                                    {{$message}}
+                                                </div>
+                                            @enderror
                                         </div>
 
                                         <div class="mb-3">
@@ -125,8 +125,8 @@
                                             @error('password')
                                                 <div class="invalid-feedback">
                                                     {{$message}}
-                                                </div>       
-                                            @enderror      
+                                                </div>
+                                            @enderror
                                         </div>
 
                                         <div class="mb-3">
@@ -135,14 +135,14 @@
                                             @error('referral_code')
                                                 <div class="invalid-feedback">
                                                     {{$message}}
-                                                </div>       
-                                            @enderror 
+                                                </div>
+                                            @enderror
                                         </div>
 
                                         <div>
                                             <p class="mb-0">By registering you agree to the {{config('app.name')}} <a href="#" class="text-primary">Terms of Use</a></p>
                                         </div>
-                                        
+
                                         <div class="mt-4 d-grid">
                                             <button class="btn btn-primary waves-effect waves-light" type="submit">Register</button>
                                         </div>
@@ -160,8 +160,8 @@
                                 <p class="mb-0">© <script>document.write(new Date().getFullYear());</script> {{config('app.name')}}.</p>
                             </div>
                         </div>
-                        
-                        
+
+
                     </div>
                 </div>
             </div>
