@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'phoneNumber' => ['required', 'unique:users', 'regex:/^[0-9]{15}$/'],
+            'phoneNumber' => ['required', 'unique:users'],
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
