@@ -234,6 +234,7 @@
                     "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             order: [[6, 'desc']],
+            pageLength: 50,
         });
         $('#client-search').on( 'keyup', function () {
             let table = $('#datatable').DataTable();

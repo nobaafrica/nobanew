@@ -16,6 +16,7 @@
             </div>
         </div>
     </x-slot>
+    <x-alert />
     <div class="mb-3 row">
         <div class="col-xl-4 col-sm-6">
             <div class="mb-2 search-box me-2 d-inline-block">
@@ -26,15 +27,12 @@
             </div>
         </div>
         <div class="col-lg-8 col-sm-6">
-            <div class="text-sm-end">
-                <a href="#" data-bs-target="#new-deposit" data-bs-toggle="modal" class="mb-2 btn btn-primary btn-rounded waves-effect waves-light "><i class="mdi mdi-plus me-1"></i> Add Deposit</a>
-            </div>
         </div>
     </div>
     <div class="mb-2 row">
         <div class="col">
             <div class="row">
-                <div class="mb-2 col-md-4">
+                <div class="mb-2 col-md-3">
                     <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
@@ -54,7 +52,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-2 col-md-4">
+                <div class="mb-2 col-md-3">
                     <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
@@ -74,7 +72,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-2 col-md-4">
+                <div class="mb-2 col-md-3">
                     <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
@@ -94,7 +92,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-2 col-md-4">
+                <div class="mb-2 col-md-3">
                     <div class="card mini-stats-wid h-100">
                         <div class="card-body">
                             <div class="d-flex">
@@ -153,10 +151,16 @@
                                         {{\Carbon\Carbon::parse($withdrawal->created_at)->format('Y-m-d')}}
                                     </td>
                                     <td>
-                                        <!-- Button trigger modal -->
-                                        <a href="#" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
-                                            Pay
-                                        </a>
+                                        <div class="dropdown d-inline-block">
+                                            <button type="button" class="btn btn-transparent header-item waves-effect" id="withdrawal-action" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="bx bx-dots-vertical-rounded font-size-24"></i>
+                                            </button>
+                                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="withdrawal-action">
+                                                <button wire:click='approve({{$withdrawal->id}})' class="text-center dropdown-item btn rounded-0 bg-primary border-primary">Pay</button>
+                                                <div class="dropdown-divider"></div>
+                                                <button wire:click='decline({{$withdrawal->id}})' class="text-center dropdown-item btn rounded-0 bg-danger border-danger">Decline</button>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -200,6 +204,7 @@
                     "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             order: [[6, 'desc']],
+            pageLength: 50,
         });
         $('#client-search').on( 'keyup', function () {
             let table = $('#datatable').DataTable();

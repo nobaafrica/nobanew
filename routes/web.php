@@ -87,3 +87,5 @@ Route::get('/admin/finance/withdrawal-requests', WithdrawalRequests::class)->nam
 
 Route::get('/reset-password', ForgotPassword::class)->name('password-reset')->middleware('guest');
 require __DIR__.'/auth.php';
+
+Route::view('/approved-email', 'emails.withdrawals.approved');

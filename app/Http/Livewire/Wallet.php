@@ -135,18 +135,11 @@ class Wallet extends Component
                 session()->flash('error', 'You do not have enough money in your for this transaction');
             else:
                 // initiate withdrawal request
+                $ref = mt_rand();
                 $withdrawal = Withdrawal::create([
                     'user_id' => Auth::user()->id,
                     'amount' => $this->withdrawalAmount + 100,
                     'status' => 'pending',
-                ]);
-                $this->user->transactions()->create([
-                    'id' => Str::uuid(),
-                    'transactionType' => 'debit',
-                    'amount' => $this->withdrawalAmount + 100,
-                    'reference' => "withdrawal + transfer charges 100NGN",
-                    'status' => 'pending',
-                    'time' => now(),
                 ]);
                 session()->flash('success', 'Withdrawal initiated successfully');
                 return redirect()->route('wallet');

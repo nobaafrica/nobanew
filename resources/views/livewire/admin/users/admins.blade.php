@@ -6,7 +6,7 @@
                     <h4 class="mb-sm-0 font-size-18">Admins</h4>
 
                     <div class="page-title-right">
-                        <ol class="breadcrumb m-0">
+                        <ol class="m-0 breadcrumb">
                             <li class="breadcrumb-item"><a href="{{route('admin-dashboard')}}">Home</a></li>
                             <li class="breadcrumb-item active">Admins</li>
                         </ol>
@@ -15,13 +15,13 @@
                 </div>
             </div>
         </div>
-    </x-slot> 
+    </x-slot>
     <x-alert />
     <x-auth-validation-errors class="mb-4" :errors="$errors" />
     <div class="row">
-        <div class="row mb-2">
+        <div class="mb-2 row">
             <div class="col-sm-4">
-                {{-- <div class="search-box me-2 mb-2 d-inline-block">
+                {{-- <div class="mb-2 search-box me-2 d-inline-block">
                     <div class="position-relative">
                         <input type="text" class="form-control" placeholder="Search...">
                         <i class="bx bx-search-alt search-icon"></i>
@@ -30,24 +30,24 @@
             </div>
             <div class="col-sm-8">
                 <div class="text-sm-end">
-                    <a href="#" data-bs-toggle="modal" data-bs-target="#new-admin" class="btn btn-success btn-rounded waves-effect waves-light mb-2 me-2"><i class="mdi mdi-plus me-1"></i> Create Admin</a>
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#new-admin" class="mb-2 btn btn-success btn-rounded waves-effect waves-light me-2"><i class="mdi mdi-plus me-1"></i> Create Admin</a>
                 </div>
             </div><!-- end col-->
         </div>
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    {{-- <div class="row mb-2">
-                        
+                    {{-- <div class="mb-2 row">
+
                         <div class="col-sm-8">
                             <div class="text-sm-end buttons">
-                                
+
                             </div>
                         </div><!-- end col-->
                     </div> --}}
 
                     <div class="table-responsive">
-                        <table id="datatable" class="table align-middle table-nowrap table-check text-center">
+                        <table id="datatable" class="table text-center align-middle table-nowrap table-check">
                             <thead class="table-light">
                                 <tr>
                                     <th class="align-middle">#ID</th>
@@ -87,7 +87,7 @@
                                     <td>
                                         <a href="{{route('client', $client)}}" class="btn btn-primary btn-sm btn-rounded">View Partnerships</a>
                                     </td>
-                                </tr> 
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -105,13 +105,13 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="text-center mb-4">
-                        <div class="avatar-md mx-auto mb-4">
+                    <div class="mb-4 text-center">
+                        <div class="mx-auto mb-4 avatar-md">
                             <div class="avatar-title bg-light rounded-circle text-primary h1">
                                 <i class="mdi mdi-shield-account"></i>
                             </div>
                         </div>
-    
+
                         <div class="row justify-content-center">
                             <form wire:submit.prevent='createAdmin' class="card-body">
                                 <div class="row">
@@ -128,7 +128,7 @@
                                         </div>
                                     </div>
                                 </div>
-            
+
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="mb-3">
@@ -143,7 +143,7 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="mb-3">
@@ -158,7 +158,7 @@
                                         </div>
                                     </div>
                                 </div>
-    
+
                                 <div class="text-center">
                                     <button class="btn btn-primary btn-lg">Create Profile</button>
                                 </div>
@@ -197,9 +197,10 @@
                     {extend: 'pdf', className: 'btn btn-primary btn-sm'},
                     {extend: 'print', className: 'btn btn-primary btn-sm'},
                 ],
-            }
+            },
+            pageLength: 50,
         });
-        $(".search-div").append("<div class='search-box me-2 mb-2 d-inline-block'>"
+        $(".search-div").append("<div class='mb-2 search-box me-2 d-inline-block'>"
                         + "<div class='position-relative'>"
                             + "<input id='client-search' type='text' class='form-control' placeholder='Search...'>"
                             + "<i class='bx bx-search-alt search-icon'></i>"

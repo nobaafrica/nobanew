@@ -17,3 +17,8 @@
 .wizard .steps > ul > li a{
     background-color: rgba(142, 191, 73, 0.1) !important;
 }
+
+.arrowless-dropdown::after
+{
+    content: none !important;
+}

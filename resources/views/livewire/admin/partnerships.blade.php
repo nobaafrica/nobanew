@@ -115,6 +115,7 @@
                     "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             order: [[7, 'desc']],
+            pageLength: 50,
         });
         $(".search-div").append("<div class='mb-2 search-box me-2 d-inline-block'>"
                             + "<div class='position-relative'>"
