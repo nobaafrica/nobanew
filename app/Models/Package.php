@@ -14,13 +14,13 @@ class Package extends Model
     protected $fillable = ['id', 'name', 'commodityCode', 'info', 'price', 'duration', 'profitPercentage', 'headerPicture', 'backPicture', 'frontPricture', 'status'];
 
     /**
-     * The "booted" method of the model.
+     * Added scope to filter by status
      *
      * @return void
      */
-    protected static function booted()
+    public function scopePopular($query)
     {
-        static::addGlobalScope('active-packages', fn(Builder $builder) =>  $builder->where('status', 'active'));
+        return $query->where('status', 'active');
     }
 
     public function getIncrementing()
