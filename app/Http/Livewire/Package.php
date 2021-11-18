@@ -42,12 +42,19 @@ class Package extends Component
 
     public function partner()
     {
-        if($this->user->wallet->accountBalance >= $this->commitment):
+        if($this->user->wallet->accountBalance >= $this->commitment || $this->user->wallet->withdrawableBalance >= $this->commitment):
             $ref = Str::uuid();
             $profit = $this->commitment * $this->package->profitPercentage/100;
-            $this->user->wallet()->update([
-                'accountBalance' => $this->user->wallet->accountBalance - $this->commitment,
-            ]);
+            if($this->user->wallet->accountBalance >= $this->commitment):
+                $this->user->wallet->accountBalance -= $this->commitment;
+                $this->user->wallet->save();
+            elseif($this->user->wallet->withdrawableBalance >= $this->commitment):
+                $this->user->wallet->withdrawableBalance -= $this->commitment;
+                $this->user->wallet->save();
+            else:
+                session()->flash('error', 'You do not have sufficient funds on your account to complete this transaction');
+                return redirect()->route('wallet');
+            endif;
             $this->user->partnerships()->create([
                 'id' => $ref,
                 'package_id' => $this->package->id,

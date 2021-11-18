@@ -19,14 +19,13 @@ class Partnership extends Component
         $user = User::find($partnership->user->id);
         $user->wallet()->update([
             'withdrawableBalance' =>  $user->wallet->withdrawableBalance + $this->partnership->estimatedPayout,
-            'accountBalance' =>  $user->wallet->accountBalance + $this->partnership->estimatedPayout,
         ]);
         $user->transactions()->create([
-            'id' => Str::uuid(), 
-            'transactionType' => 'credit', 
-            'amount' => $this->partnership->estimatedPayout, 
-            'reference' => $partnership->id, 
-            'status' => 'success', 
+            'id' => Str::uuid(),
+            'transactionType' => 'credit',
+            'amount' => $this->partnership->estimatedPayout,
+            'reference' => $partnership->id,
+            'status' => 'success',
             'time' => now(),
         ]);
         session()->flash('success', 'Partnership redeemed successfully');

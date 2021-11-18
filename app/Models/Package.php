@@ -18,7 +18,7 @@ class Package extends Model
      *
      * @return void
      */
-    public function scopePopular($query)
+    public function scopeActive($query)
     {
         return $query->where('status', 'active');
     }
