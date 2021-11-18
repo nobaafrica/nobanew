@@ -132,7 +132,7 @@ class Wallet extends Component
             session()->flash('error', 'Please setup and fund your wallet');
         else:
             if($this->withdrawalAmount > $this->withdrawableBalance):
-                session()->flash('error', 'You do not have enough money in your for this transaction');
+                session()->flash('error', 'You do not have enough money in your account for this transaction');
             else:
                 // initiate withdrawal request
                 $ref = mt_rand();
