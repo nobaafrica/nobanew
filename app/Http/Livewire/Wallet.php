@@ -6,6 +6,7 @@ use App\Events\CustomerIdentified;
 use App\Models\Transactions;
 use App\Models\User;
 use App\Models\Wallet as ModelsWallet;
+use App\Models\Withdrawal;
 use App\Traits\PaystackCustomerTrait;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -128,100 +129,27 @@ class Wallet extends Component
     {
         // check available funds
         if(is_null($this->wallet)):
-            session()->flash('error', 'please setup and fund your wallet');
+            session()->flash('error', 'Please setup and fund your wallet');
         else:
             if($this->withdrawalAmount > $this->withdrawableBalance):
                 session()->flash('error', 'You do not have enough money in your for this transaction');
             else:
-                // get user bank info
-                $account = is_null($this->user->bank()->first()->nuban) ? null : $this->user->bank()->first()->nuban;
-                $userBank = is_null($this->user->bank()->first()->nuban) ? null : $this->user->bank()->first()->bank;
-                // get transfer info
-                if($this->user->withdrawal->count() < 1):
-                    $withdrawalInfo = $this->firstWithdrawal($account, $userBank, $this->withdrawalAmount);
-                else:
-                    $withdrawalInfo = $this->user->withdrawal->first();
-                    $this->user->withdrawal()->create([
-                        'recipient_code' => $withdrawalInfo->recipient_code,
-                        'bank_code' => $withdrawalInfo->bank_code,
-                        'bank_name' => $withdrawalInfo->bank_name,
-                        'amount' => $this->withdrawalAmount,
-                    ]);
-                endif;
-                $initTransfer = Http::withToken(config('app.paystack_secret'))->post('https://api.paystack.co/transfer', [
-                    'source' => 'balance',
-                    'amount' => $this->withdrawalAmount * 100,
-                    'recipient' => $withdrawalInfo->recipient_code,
-                    'reason' => 'Noba Africa Partnership Payout'
-                ])->object();
-                // initialize transfer
-                if($initTransfer->status == true):
-                    $verifyTransfer = Http::withToken(config('app.paystack_secret'))->get('https://api.paystack.co/transfer/verify/:reference', [
-                        'reference' => $initTransfer->data->reference
-                    ])->object();
-                    if($verifyTransfer->status == true && $verifyTransfer->message == 'Transfer retrieved'):
-                        $this->user->transactions()->create([
-                            'id' => Str::uuid(),
-                            'transactionType' => 'debit',
-                            'amount' => $this->withdrawalAmount + 100,
-                            'reference' => $initTransfer->data->reference. "withdrawal + transfer charges 100NGN",
-                            'status' => 'success',
-                            'time' => now(),
-                        ]);
-                        $wallet = ModelsWallet::where('user_id', $this->user->id)->first();
-                        $wallet->accountBalance = $wallet->accountBalance - $verifyTransfer->data->amount/100;
-                        $wallet->save();
-                        session()->flash('success', 'Withdrawal successful');
-                        return redirect()->route('wallet');
-                    else:
-                        $this->user->transactions()->create([
-                            'id' => Str::uuid(),
-                            'transactionType' => 'debit',
-                            'amount' => $this->withdrawalAmount + 100,
-                            'reference' => $initTransfer->data->reference. "withdrawal + transfer charges 100NGN",
-                            'status' => 'pending',
-                            'time' => now(),
-                        ]);
-                        session()->flash('success', 'Withdrawal initiated successfully');
-                        return redirect()->route('wallet');
-                    endif;
-                endif;
-            endif;
-        endif;
-    }
-
-    protected function firstWithdrawal($account, $userBank, $amount)
-    {
-        // fetch banks list from paystack
-        $getBanks = Cache::remember('paystack-banks', now()->addDays(30), function () {
-            $request = Http::withToken(config('app.paystack_secret'))->get('https://api.paystack.co/bank')->object();
-            return collect($request->data);
-        });
-        // get bank code from paystack bank list
-        $getBankCode = $getBanks->where('name', $userBank)->first();
-        $bankcode = $getBankCode->code;
-        // verify user account number
-        $verifyAccount = Http::withToken(config('app.paystack_secret'))->get('https://api.paystack.co/bank/resolve', [
-            'account_number' => $account,
-            'bank_code' => $bankcode,
-        ])->object();
-        // create transfer recipient
-        if($verifyAccount->status == 'true'):
-            $createRecipient = Http::withToken(config('app.paystack_secret'))->post('https://api.paystack.co/transferrecipient', [
-                "type" => "nuban",
-                "name" => $verifyAccount->data->account_name,
-                "account_number" => $verifyAccount->data->account_number,
-                "bank_code" => $bankcode,
-                "currency" => "NGN"
-            ])->object();
-            if($createRecipient->status == true):
-                $this->user->withdrawal()->create([
-                    'recipient_code' => $createRecipient->data->recipient_code,
-                    'bank_code' => $createRecipient->data->details->bank_code,
-                    'bank_name' => $createRecipient->data->details->bank_name,
-                    'amount' => $amount,
+                // initiate withdrawal request
+                $withdrawal = Withdrawal::create([
+                    'user_id' => Auth::user()->id,
+                    'amount' => $this->withdrawalAmount + 100,
+                    'status' => 'pending',
                 ]);
-                return $this->user->withdrawal->last();
+                $this->user->transactions()->create([
+                    'id' => Str::uuid(),
+                    'transactionType' => 'debit',
+                    'amount' => $this->withdrawalAmount + 100,
+                    'reference' => "withdrawal + transfer charges 100NGN",
+                    'status' => 'pending',
+                    'time' => now(),
+                ]);
+                session()->flash('success', 'Withdrawal initiated successfully');
+                return redirect()->route('wallet');
             endif;
         endif;
     }

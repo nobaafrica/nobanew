@@ -10,10 +10,15 @@ class Withdrawal extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['user_id', 'recipient_code', 'bank_code', 'bank_name', 'amount', 'status'];
+    protected $fillable = ['user_id', 'authorized_by', 'amount', 'status'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function bank()
+    {
+        return $this->belongsTo(Bank::class, 'user_id', 'user_id');
     }
 }
