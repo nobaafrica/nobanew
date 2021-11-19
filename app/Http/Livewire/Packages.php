@@ -12,15 +12,6 @@ class Packages extends Component
     use WithPagination;
 
     protected $paginationTheme = 'bootstrap';
-    protected $packages;
-
-    public function mount()
-    {
-        $this->packages = Package::active()->paginate(10)->map(function ($item) {
-            $item->picture = $item->frontPicture ?? $item->pictures->picture;
-            return $item;
-        });
-    }
 
     public function paginationView()
     {
@@ -30,7 +21,10 @@ class Packages extends Component
     public function render()
     {
         return view('livewire.packages')->with([
-            'packages' => $this->packages,
+            'packages' => tap(Package::active()->paginate(10))->map(function ($item) {
+                $item->picture = $item->frontPicture ?? $item->pictures->picture;
+                return $item;
+            }),
         ]);
     }
 }
