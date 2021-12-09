@@ -47,6 +47,7 @@ class Deposits extends Component
         ]);
         if($saveDeposit):
             $user = User::find($this->user);
+            $balance = is_null($user->wallet) ? 0 : $user->wallet->accountBalance;
             $user->transactions()->create([
                 'id' => Str::uuid(),
                 'reference' => mt_rand(),
@@ -60,7 +61,7 @@ class Deposits extends Component
                 [ 'user_id' => $this->user],
                 [
                     'user_id' => $this->user,
-                    'accountBalance' => $user->wallet()->first()->accountBalance + $this->amount,
+                    'accountBalance' => $balance + $this->amount,
                 ]
             );
             session()->flash('success', 'Deposit added successfully');
