@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-    </x-slot> 
+    </x-slot>
     <!-- end header -->
     <x-alert />
     <div class="row">
@@ -101,7 +101,15 @@
 
                                 <h6 class="text-success text-uppercase">{{$package->profitPercentage}}% Profit</h6>
                                 <h5>Minimum Commitment : <b>₦{{number_format($package->price)}}</b></h5>
-                                <h5 class="mb-4">Estimated Payout : <b>₦{{number_format($package->price + $package->price * ($package->profitPercentage/100))}}</b></h5>
+                                @if($package->period > 1)
+                                    <h5>No of payouts until maturity : <b>{{ \App\Models\Package::totalPayouts($package) }}</b></h5>
+                                    <h5>Periodic Payout : <b>₦{{ number_format(\App\Models\Package::periodicPayout($package)) }}</b></h5>
+                                    <h5>Payout at maturity : <b>₦{{ number_format(\App\Models\Package::periodicPayout($package) + $package->price) }}</b></h5>
+                                @else
+                                    <h5 class="mb-4">Cumulative Payout at maturity:
+                                        <b>₦{{ \App\Models\Package::cumulativePayout($package) }}</b>
+                                    </h5>
+                                @endif
                                 <p class="text-muted mb-4">{!! $package->info !!}</p>
                             </div>
                         </div>
@@ -143,7 +151,7 @@
             </div>
         </div>
     </div>
-    <!-- end modal -->   
+    <!-- end modal -->
 </div>
 <script type="module" defer>
     setTimeout(function () {

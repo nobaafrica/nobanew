@@ -4,7 +4,7 @@ $(function () {
             "<'row'<'col-sm-12'tr>>" +
             "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
         order: [[8, 'desc']],
-        pageLength: 50,
+        pageLength: 100,
     })
     $(".search-div").append("<div class='search-box me-2 mb-2 d-inline-block'>"
                         + "<div class='position-relative'>"

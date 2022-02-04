@@ -39,8 +39,8 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Deposits</p>
-                                    <h4 class="mb-0">{{$deposits->count()}}</h4>
+                                    <p class="text-muted fw-medium">Transfers</p>
+                                    <h4 class="mb-0">{{$transfers->count()}}</h4>
                                 </div>
 
                                 <div class="flex-shrink-0 align-self-center">
@@ -59,10 +59,9 @@
                         <div class="card-body">
                             <div class="d-flex">
                                 <div class="flex-grow-1">
-                                    <p class="text-muted fw-medium">Deposit Value</p>
-                                    <h4 class="mb-0">{{number_format($deposits->sum('amount'))}}</h4>
+                                    <p class="text-muted fw-medium">Transfers Value</p>
+                                    <h4 class="mb-0">₦{{number_format($transfers->sum('amount'))}}</h4>
                                 </div>
-                                {{-- {{dd($users)}} --}}
                                 <div class="flex-shrink-0 align-self-center">
                                     <div class="mini-stat-icon avatar-sm rounded-circle bg-primary">
                                         <span class="avatar-title">
@@ -92,35 +91,33 @@
                                 <tr>
                                     <th class="align-middle">ID</th>
                                     <th class="align-middle">Name</th>
-                                    <th class="align-middle">Description</th>
-                                    <th class="align-middle">Deposit Date</th>
+                                    <th class="align-middle">Transfer Date</th>
                                     <th class="align-middle">Amount</th>
-                                    <th class="align-middle">Deposit By</th>
+                                    <th class="align-middle">Transferred By</th>
                                     <th class="align-middle">Created At</th>
                                     <th class="align-middle">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($deposits as $deposit)
+                                @foreach ($transfers as $transfer)
                                 <tr>
                                     <td><a href="#" class="text-body fw-bold">#{{$loop->iteration}}</a> </td>
-                                    <td>{{$deposit->user->firstName?? "No Name"}} {{$deposit->user->lastName?? ""}}</td>
-                                    <td>{!! $deposit->description !!}</td>
+                                    <td>{{$transfer->user->firstName?? "No Name"}} {{$transfer->user->lastName?? ""}}</td>
                                     <td>
-                                        {{\Carbon\Carbon::parse($deposit->date)->format('Y-m-d')}}
+                                        {{\Carbon\Carbon::parse($transfer->updated_at)->format('Y-m-d')}}
                                     </td>
                                     <td>
-                                        ₦{{number_format($deposit->amount)}}
+                                        ₦{{number_format($transfer->amount)}}
                                     </td>
                                     <td>
-                                        {{$deposit->admin->firstName?? "No Name"}} {{$deposit->admin->lastName?? ""}}
+                                        {{$transfer->admin->firstName . ' ' . $transfer->admin->lastName ?? "No Name"}}
                                     </td>
                                     <td>
-                                        {{\Carbon\Carbon::parse($deposit->created_at)->format('Y-m-d')}}
+                                        {{\Carbon\Carbon::parse($transfer->created_at)->format('Y-m-d')}}
                                     </td>
                                     <td>
                                         <!-- Button trigger modal -->
-                                        <a href="{{route('client', $deposit->user->id)}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
+                                        <a href="{{route('client', $transfer->user->id)}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
                                             View User
                                         </a>
                                     </td>
@@ -135,80 +132,7 @@
 
     </div>
     <!-- end row -->
-
-    {{-- Start New Deposit Modal --}}
-    <div class="modal fade" id="new-deposit" tabindex="-1" aria-labelledby="new-deposit" aria-hidden="true" wire:ignore.self>
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="transaction-detailModalLabel">New Deposit</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form class="p-3 mt-4 mt-xl-3" wire:submit.prevent='addDeposit'>
-
-                        <div class="col-lg">
-                            <div class="mb-3">
-                                <label for="select-user">User</label>
-                                <select class="form-control" id="select-user" wire:model='user' wire:ignore>
-                                    <option selected>Select User</option>
-                                    @foreach ($users as $user)
-                                    <option value="{{$user->id}}">{{$user->firstName}} {{$user->lastName}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="mb-4 col-lg">
-                            <div class="mb-3">
-                                <label for="amount">Amount</label>
-                                <input type="number" inputmode="numeric" wire:model='amount' class="form-control" id="amount">
-                            </div>
-                        </div>
-                        <div class="mb-4 col-lg" wire:ignore>
-                            <label for="description">Description</label>
-                            <div
-                                class="mb-4 text-muted"
-                                id="description"
-                                x-data
-                                name="description"
-                                x-ref="quillEditor"
-                                x-init="
-                                    quill = new Quill($refs.quillEditor, {theme: 'snow'});
-                                    quill.on('text-change', function () {
-                                        $dispatch('input', quill.root.innerHTML);
-                                        @this.set('description', quill.root.innerHTML)
-                                    });
-                                "
-                            >
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="payment-receipt" class="form-label">Payment Receipt</label>
-                                <input class="form-control" wire:model='receipt' type="file" id="payment-receipt">
-                            </div>
-                        </div>
-                        <div class="col-lg">
-                            <div class="mb-3">
-                                <label for="date">Payment Date</label>
-                                <input type="date" inputmode="numeric" wire:model='date' class="form-control" id="date">
-                            </div>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Add Deposit</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- End New Deposit Modal --}}
 </div>
-@push('styles')
-<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-<link href="//cdn.quilljs.com/1.3.6/quill.bubble.css" rel="stylesheet">
-@endpush
 
 @push('scripts')
 <script src="{{ asset ('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}" defer></script>

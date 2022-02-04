@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Events\CustomerIdentified;
+use App\Mail\WithdrawalRequestApproved;
+use App\Mail\WithdrawalRequestToAdmin;
 use App\Models\Transactions;
 use App\Models\User;
 use App\Models\Wallet as ModelsWallet;
@@ -12,6 +14,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
@@ -141,10 +144,11 @@ class Wallet extends Component
                     'amount' => $this->withdrawalAmount + 100,
                     'status' => 'pending',
                 ]);
+                Mail::to(getenv('CUSTOMER_CARE_MAIL'))->queue(new WithdrawalRequestToAdmin($withdrawal));
                 session()->flash('success', 'Withdrawal initiated successfully');
-                return redirect()->route('wallet');
             endif;
         endif;
+        return redirect()->route('wallet');
     }
 
     public function render()

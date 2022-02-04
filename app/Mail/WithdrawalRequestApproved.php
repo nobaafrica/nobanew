@@ -4,13 +4,14 @@ namespace App\Mail;
 
 use App\Models\Withdrawal;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
 class WithdrawalRequestApproved extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $withdrawal;
 
     /**
      * Create a new message instance.

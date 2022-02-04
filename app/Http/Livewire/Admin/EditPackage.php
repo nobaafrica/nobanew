@@ -31,7 +31,7 @@ class EditPackage extends Component
 
     public  function editPackage()
     {
-        $package = Package::find($this->package->id); 
+        $package = Package::find($this->package->id);
         $package->name = $this->name;
         $package->commodityCode = $this->code;
         $package->price = $this->price;
@@ -70,7 +70,16 @@ class EditPackage extends Component
         session()->flash('success', 'Package disabled successfully');
         return redirect()->route('admin-packages', $this->package);
     }
-    
+
+    public function enablePackage()
+    {
+        $package = Package::find($this->package->id);
+        $package->status = 'active';
+        $package->save();
+        session()->flash('success', 'Package activated successfully');
+        return redirect()->route('admin-packages', $this->package);
+    }
+
     public function render()
     {
         return view('livewire.admin.edit-package');

@@ -60,7 +60,7 @@
                             <div class="d-flex">
                                 <div class="flex-grow-1">
                                     <p class="text-muted fw-medium">Deposit Value</p>
-                                    <h4 class="mb-0">{{number_format($deposits->sum('amount'))}}</h4>
+                                    <h4 class="mb-0">₦{{number_format($deposits->sum('amount'))}}</h4>
                                 </div>
                                 {{-- {{dd($users)}} --}}
                                 <div class="flex-shrink-0 align-self-center">
@@ -104,7 +104,7 @@
                                 @foreach ($deposits as $deposit)
                                 <tr>
                                     <td><a href="#" class="text-body fw-bold">#{{$loop->iteration}}</a> </td>
-                                    <td>{{$deposit->user->firstName?? "No Name"}} {{$deposit->user->lastName?? ""}}</td>
+                                    <td>{{$deposit->user->firstName ?? "No Name"}} {{$deposit->user->lastName?? ""}}</td>
                                     <td>{!! $deposit->description !!}</td>
                                     <td>
                                         {{\Carbon\Carbon::parse($deposit->date)->format('Y-m-d')}}
@@ -234,7 +234,7 @@
                     "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             order: [[6, 'desc']],
-            pageLength: 50,
+            pageLength: 100,
         });
         $('#client-search').on( 'keyup', function () {
             let table = $('#datatable').DataTable();

@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-    </x-slot> 
+    </x-slot>
     <!-- end header -->
     <x-alert />
     <div class="row">
@@ -84,8 +84,8 @@
                                     </div>
                                 </div>
                                 <div class="row" wire:ignore>
-                                    <div 
-                                        class="text-muted mb-4" 
+                                    <div
+                                        class="text-muted mb-4"
                                         id="description"
                                         x-data
                                         name="description"
@@ -106,8 +106,18 @@
                                 </div>
                             </form>
                             <div class="d-flex justify-content-between col-xl-8 mx-auto mt-4">
-                                <button wire:click='disablePackage()' class="btn btn-warning waves-effect waves-light">Disable Package <i class="mdi mdi-stop ms-1"></i></button>
-                                <button wire:click='deletePackage()' class="btn btn-danger waves-effect waves-light">Delete Package <i class="mdi mdi-trash-can-outline ms-1"></i></button>
+                                @if($package->status === 'active')
+                                    <button wire:click='disablePackage()' class="btn btn-warning waves-effect waves-light">
+                                        Disable Package <i class="mdi mdi-stop ms-1"></i>
+                                    </button>
+                                @else
+                                    <button wire:click='enablePackage()' class="btn btn-success waves-effect waves-light">
+                                        Enable Package <i class="mdi mdi-reload ms-1"></i>
+                                    </button>
+                                @endif
+                                <button wire:click='deletePackage()' class="btn btn-danger waves-effect waves-light">
+                                    Delete Package <i class="mdi mdi-trash-can-outline ms-1"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -118,7 +128,7 @@
             <!-- end card -->
         </div>
     </div>
-    <!-- end row --> 
+    <!-- end row -->
 </div>
 
 @push('scripts')

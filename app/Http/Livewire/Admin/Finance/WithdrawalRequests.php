@@ -13,17 +13,21 @@ use Livewire\Component;
 class WithdrawalRequests extends Component
 {
     public $withdrawalRequests;
+    public $declinedRequests;
+    public $approvedRequests;
 
     public function mount()
     {
         $this->withdrawalRequests = Withdrawal::where('status', 'pending')->with('user', 'bank')->get();
+        $this->declinedRequests = Withdrawal::where('status', 'declined')->get();
+        $this->approvedRequests = Withdrawal::where('status', 'approved')->get();
     }
 
     public function approve($id)
     {
         $withdrawal = Withdrawal::find($id);
-        $withdrawal->status = 'approved';
-        $withdrawal->save();
+        $withdrawal->authorized_by = auth()->user()->id;
+
         // fetch user
         $user = User::find($withdrawal->user_id);
         // update balances
@@ -40,13 +44,14 @@ class WithdrawalRequests extends Component
                 'time' => now(),
             ]);
             Mail::to($user)->queue(new WithdrawalRequestApproved($withdrawal));
+            $withdrawal->status = 'approved';
             session()->flash('success', 'Withdrawal approved successfully');
-            return redirect()->route('withdrawal-requests');
         else:
             Mail::to($user)->queue(new WithdrawalRequestDeclined($withdrawal));
             session()->flash('error', 'Insufficient withdrawable balance');
-            return redirect()->route('withdrawal-requests');
         endif;
+        $withdrawal->save();
+        return redirect()->route('withdrawal-requests');
     }
 
     public function decline($id)
@@ -57,8 +62,6 @@ class WithdrawalRequests extends Component
 
         session()->flash('success', 'Withdrawal declined successfully');
         return redirect()->route('withdrawal-requests');
-
-
     }
 
     public function render()

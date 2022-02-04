@@ -7,7 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class WithdrawalRequestDeclined extends Mailable
+class WithdrawalRequestToAdmin extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -16,7 +16,7 @@ class WithdrawalRequestDeclined extends Mailable
     /**
      * Create a new message instance.
      *
-     * @return void
+     * @param Withdrawal $withdrawal
      */
     public function __construct(Withdrawal $withdrawal)
     {
@@ -25,11 +25,10 @@ class WithdrawalRequestDeclined extends Mailable
 
     /**
      * Build the message.
-     *
-     * @return $this
+     * @return WithdrawalRequestToAdmin
      */
     public function build()
     {
-        return $this->view('emails.withdrawals.declined');
+        return $this->view('emails.withdrawals.request-admin');
     }
 }

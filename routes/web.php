@@ -9,6 +9,7 @@ use App\Http\Livewire\Admin\Finance\Transfers;
 use App\Http\Livewire\Admin\Finance\WithdrawalRequests;
 use App\Http\Livewire\Admin\Package as AdminPackage;
 use App\Http\Livewire\Admin\Packages as AdminPackages;
+use App\Http\Livewire\Admin\DisabledPackages as AdminDisabledPackages;
 use App\Http\Livewire\Admin\Partnership as AdminPartnership;
 use App\Http\Livewire\Admin\Partnerships as AdminPartnerships;
 use App\Http\Livewire\Admin\Users\Admins;
@@ -70,6 +71,7 @@ Route::get('/verify-mail/{id}/{hash}', function (EmailVerificationRequest $reque
 // Admin Routes
 Route::get('/admin/dashboard', AdminDashboard::class)->name('admin-dashboard')->middleware(['auth', 'isAdmin']);
 Route::get('/admin/packages', AdminPackages::class)->name('admin-packages')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/disabled-packages', AdminDisabledPackages::class)->name('admin-disabled-packages')->middleware(['auth', 'isAdmin']);
 Route::get('/admin/package/{package}', AdminPackage::class)->name('admin-package')->middleware(['auth', 'isAdmin']);
 Route::get('/admin/edit-package/{package}', EditPackage::class)->name('edit-package')->middleware(['auth', 'isAdmin']);
 Route::get('/admin/partnerships', AdminPartnerships::class)->name('admin-partnerships')->middleware(['auth', 'isAdmin']);

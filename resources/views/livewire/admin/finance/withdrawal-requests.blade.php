@@ -58,7 +58,7 @@
                             <div class="d-flex">
                                 <div class="flex-grow-1">
                                     <p class="text-muted fw-medium">Declined Withdrawal Requests</p>
-                                    <h4 class="mb-0">{{$withdrawalRequests->count()}}</h4>
+                                    <h4 class="mb-0">{{$declinedRequests->count()}}</h4>
                                 </div>
 
                                 <div class="flex-shrink-0 align-self-center">
@@ -78,7 +78,7 @@
                             <div class="d-flex">
                                 <div class="flex-grow-1">
                                     <p class="text-muted fw-medium">Approved Requests</p>
-                                    <h4 class="mb-0">{{$withdrawalRequests->count()}}</h4>
+                                    <h4 class="mb-0">{{$approvedRequests->count()}}</h4>
                                 </div>
 
                                 <div class="flex-shrink-0 align-self-center">
@@ -98,7 +98,7 @@
                             <div class="d-flex">
                                 <div class="flex-grow-1">
                                     <p class="text-muted fw-medium">Deposit Value</p>
-                                    <h4 class="mb-0">{{number_format($withdrawalRequests->sum('amount'))}}</h4>
+                                    <h4 class="mb-0">₦{{number_format($withdrawalRequests->sum('amount'))}}</h4>
                                 </div>
                                 {{-- {{dd($users)}} --}}
                                 <div class="flex-shrink-0 align-self-center">
@@ -204,7 +204,7 @@
                     "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
             order: [[6, 'desc']],
-            pageLength: 50,
+            pageLength: 100,
         });
         $('#client-search').on( 'keyup', function () {
             let table = $('#datatable').DataTable();

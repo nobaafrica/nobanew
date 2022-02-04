@@ -61,7 +61,8 @@
                         <span key="t-admin">Admin</span>
                     </a>
                     <ul class="sub-menu mm-collapse mm-show" aria-expanded="true" style="">
-                        <li><a href="{{route('admin-packages')}}" key="t-level-packages" aria-expanded="false">Packages</a></li>
+                        <li><a href="{{route('admin-packages')}}" key="t-level-packages" aria-expanded="false">Active Packages</a></li>
+                        <li><a href="{{route('admin-disabled-packages')}}" key="t-level-packages" aria-expanded="false">Disabled Packages</a></li>
                         <li><a href="{{route('admin-partnerships')}}" key="t-level-partnerships" aria-expanded="false">Partnerships</a></li>
                         <li>
                             <a href="javascript: void(0);" class="has-arrow" key="t-level-users" aria-expanded="true">Users</a>
@@ -75,7 +76,7 @@
                             <a href="javascript: void(0);" class="has-arrow" key="t-level-finance" aria-expanded="true">Finance</a>
                             <ul class="sub-menu mm-collapse mm-show" aria-expanded="true" style="">
                                 <li><a href="{{route('deposits')}}" key="t-level-finance-deposits">Deposits</a></li>
-                                <li><a href="{{route('payouts')}}" key="t-level-finance-payouts">Payouts</a></li>
+{{--                                <li><a href="{{route('payouts')}}" key="t-level-finance-payouts">Payouts</a></li>--}}
                                 <li><a href="{{route('transfers')}}" key="t-level-finance-transfers">Transfers</a></li>
                                 <li><a href="{{route('withdrawal-requests')}}" key="t-level-finance-withdrawal-requests">Withdrawal Requests</a></li>
                             </ul>

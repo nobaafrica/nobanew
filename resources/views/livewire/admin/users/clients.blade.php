@@ -15,17 +15,17 @@
                 </div>
             </div>
         </div>
-    </x-slot> 
+    </x-slot>
     <x-alert />
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
                     {{-- <div class="row mb-2">
-                        
+
                         <div class="col-sm-8">
                             <div class="text-sm-end buttons">
-                                
+
                             </div>
                         </div><!-- end col-->
                     </div> --}}
@@ -38,6 +38,10 @@
                                     <th class="align-middle">Full Name</th>
                                     <th class="align-middle">Email</th>
                                     <th class="align-middle">Phone Number</th>
+                                    <th class="align-middle">Address</th>
+                                    <th class="align-middle">Date of birth</th>
+                                    <th class="align-middle">Bank</th>
+                                    <th class="align-middle">Account Number</th>
                                     <th class="align-middle">Partnerships</th>
                                     <th class="align-middle">Wallet Balance</th>
                                     <th class="align-middle">Total Commitment</th>
@@ -49,35 +53,31 @@
                             </thead>
                             <tbody>
                                 @foreach ($clients as $client)
-                                <tr>
-                                    <td><a href="#" class="text-body fw-bold">{{$loop->iteration}}</a></td>
-                                    <td>{{$client->firstName ?? " "}} {{$client->lastName ?? " "}}</td>
-                                    <td>{{$client->email}}</td>
-                                    <td>
-                                        {{$client->phoneNumber}}
-                                    </td>
-                                    <td>
-                                        {{number_format($client->partnerships->count())}}
-                                    </td>
-                                    <td>
-                                        ₦{{number_format($client->wallet->accountBalance ?? 0)}}
-                                    </td>
-                                    <td>
-                                        ₦{{number_format($client->partnerships->sum('amount'))}}
-                                    </td>
-                                    <td>
-                                        ₦{{number_format($client->partnerships->where('isRedeemed', 0)->sum('estimatedPayout'))}}
-                                    </td>
-                                    <td>
-                                        ₦{{number_format($client->partnerships->where('isRedeemed', 1)->sum('estimatedPayout'))}}
-                                    </td>
-                                    <td>
-                                        {{\Carbon\Carbon::parse($client->created_at)->format('Y-m-d')}}
-                                    </td>
-                                    <td>
-                                        <a href="{{route('client', $client)}}" class="btn btn-primary btn-sm btn-rounded">View Partnerships</a>
-                                    </td>
-                                </tr> 
+                                    <tr>
+                                        <td><a href="#" class="text-body fw-bold">{{$loop->iteration}}</a></td>
+                                        <td>{{$client->firstName . ' ' . $client->lastName ?? " "}}</td>
+                                        <td>{{$client->email}}</td>
+                                        <td>{{$client->phoneNumber}}</td>
+                                        <td>{{$client->address}}</td>
+                                        <td>{{$client->birthday}}</td>
+                                        <td>{{$client->bank->first()->bank}}</td>
+                                        <td>{{$client->bank->first()->nuban}}</td>
+                                        <td>{{number_format($client->partnerships->count())}}</td>
+                                        <td>₦{{number_format($client->wallet->accountBalance ?? 0)}}</td>
+                                        <td>₦{{number_format($client->partnerships->sum('amount'))}}</td>
+                                        <td>
+                                            ₦{{number_format($client->partnerships->where('isRedeemed', 0)->sum('estimatedPayout'))}}
+                                        </td>
+                                        <td>
+                                            ₦{{number_format($client->partnerships->where('isRedeemed', 1)->sum('estimatedPayout'))}}
+                                        </td>
+                                        <td>{{\Carbon\Carbon::parse($client->created_at)->format('Y-m-d')}}</td>
+                                        <td>
+                                            <a href="{{route('client', $client)}}" class="btn btn-primary btn-sm btn-rounded">
+                                                View Partnerships
+                                            </a>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -101,5 +101,5 @@
 <script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.html5.min.js') }}" defer></script>
 <script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}" defer></script>
 <script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}" defer></script>
-<script src="{{ asset ('assets/js/pages/datatables.init.js') }}" defer></script>  
+<script src="{{ asset ('assets/js/pages/datatables.init.js') }}" defer></script>
 @endpush

@@ -15,17 +15,17 @@
                 </div>
             </div>
         </div>
-    </x-slot> 
+    </x-slot>
     <!-- end header -->
     <x-alert />
     <x-auth-validation-errors />
     <div class="row">
         <div class="col-lg-12">
-                
+
             <div class="row mb-3">
                 <div class="col-xl-4 col-sm-6">
                     <div class="mt-2">
-                        <h5>All Packages</h5>
+                        <h5>All Active Packages</h5>
                     </div>
                 </div>
                 <div class="col-lg-8 col-sm-6">
@@ -46,7 +46,7 @@
                             </div>
                             <div class="mt-4 text-center">
                                 <h5 class="mb-3 text-truncate"><a href="{{route('admin-package', $package)}}" class="text-dark">{{$package->name}}</a></h5>
-                                
+
                                 <h5 class="my-0"><b>₦{{number_format($package->price)}}</b></h5>
 
                             </div>
@@ -68,7 +68,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="mt-4 mt-xl-3 p-3" wire:submit.prevent='addPackage'>
+                    <form class="mt-4 mt-xl-3 px-3" wire:submit.prevent='addPackage'>
                         <div class="col-lg">
                             <div class="mb-3">
                                 <label for="name">Package Name</label>
@@ -81,7 +81,7 @@
                                 <input type="text" wire:model='code' class="form-control" id="code">
                             </div>
                         </div>
-                    
+
                         <div class="col-lg">
                             <div class="mb-3">
                                 <label for="price">Minimum Commitment</label>
@@ -95,14 +95,27 @@
                             </div>
                         </div>
                         <div class="col-lg">
+                            <div class="mb-3" wire:ignore>
+                                <label for="period">Frequency of payouts(Months)</label>
+                                <select class="form-control" id="period" wire:model='period'>
+                                    <option selected></option>
+                                    <option value="1">At Once</option>
+                                    <option value="2">Bi-Monthly</option>
+                                    <option value="3">Tri-Monthly</option>
+                                    <option value="4">Quarterly</option>
+                                    <option value="6">Half-Year</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg">
                             <div class="mb-3">
                                 <label for="profit">Profit (%)</label>
                                 <input type="number" inputmode="numeric" wire:model='profit' class="form-control" id="profit">
                             </div>
                         </div>
                         <div class="row" wire:ignore>
-                            <div 
-                                class="text-muted mb-4" 
+                            <div
+                                class="text-muted mb-4"
                                 id="description"
                                 x-data
                                 name="description"

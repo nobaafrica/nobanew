@@ -22,7 +22,7 @@ class Deposits extends Component
 
     public function mount()
     {
-        $this->deposits = Deposit::with('user', 'admin')->get();
+        $this->deposits = Deposit::with('user', 'admin')->orderBy('deposits.created_at', 'DESC')->get();
         $this->users = User::all();
         $this->date = now()->format('Y-m-d');
     }

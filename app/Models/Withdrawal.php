@@ -21,4 +21,9 @@ class Withdrawal extends Model
     {
         return $this->belongsTo(Bank::class, 'user_id', 'user_id');
     }
+
+    public function admin()
+    {
+        return $this->belongsTo(User::class, 'authorized_by', 'id');
+    }
 }

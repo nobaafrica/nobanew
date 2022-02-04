@@ -125,12 +125,18 @@
                                 <input readonly type="text" value='{{ $user->birthday }}' class="form-control" id="basicpill-dob-input">
                             </div>
                         </div>
-                        {{-- <div class="col-lg-6">
+                        <div class="col-lg-6">
                             <div class="mb-3">
-                                <label for="basicpill-bvn-input">BVN</label>
-                                <input readonly type="text" value='{{ $user->bank->first()->bvn }}' class="form-control" id="basicpill-bvn-input">
+                                <label for="basicpill-bank-name">Bank Name</label>
+                                <input readonly type="text" value='{{ $user->bank->first()->bank }}' class="form-control" id="basicpill-bank-name">
                             </div>
-                        </div> --}}
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="mb-3">
+                                <label for="basicpill-acc-number">Account Number</label>
+                                <input readonly type="text" value='{{ $user->bank->first()->nuban }}' class="form-control" id="basicpill-acc-number">
+                            </div>
+                        </div>
                         <div class="col-lg-12">
                             <div class="mb-3">
                                 <label for="basicpill-address-input">Address</label>

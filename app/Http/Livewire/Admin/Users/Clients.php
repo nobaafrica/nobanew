@@ -11,9 +11,9 @@ class Clients extends Component
 
     public function mount()
     {
-        $this->clients = User::where('isAdmin', 0)->with('partnerships', 'wallet')->get();
+        $this->clients = User::where('isAdmin', 0)->with('partnerships', 'wallet', 'bank')->get();
     }
-    
+
     public function render()
     {
         return view('livewire.admin.users.clients');

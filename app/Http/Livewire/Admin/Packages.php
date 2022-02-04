@@ -17,6 +17,7 @@ class Packages extends Component
     public $code;
     public $price;
     public $duration;
+    public $period;
     public $profit;
     public $picture;
     public $description;
@@ -26,6 +27,7 @@ class Packages extends Component
         'code' => 'string|required',
         'price' => 'integer|required',
         'duration' => 'integer|required',
+        'period' => 'integer|required',
         'profit' => 'integer|required',
         'picture' => 'image|max:4096|required',
     ];
@@ -40,6 +42,7 @@ class Packages extends Component
         $package->commodityCode = $this->code;
         $package->price = $this->price;
         $package->duration = $this->duration;
+        $package->period = $this->period;
         $package->profitPercentage = $this->profit;
         $package->info = $this->description;
         $package->frontPicture = $pic;
@@ -56,7 +59,7 @@ class Packages extends Component
     public function render()
     {
         return view('livewire.admin.packages', [
-            'packages' => tap(Package::paginate(10))->map(function ($item) {
+            'packages' => tap(Package::where('status', 'active')->paginate(10))->map(function ($item) {
                 $item->picture = $item->frontPicture ?? $item->pictures->picture;
                 return $item;
             }),
