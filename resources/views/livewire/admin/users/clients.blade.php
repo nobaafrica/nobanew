@@ -60,8 +60,8 @@
                                         <td>{{$client->phoneNumber}}</td>
                                         <td>{{$client->address}}</td>
                                         <td>{{$client->birthday}}</td>
-                                        <td>{{$client->bank->first()->bank}}</td>
-                                        <td>{{$client->bank->first()->nuban}}</td>
+                                        <td>{{$client->bank->first() ? $client->bank->first()->bank : ''}}</td>
+                                        <td>{{$client->bank->first() ? $client->bank->first()->nuban : ''}}</td>
                                         <td>{{number_format($client->partnerships->count())}}</td>
                                         <td>₦{{number_format($client->wallet->accountBalance ?? 0)}}</td>
                                         <td>₦{{number_format($client->partnerships->sum('amount'))}}</td>

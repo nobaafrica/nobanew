@@ -24,10 +24,10 @@ class Dashboard extends Component
         $this->user = User::find(Auth::user()->id);
         $this->wallet = $this->user->wallet;
         $this->withdrawableBalance = is_null($this->wallet) ? null : $this->wallet->withdrawableBalance;
-        $this->partnerships = Partnership::where('user_id', Auth::user()->id)->where('isRedeemed', '0')->with('package')->orderBy('created_at', 'desc')->get();
-        $this->cummulativePayout = $this->partnerships->where('isRedeemed', '1')->sum('estimatedPayout');
+        $this->partnerships = Partnership::where('user_id', Auth::user()->id)->where('isRedeemed', 0)->with('package')->orderBy('created_at', 'desc')->get();
+        $this->cummulativePayout = $this->partnerships->where('isRedeemed', 1)->sum('estimatedPayout');
         $this->cummulativePartnership = $this->partnerships->sum('amount');
-        $this->monthtPayout = Partnership::where('user_id', Auth::user()->id)->where(DB::raw('MONTH(payoutDate) = MONTH(CURRENT_DATE())'))->sum('estimatedPayout');
+        $this->monthPayout = Partnership::where('user_id', Auth::user()->id)->where(DB::raw('MONTH(payoutDate) = MONTH(CURRENT_DATE())'))->sum('estimatedPayout');
         $this->trending =  $this->trendingPackages();
     }
 

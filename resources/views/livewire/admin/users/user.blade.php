@@ -128,13 +128,13 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="basicpill-bank-name">Bank Name</label>
-                                <input readonly type="text" value='{{ $user->bank->first()->bank }}' class="form-control" id="basicpill-bank-name">
+                                <input readonly type="text" value='{{ $user->bank->first() ? $user->bank->first()->bank : '' }}' class="form-control" id="basicpill-bank-name">
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="basicpill-acc-number">Account Number</label>
-                                <input readonly type="text" value='{{ $user->bank->first()->nuban }}' class="form-control" id="basicpill-acc-number">
+                                <input readonly type="text" value='{{ $user->bank->first() ? $user->bank->first()->nuban : '' }}' class="form-control" id="basicpill-acc-number">
                             </div>
                         </div>
                         <div class="col-lg-12">

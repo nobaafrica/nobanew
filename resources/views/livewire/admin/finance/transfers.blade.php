@@ -102,7 +102,7 @@
                                 @foreach ($transfers as $transfer)
                                 <tr>
                                     <td><a href="#" class="text-body fw-bold">#{{$loop->iteration}}</a> </td>
-                                    <td>{{$transfer->user->firstName?? "No Name"}} {{$transfer->user->lastName?? ""}}</td>
+                                    <td>{{$transfer->user->firstName ?? "No Name"}} {{$transfer->user->lastName ?? ""}}</td>
                                     <td>
                                         {{\Carbon\Carbon::parse($transfer->updated_at)->format('Y-m-d')}}
                                     </td>
@@ -110,7 +110,7 @@
                                         ₦{{number_format($transfer->amount)}}
                                     </td>
                                     <td>
-                                        {{$transfer->admin->firstName . ' ' . $transfer->admin->lastName ?? "No Name"}}
+                                        {{($transfer->admin ?? $transfer->admin->firstName . ' ' . $transfer->admin->lastName) ?? "No Name"}}
                                     </td>
                                     <td>
                                         {{\Carbon\Carbon::parse($transfer->created_at)->format('Y-m-d')}}

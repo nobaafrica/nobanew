@@ -43,7 +43,7 @@
                 </div>
             </div>
         </div>
-    </x-slot> 
+    </x-slot>
     <div class="row">
         <div class="col-xl-4">
             <div class="card overflow-hidden">
@@ -181,23 +181,25 @@
                         <table class="table align-middle table-nowrap">
                             <tbody>
                                 @foreach ($partnerships as $partnership)
-                                <tr class="align-content-center">
-                                    <td class="text-center" style="width: 30%">
-                                        <h5 class="mb-2">{{$partnership->package->name}}</h5>
-                                        <p class="text-muted">Package</p>
-                                    </td>
-                                    <td class="d-flex flex-column">
-                                        <div class="text-center">
-                                            <p class="text-muted">Investment value ₦{{number_format(growthPecentage($partnership))}}</p>
-                                        </div>
-                                        <div class="progress mb-2">
-                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary rounded" role="progressbar" style="width: {{completionPercentage($partnership)}}%" aria-valuenow="{{completionPercentage($partnership)}}" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div class="text-center">
-                                            <p class="text-muted">{{daysPercentage($partnership)}}/{{$partnership->package->duration * 30}} Days</p>
-                                        </div>
-                                    </td>
-                                </tr>   
+                                    @if (daysPercentage($partnership) <= $partnership->package->duration * 30)
+                                        <tr class="align-content-center">
+                                            <td class="text-center" style="width: 30%">
+                                                <h5 class="mb-2">{{$partnership->package->name}}</h5>
+                                                <p class="text-muted">Package</p>
+                                            </td>
+                                            <td class="d-flex flex-column">
+                                                <div class="text-center">
+                                                    <p class="text-muted">Investment value ₦{{number_format(growthPecentage($partnership))}}</p>
+                                                </div>
+                                                <div class="progress mb-2">
+                                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary rounded" role="progressbar" style="width: {{completionPercentage($partnership)}}%" aria-valuenow="{{completionPercentage($partnership)}}" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <p class="text-muted">{{daysPercentage($partnership)}}/{{$partnership->package->duration * 30}} Days</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endif
                                 @endforeach
                             </tbody>
                         </table>
@@ -205,7 +207,7 @@
                 </div>
             </div>
         </div>
-        
+
     </div>
     <!-- end row -->
     <div class="row">
@@ -381,7 +383,7 @@
             </div>
         </div>
     </div>
-    <!-- end modal -->   
+    <!-- end modal -->
     @endpush
 </div>
 <!-- end main content-->
