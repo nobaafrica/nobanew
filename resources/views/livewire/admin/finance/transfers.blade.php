@@ -117,7 +117,7 @@
                                     </td>
                                     <td>
                                         <!-- Button trigger modal -->
-                                        <a href="{{route('client', $transfer->user->id)}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
+                                        <a href=" {{isset($transfer->user) ? route('client', $transfer->user->id) : '#'}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
                                             View User
                                         </a>
                                     </td>
