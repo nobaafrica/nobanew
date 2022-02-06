@@ -110,7 +110,7 @@
                                         ₦{{number_format($transfer->amount)}}
                                     </td>
                                     <td>
-                                        {{($transfer->admin ?? $transfer->admin->firstName . ' ' . $transfer->admin->lastName) ?? "No Name"}}
+                                        {{(isset($transfer->admin) ?? $transfer->admin->firstName . ' ' . $transfer->admin->lastName) ?? "No Name"}}
                                     </td>
                                     <td>
                                         {{\Carbon\Carbon::parse($transfer->created_at)->format('Y-m-d')}}
