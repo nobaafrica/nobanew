@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                    <h4 class="mb-sm-0 font-size-18">Packages</h4>
+                    <h4 class="mb-sm-0 font-size-18">Partnerships</h4>
 
                     <div class="page-title-right">
                         <ol class="m-0 breadcrumb">
@@ -46,6 +46,7 @@
                                     <th class="align-middle">Package Name</th>
                                     <th class="align-middle">Date</th>
                                     <th class="align-middle">Package Unit</th>
+                                    <th class="align-middle">Status</th>
                                     <th class="align-middle">Total Commitment</th>
                                     <th class="align-middle">Estimated Payout</th>
                                     <th class="align-middle">Payout Date</th>
@@ -66,6 +67,11 @@
                                     </td>
                                     <td>
                                         {{$partnership->commodityUnit}}
+                                    </td>
+                                    <td>
+                                        <span class='badge badge-pill font-size-13 badge-soft-{{ $partnership->isRedeemed ? 'danger' : 'success' }}'>
+                                            {{$partnership->isRedeemed ? 'Expired' : 'Active'}}
+                                        </span>
                                     </td>
                                     <td>
                                         ₦{{number_format($partnership->amount)}}
