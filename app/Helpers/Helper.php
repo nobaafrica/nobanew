@@ -9,7 +9,7 @@ function numberToWord($number)
     return $digits->format($number);
 }
 
-function growthPecentage(object $partnership) 
+function growthPecentage(object $partnership)
 {
     $partnership_duration = $partnership->package->duration * 30;
     $dailyInterest = $partnership->estimatedProfit/$partnership_duration;
