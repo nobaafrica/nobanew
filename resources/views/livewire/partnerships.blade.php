@@ -55,40 +55,40 @@
                             </thead>
                             <tbody>
                                 @foreach ($partnerships as $partnership)
-                                <tr>
-                                    <td>
-                                        <a href="{{route('agreement', $partnership)}}" target="_blank" class="btn btn-primary btn-sm btn-rounded">
-                                            Download Agreement
-                                        </a>
-                                    </td>
-                                    <td><a href="{{route('package',$partnership->package)}}" class="text-body fw-bold">{{$partnership->package_name}}</a> </td>
-                                    <td>
-                                       {{\Carbon\Carbon::parse($partnership->created_at)->format('d F, Y')}}
-                                    </td>
-                                    <td>
-                                        {{$partnership->commodityUnit}}
-                                    </td>
-                                    <td>
-                                        <span class='badge badge-pill font-size-13 badge-soft-{{ $partnership->isRedeemed ? 'danger' : 'success' }}'>
-                                            {{$partnership->isRedeemed ? 'Expired' : 'Active'}}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        ₦{{number_format($partnership->amount)}}
-                                    </td>
-                                    <td>
-                                        ₦{{number_format($partnership->estimatedPayout)}} {{$partnership->isRedeemed == 1 ? "(Paid Out)" : ""}}
-                                    </td>
-                                    <td>
-                                        {{\Carbon\Carbon::parse($partnership->payoutDate)->format('d F, Y')}}
-                                     </td>
-                                    <td>
-                                        <!-- Button trigger modal -->
-                                        <a href="{{$partnership->isRedeemed == 1 ? route('agreement', $partnership) : route('partnership', $partnership) }}" class="btn btn-primary btn-sm btn-rounded">
-                                            View Details
-                                        </a>
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>
+                                            <a href="{{route('agreement', $partnership)}}" target="_blank" class="btn btn-primary btn-sm btn-rounded">
+                                                Download Agreement
+                                            </a>
+                                        </td>
+                                        <td><a href="{{route('package',$partnership->package)}}" class="text-body fw-bold">{{$partnership->package_name}}</a> </td>
+                                        <td>
+                                           {{\Carbon\Carbon::parse($partnership->created_at)->format('d F, Y')}}
+                                        </td>
+                                        <td>
+                                            {{$partnership->commodityUnit}}
+                                        </td>
+                                        <td>
+                                            <span class='badge badge-pill font-size-13 badge-soft-{{ now() > $partnership->payoutDate ? 'danger' : 'success' }}'>
+                                                {{now() > $partnership->payoutDate ? 'Expired' : 'Active'}}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            ₦{{number_format($partnership->amount)}}
+                                        </td>
+                                        <td>
+                                            ₦{{number_format($partnership->estimatedPayout)}} {{$partnership->isRedeemed == 1 ? "(Paid Out)" : ""}}
+                                        </td>
+                                        <td>
+                                            {{\Carbon\Carbon::parse($partnership->payoutDate)->format('d F, Y')}}
+                                         </td>
+                                        <td>
+                                            <!-- Button trigger modal -->
+                                            <a href="{{$partnership->isRedeemed == 1 ? route('agreement', $partnership) : route('partnership', $partnership) }}" class="btn btn-primary btn-sm btn-rounded">
+                                                View Details
+                                            </a>
+                                        </td>
+                                    </tr>
                                 @endforeach
                             </tbody>
                         </table>
