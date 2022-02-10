@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Webhook;
+use App\Http\Livewire\Admin\Crm\Emails;
+use App\Http\Livewire\Admin\Crm\Sms;
 use App\Http\Livewire\Admin\Dashboard as AdminDashboard;
 use App\Http\Livewire\Admin\EditPackage;
 use App\Http\Livewire\Admin\Finance\Deposits;
@@ -80,6 +82,10 @@ Route::get('/admin/users/clients', Clients::class)->name('clients')->middleware(
 Route::get('/admin/users/suspended-clients', SuspendedUsers::class)->name('suspended-clients')->middleware(['auth', 'isAdmin']);
 Route::get('/admin/clients/{user}', User::class)->name('client')->middleware(['auth', 'isAdmin']);
 Route::get('/admin/users/admins', Admins::class)->name('admins')->middleware(['auth', 'isAdmin']);
+
+// Admin CRM Routes
+Route::get('/admin/crm/sms', Sms::class)->name('sms')->middleware(['auth', 'isAdmin']);
+Route::get('/admin/crm/emails', Emails::class)->name('emails')->middleware(['auth', 'isAdmin']);
 
 // Admin Finance Routes
 Route::get('/admin/finance/deposits', Deposits::class)->name('deposits')->middleware(['auth', 'isAdmin']);

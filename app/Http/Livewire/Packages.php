@@ -3,7 +3,6 @@
 namespace App\Http\Livewire;
 
 use App\Models\Package;
-use Illuminate\Pagination\Paginator;
 use Livewire\Component;
 use Livewire\WithPagination;
 

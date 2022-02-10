@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Mail\PayoutIsReady;
+use App\Models\Package;
 use App\Models\Partnership;
 use App\Models\User;
 use Illuminate\Console\Command;
@@ -47,7 +48,7 @@ class RedeemCron extends Command
             ->join('partnerships', 'users.id', '=', 'partnerships.user_id')
             ->join('packages', 'partnerships.package_id', '=', 'packages.id')
             ->where([['isRedeemed','=', 0], ['period', '>', 1], ['payoutDate', '>', now()]])
-            ->select(['partnerships.id as partnership_id', 'users.id', 'firstName', 'lastName', 'email', 'period', 'no_of_matured_payout', 'partnerships.created_at'])
+            ->select(['partnerships.id as partnership_id', 'users.id', 'period', 'no_of_matured_payout', 'partnerships.created_at'])
             ->get();
 
         foreach ($activePartnerships as $activePartnership) {
@@ -56,12 +57,15 @@ class RedeemCron extends Command
             $createdDate = $activePartnership->created_at;
             $futureDate = date('Y-m-d', strtotime($createdDate . ' +  ' . $packagePeriod * ($maturedPayout ?: 1) . 'months'));
             $today = date('Y-m-d', strtotime(now()));
-            if ($today == $futureDate) {
-                $partnership = Partnership::find($activePartnership->partnership_id);
+            $partnership = Partnership::find($activePartnership->partnership_id);
+            $package = $partnership->package;
+            $totalPayout = Package::totalPayouts($package);
+
+            if ($today == $futureDate && $maturedPayout != $totalPayout) {
                 $partnership->no_of_matured_payout += 1;
                 $partnership->save();
 
-                $profit = \App\Models\Package::periodicPayout($partnership->package);
+                $profit = \App\Models\Package::periodicPayout($package);
 
                 $user = User::find($activePartnership->id);
                 $user->wallet()->update([
@@ -76,7 +80,7 @@ class RedeemCron extends Command
                     'reference' => $activePartnership->partnership_id,
                     'status' => 'success',
                     'time' => now(),
-                    'payment_method' => 'manual'
+                    'payment_method' => 'Automated'
                 ]);
                 Mail::to($user)->queue(new PayoutIsReady($user));
             }

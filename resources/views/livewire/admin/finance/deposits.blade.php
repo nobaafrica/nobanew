@@ -145,7 +145,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="p-3 mt-4 mt-xl-3" wire:submit.prevent='addDeposit'>
+                    <form class="p-3 mt-4 mt-xl-3" wire:submit='addDeposit'>
 
                         <div class="col-lg">
                             <div class="mb-3">

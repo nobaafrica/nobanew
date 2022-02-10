@@ -84,8 +84,8 @@
                         <li>
                             <a href="javascript: void(0);" class="has-arrow" key="t-level-crm" aria-expanded="true">CRM</a>
                             <ul class="sub-menu mm-collapse mm-show" aria-expanded="true" style="">
-                                <li><a href="{{route('deposits')}}" key="t-level-crm-sms">SMS</a></li>
-                                <li><a href="{{route('payouts')}}" key="t-level-crm-emails">Emails</a></li>
+                                <li><a href="{{route('sms')}}" key="t-level-crm-sms">SMS</a></li>
+                                <li><a href="{{route('emails')}}" key="t-level-crm-emails">Emails</a></li>
                             </ul>
                         </li>
                     </ul>
