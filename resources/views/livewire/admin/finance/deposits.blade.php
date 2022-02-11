@@ -120,7 +120,7 @@
                                     </td>
                                     <td>
                                         <!-- Button trigger modal -->
-                                        <a href="{{route('client', $deposit->user->id)}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
+                                        <a href="{{route('client', $deposit->user_id)}}" class="btn btn-primary btn-sm btn-rounded waves-effect waves-light">
                                             View User
                                         </a>
                                     </td>

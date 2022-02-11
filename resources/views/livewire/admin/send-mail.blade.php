@@ -15,6 +15,7 @@
         </div>
     </x-slot>
     <x-alert />
+    <x-auth-validation-errors />
     <div class="mb-3 row">
         <div class="col-xl-4 col-sm-6">
             <div class="mb-2 search-box me-2 d-inline-block">
@@ -37,7 +38,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form class="p-3" wire:submit='sendMail'>
+                            <form class="p-3" wire:submit.prevent='sendMail'>
                                 <div class="col-lg">
                                     <div class="mb-3">
                                         <label for="select-user">User</label>

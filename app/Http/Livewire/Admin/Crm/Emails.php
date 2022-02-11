@@ -24,20 +24,22 @@ class Emails extends Component
 
     public function sendMail()
     {
-        $this->validate(['user' => 'required', 'description' => 'required']);
+        $this->validate(['user' => 'required', 'subject' => 'required', 'description' => 'required']);
         $user = User::find($this->user);
 
-        CrmSmsEmail::create([
-            'user_id' => $this->user,
-            'authorized_by' => auth()->user()->id,
-            'type' => CrmSmsEmail::EMAIL,
-            'subject' => $this->subject,
-            'content' => $this->description
-        ]);
-
-        Mail::to($user)->queue(new CrmMail($this->description, $this->subject));
-        session()->flash('success', 'Email sent successfully');
-
+        if ($user) {
+            Mail::to($user)->queue(new CrmMail($this->description, $this->subject));
+            CrmSmsEmail::create([
+                'user_id' => $this->user,
+                'authorized_by' => auth()->user()->id,
+                'type' => CrmSmsEmail::EMAIL,
+                'subject' => $this->subject,
+                'content' => $this->description
+            ]);
+            session()->flash('success', 'Email sent successfully');
+        } else {
+            session()->flash('error', 'User not found.');
+        }
         return redirect()->route('emails');
     }
 

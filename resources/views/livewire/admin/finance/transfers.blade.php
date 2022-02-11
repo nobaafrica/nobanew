@@ -25,11 +25,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-8 col-sm-6">
-            <div class="text-sm-end">
-                <a href="#" data-bs-target="#new-deposit" data-bs-toggle="modal" class="mb-2 btn btn-primary btn-rounded waves-effect waves-light "><i class="mdi mdi-plus me-1"></i> Add Deposit</a>
-            </div>
-        </div>
     </div>
     <div class="mb-2 row">
         <div class="col">
