@@ -62,10 +62,11 @@ class RedeemCron extends Command
             $totalPayout = Package::totalPayouts($package);
 
             if ($today == $futureDate && $maturedPayout != $totalPayout) {
-                $partnership->no_of_matured_payout += 1;
-                $partnership->save();
+                $profit = Package::periodicPayout($package);
 
-                $profit = \App\Models\Package::periodicPayout($package);
+                $partnership->no_of_matured_payout += 1;
+                $partnership->estimatedPayout -= $profit;
+                $partnership->save();
 
                 $user = User::find($activePartnership->id);
                 $user->wallet()->update([
