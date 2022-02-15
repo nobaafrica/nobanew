@@ -153,7 +153,7 @@
                                 <select class="form-control" id="select-user" wire:model='user' wire:ignore>
                                     <option selected>Select User</option>
                                     @foreach ($users as $user)
-                                    <option value="{{$user->id}}">{{$user->firstName}} {{$user->lastName}}</option>
+                                        <option value="{{$user->id}}">{{$user->firstName ?? $user->email}} {{$user->lastName}}</option>
                                     @endforeach
                                 </select>
                             </div>
