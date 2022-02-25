@@ -25,12 +25,12 @@ class Emails extends Component
     public function sendMail()
     {
         $this->validate(['user' => 'required', 'subject' => 'required', 'description' => 'required']);
-        $user = User::find($this->user);
+        $user = User::firstWhere('email', $this->user);
 
         if ($user) {
             Mail::to($user)->queue(new CrmMail($this->description, $this->subject));
             CrmSmsEmail::create([
-                'user_id' => $this->user,
+                'user_id' => $user->id,
                 'authorized_by' => auth()->user()->id,
                 'type' => CrmSmsEmail::EMAIL,
                 'subject' => $this->subject,

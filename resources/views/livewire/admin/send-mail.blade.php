@@ -42,12 +42,12 @@
                                 <div class="col-lg">
                                     <div class="mb-3">
                                         <label for="select-user">User</label>
-                                        <select class="form-control" id="select-user" wire:model='user' wire:ignore>
-                                            <option selected>Select User</option>
+                                        <input class="form-control" list="datalistOptions" placeholder="Type to search..." wire:model='user' wire:ignore>
+                                        <datalist id="datalistOptions">
                                             @foreach ($users as $user)
-                                                <option value="{{$user->id}}">{{$user->firstName}} {{$user->lastName}}</option>
+                                                <option value="{{$user->email}}">{{$user->firstName . ' ' . $user->lastName }}</option>
                                             @endforeach
-                                        </select>
+                                        </datalist>
                                     </div>
                                 </div>
                                 <div class="mb-4 col-lg">
@@ -65,12 +65,12 @@
                                         name="description"
                                         x-ref="quillEditor"
                                         x-init="
-                                quill = new Quill($refs.quillEditor, {theme: 'snow'});
-                                quill.on('text-change', function () {
-                                    $dispatch('input', quill.root.innerHTML);
-                                    @this.set('description', quill.root.innerHTML)
-                                });
-                            "
+                                             quill = new Quill($refs.quillEditor, {theme: 'snow'});
+                                                quill.on('text-change', function () {
+                                                    $dispatch('input', quill.root.innerHTML);
+                                                    @this.set('description', quill.root.innerHTML)
+                                                });
+                                            "
                                     >
                                     </div>
                                 </div>
@@ -152,7 +152,6 @@
 @push('scripts')
     <script src="{{ asset ('assets/libs/datatables.net/js/jquery.dataTables.min.js') }}" defer></script>
     <script src="{{ asset ('assets/libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}" defer></script>
-
     <script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.print.min.js') }}" defer></script>
     <script src="{{ asset ('assets/libs/datatables.net-buttons/js/buttons.colVis.min.js') }}" defer></script>
     <script src="//cdn.quilljs.com/1.3.6/quill.min.js" defer></script>
@@ -172,8 +171,5 @@
             $(".dataTables_filter").addClass("d-none");
             $(".dataTables_length label").addClass("d-flex align-items-center justify-content-between align-content-center");
         })
-        // $(function () {
-
-        // });
     </script>
 @endpush

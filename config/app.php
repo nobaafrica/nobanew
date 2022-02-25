@@ -64,6 +64,8 @@ return [
 
     'payment_callback' => env('PAYMENT_CALLBACK'),
 
+    'twilio_callback' => env('TWILIO_CALLBACK'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

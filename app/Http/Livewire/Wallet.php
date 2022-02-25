@@ -3,20 +3,17 @@
 namespace App\Http\Livewire;
 
 use App\Events\CustomerIdentified;
-use App\Mail\WithdrawalRequestApproved;
 use App\Mail\WithdrawalRequestToAdmin;
 use App\Models\Transactions;
 use App\Models\User;
 use App\Models\Wallet as ModelsWallet;
 use App\Models\Withdrawal;
 use App\Traits\PaystackCustomerTrait;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
 class Wallet extends Component
@@ -63,10 +60,10 @@ class Wallet extends Component
     public function generateWallet()
     {
         $wallet = ModelsWallet::where('user_id', $this->user->id)->first();
-        $customerRequest = Http::withToken(config('app.paystack_secret'))->get("https://api.paystack.co/customer/".Auth::user()->email);
+        $customerRequest = Http::withToken(config('app.paystack_secret'))->get("https://api.paystack.co/customer/" . Auth::user()->email);
         $fetchCustomer = $customerRequest->object();
-        if($fetchCustomer->status == 'true'):
-            if($fetchCustomer->data->identified== 'true' && !empty($fetchCustomer->data->dedicated_account)):
+        if ($fetchCustomer->status == 'true'):
+            if ($fetchCustomer->data->identified == 'true' && !empty($fetchCustomer->data->dedicated_account)):
                 $wallet ? $wallet->update([
                     'bank' => $fetchCustomer->data->dedicated_account->bank->name,
                     'customerCode' => $fetchCustomer->data->customer_code,
@@ -80,17 +77,17 @@ class Wallet extends Component
                         'customerCode' => $fetchCustomer->data->customer_code,
                         'accountNumber' => $fetchCustomer->data->dedicated_account->account_number,
                         'accountName' => $fetchCustomer->data->dedicated_account->account_name,
-                ]);
+                    ]);
                 session()->flash('success', "Account generated successfully");
                 return redirect()->route('wallet');
-            elseif($fetchCustomer->data->identified == 'true' && empty($fetchCustomer->data->dedicated_account)):
+            elseif ($fetchCustomer->data->identified == 'true' && empty($fetchCustomer->data->dedicated_account)):
                 CustomerIdentified::dispatch($fetchCustomer->data->customer_code);
                 session()->flash('success', "Account is being generated");
                 return redirect()->route('wallet');
-            elseif($fetchCustomer->data->identified == 'false'):
+            elseif ($fetchCustomer->data->identified == 'false'):
                 return $this->verifyCustomer($fetchCustomer->data->customer_code, $this->user);
             endif;
-        elseif($customerRequest->status == 404):
+        elseif ($customerRequest->status == 404):
             return $this->createCustomerProfile($this->user);
         endif;
     }
@@ -107,15 +104,18 @@ class Wallet extends Component
             'callback_url' => config('app.payment_callback'),
         ])->object();
 
-        if($initpayment->status == 'true'):
-            $this->user->transactions()->create([
-                'id' => Str::uuid(),
-                'transactionType' => 'credit',
-                'amount' => $this->fundingAmount,
-                'reference' => $ref,
-                'status' => 'pending',
-                'time' => now(),
-            ]);
+        if ($initpayment->status == 'true'):
+            $existingTransaction = Transactions::where('reference', $ref)->get();
+            if (!$existingTransaction->count()) {
+                $this->user->transactions()->create([
+                    'id' => Str::uuid(),
+                    'transactionType' => 'credit',
+                    'amount' => $this->fundingAmount,
+                    'reference' => $ref,
+                    'status' => 'pending',
+                    'time' => now(),
+                ]);
+            }
             return redirect($initpayment->data->authorization_url);
         else:
             session()->flash('error', 'Unable to initialize payment');
@@ -131,10 +131,10 @@ class Wallet extends Component
     public function withdrawFunds()
     {
         // check available funds
-        if(is_null($this->wallet)):
+        if (is_null($this->wallet)):
             session()->flash('error', 'Please setup and fund your wallet');
         else:
-            if($this->withdrawalAmount > $this->withdrawableBalance):
+            if ($this->withdrawalAmount > $this->withdrawableBalance):
                 session()->flash('error', 'You do not have enough money in your account for this transaction');
             else:
                 // initiate withdrawal request

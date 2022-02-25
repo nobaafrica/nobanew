@@ -13,7 +13,8 @@
         "laravel/framework": "^8.54",
         "laravel/jetstream": "^2.3",
         "laravel/tinker": "^2.5",
-        "livewire/livewire": "^2.5"
+        "livewire/livewire": "^2.5",
+        "twilio/sdk": "^6.34"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -23,7 +23,7 @@ class Deposits extends Component
     public function mount()
     {
         $this->deposits = Deposit::with('user', 'admin')->orderBy('deposits.created_at', 'DESC')->get();
-        $this->users = User::orderBy('lastName', 'ASC')->get();
+        $this->users = User::orderBy('firstName', 'ASC')->get();
         $this->date = now()->format('Y-m-d');
     }
 
@@ -37,8 +37,9 @@ class Deposits extends Component
             'date' => 'required|date',
         ]);
         $receipt = $this->receipt->store('src/public/images', 'public');
+        $user = User::firstWhere('email', $this->user);
         $saveDeposit = Deposit::create([
-            'user_id' => $this->user,
+            'user_id' => $user->id,
             'amount' => $this->amount,
             'description' => $this->description,
             'payment_receipt' => $receipt,
@@ -46,7 +47,6 @@ class Deposits extends Component
             'deposit_by' => auth()->user()->id,
         ]);
         if($saveDeposit):
-            $user = User::find($this->user);
             $balance = is_null($user->wallet) ? 0 : $user->wallet->accountBalance;
             $user->transactions()->create([
                 'id' => Str::uuid(),

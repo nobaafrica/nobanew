@@ -145,17 +145,17 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="p-3 mt-4 mt-xl-3" wire:submit='addDeposit'>
+                    <form class="p-3" wire:submit='addDeposit'>
 
                         <div class="col-lg">
                             <div class="mb-3">
                                 <label for="select-user">User</label>
-                                <select class="form-control" id="select-user" wire:model='user' wire:ignore>
-                                    <option selected>Select User</option>
+                                <input class="form-control" list="datalistOptions" placeholder="Type to search..." wire:model='user' wire:ignore>
+                                <datalist id="datalistOptions">
                                     @foreach ($users as $user)
-                                        <option value="{{$user->id}}">{{$user->firstName ?? $user->email}} {{$user->lastName}}</option>
+                                        <option value="{{$user->email}}">{{$user->firstName . ' ' . $user->lastName }}</option>
                                     @endforeach
-                                </select>
+                                </datalist>
                             </div>
                         </div>
 
