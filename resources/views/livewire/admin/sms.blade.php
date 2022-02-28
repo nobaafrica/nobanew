@@ -79,10 +79,10 @@
                                 @foreach ($sms as $text)
                                     <tr>
                                         <td><a href="#" class="text-body fw-bold">#{{$loop->iteration}}</a> </td>
-                                        <td>{{$text->user->firstName ?? "No Name"}} {{$text->user->lastName?? ""}}</td>
-                                        <td>{{isset($email->admin) ? $email->admin->firstName . ' ' . $email->admin->lastName : '' }}</td>
+                                        <td>{{$text->user->firstName ? $text->user->firstName . ' ' . $text->user->lastName: $text->user->email}}</td>
+                                        <td>{{isset($text->admin) ? $text->admin->firstName . ' ' . $text->admin->lastName : '' }}</td>
                                         <td>{{$text->status}}</td>
-                                        <td>{{\Carbon\Carbon::parse($email->created_at)->format('Y-m-d')}}</td>
+                                        <td>{{\Carbon\Carbon::parse($text->created_at)->format('Y-m-d')}}</td>
                                         <td>
                                             <!-- Button trigger modal -->
                                             <a href="#" data-bs-target="#view-mail-{{$loop->iteration}}" data-bs-toggle="modal" class="mb-2 btn btn-primary btn-rounded waves-effect waves-light">View Message</a>
