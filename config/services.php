@@ -36,4 +36,8 @@ return [
         'from' => env('TWILIO_FROM'),
     ],
 
+    'termii' => [
+        'sms' => env('TERMII_BASE_URL'),
+        'key' => env('TERMII_API_KEY')
+    ],
 ];

@@ -13,6 +13,7 @@ class CrmSmsEmail extends Model
 
     const SMS = 'sms';
     const EMAIL = 'email';
+    const MTN_NUMBERS = ["0703", "0706", "0803", "0806", "0810", "0813", "0814", "0816", "0903", "0906", "0913"];
 
     public function getIncrementing()
     {

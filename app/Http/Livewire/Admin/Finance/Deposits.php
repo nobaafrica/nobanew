@@ -33,16 +33,16 @@ class Deposits extends Component
             'user' => 'required',
             'amount' => 'required|numeric',
             'description' => 'required',
-            'receipt' => 'required|image|max:2048',
+//            'receipt' => 'required|image|max:2048',
             'date' => 'required|date',
         ]);
-        $receipt = $this->receipt->store('src/public/images', 'public');
+//        $receipt = $this->receipt->store('src/public/images', 'public');
         $user = User::firstWhere('email', $this->user);
         $saveDeposit = Deposit::create([
             'user_id' => $user->id,
             'amount' => $this->amount,
             'description' => $this->description,
-            'payment_receipt' => $receipt,
+            'payment_receipt' => '',
             'date' => $this->date,
             'deposit_by' => auth()->user()->id,
         ]);
@@ -58,18 +58,17 @@ class Deposits extends Component
                 'time' => now(),
             ]);
             $user->wallet()->updateOrCreate(
-                [ 'user_id' => $this->user],
+                [ 'user_id' => $user->id],
                 [
-                    'user_id' => $this->user,
+                    'user_id' => $user->id,
                     'accountBalance' => $balance + $this->amount,
                 ]
             );
             session()->flash('success', 'Deposit added successfully');
-            return redirect()->route('deposits');
         else:
             session()->flash('error', 'Something went wrong');
-            return redirect()->route('deposits');
         endif;
+        return redirect()->route('deposits');
 
 
     }

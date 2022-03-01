@@ -145,8 +145,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form class="p-3" wire:submit='addDeposit'>
-
+                    <form class="p-3" wire:submit.prevent='addDeposit'>
                         <div class="col-lg">
                             <div class="mb-3">
                                 <label for="select-user">User</label>
@@ -183,12 +182,12 @@
                             >
                             </div>
                         </div>
-                        <div class="col">
-                            <div class="mb-3">
-                                <label for="payment-receipt" class="form-label">Payment Receipt</label>
-                                <input class="form-control" wire:model='receipt' type="file" id="payment-receipt">
-                            </div>
-                        </div>
+{{--                        <div class="col">--}}
+{{--                            <div class="mb-3">--}}
+{{--                                <label for="payment-receipt" class="form-label">Payment Receipt</label>--}}
+{{--                                <input class="form-control" wire:model='receipt' type="file" id="payment-receipt">--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                         <div class="col-lg">
                             <div class="mb-3">
                                 <label for="date">Payment Date</label>

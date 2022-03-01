@@ -5,6 +5,7 @@ namespace App\Traits;
 use Twilio\Exceptions\ConfigurationException;
 use Twilio\Exceptions\TwilioException;
 use Twilio\Rest\Client;
+use Zeevx\LaraTermii\LaraTermii;
 
 trait SendSMSTrait
 {
@@ -20,17 +21,22 @@ trait SendSMSTrait
     {
         $sid    = config('services.twilio.sid');
         $token  = config('services.twilio.token');
-        $from   = config('services.twilio.from');
+        $from   = config('app.name');
         $twilio = new Client($sid, $token);
 
         return $twilio->messages->create(
             $recipient, // to
             [
                 "from" => $from,
-                "body" => $message,
-                'statusCallback' => config('app.twilio_callback')
+                "body" => $message
             ]
         );
+    }
+
+    public function sendTextMessage($to, $sms): string
+    {
+        $termii = new LaraTermii(config('services.termii.key'));
+        return $termii->sendMessage($to, config('app.name'), $sms);
     }
 
     public function getErrorMessage($code, $message): string

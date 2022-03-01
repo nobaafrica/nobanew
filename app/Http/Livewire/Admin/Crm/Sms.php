@@ -29,15 +29,25 @@ class Sms extends Component
     {
         try {
             $user = User::where('phoneNumber', $this->phoneNumber)->where('phoneNumber', '!=', null)->first();
-            $message = $this->sendMessage($this->content, '+234' . Str::substr($user->phoneNumber, 1));
+            $mtnNumber = in_array(Str::substr($user->phoneNumber, 0, 4), CrmSmsEmail::MTN_NUMBERS);
+            $phoneNumber = '234' . Str::substr($user->phoneNumber, 1);
+            if ($mtnNumber) {
+                $message = $this->sendTextMessage($phoneNumber, $this->content);
+                $status = json_decode($message)->message;
+                $sid = json_decode($message)->message_id;
+            } else {
+                $message = $this->sendMessage($this->content, '+' . $phoneNumber);
+                $status = $message->status;
+                $sid = $message->sid;
+            }
             if ($user && $message) {
                 CrmSmsEmail::create([
-                    'user_id' => $this->userId,
+                    'user_id' => $user->id,
                     'authorized_by' => auth()->user()->id,
                     'type' => CrmSmsEmail::SMS,
                     'content' => $this->content,
-                    'status' => $message->status,
-                    'sid' => $message->sid,
+                    'status' => $status,
+                    'sid' => $sid,
                 ]);
                 session()->flash('success', 'SMS sent successfully');
             } else {
@@ -51,7 +61,7 @@ class Sms extends Component
                 'content' => $this->content,
                 'status' => $e->getMessage()
             ]);
-            session()->flash('error', 'There was an issue trying to send the text message');
+            session()->flash('error', $e->getMessage());
         }
         return redirect()->route('sms');
     }
