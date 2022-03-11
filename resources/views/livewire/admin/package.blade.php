@@ -44,10 +44,20 @@
                             <div class="mt-4 mt-xl-3">
                                 <a href="{{route('packages')}}" class="text-primary">Package</a>
                                 <h4 class="mt-1 mb-3">{{$package->name}}</h4>
+
+                                {{-- <p class="text-muted float-start me-3">
+                                    <span class="bx bxs-star text-warning"></span>
+                                    <span class="bx bxs-star text-warning"></span>
+                                    <span class="bx bxs-star text-warning"></span>
+                                    <span class="bx bxs-star text-warning"></span>
+                                    <span class="bx bxs-star text-warning"></span>
+                                </p> --}}
+                                {{-- <p class="text-muted mb-4">( 152 Customers Review )</p> --}}
+
                                 <h6 class="text-success text-uppercase">{{$package->profitPercentage}}% Profit</h6>
                                 <h5>Minimum Commitment : <b>₦{{number_format($package->price)}}</b></h5>
                                 <h5 class="mb-4">Estimated Payout : <b>₦{{number_format($package->price + $package->price * ($package->profitPercentage/100))}}</b></h5>
-                                <h6 class="text-muted mb-4">{!! $package->info ?: '' !!}</h6>
+                                <p class="text-muted mb-4">{!! $package->info !!}</p>
                             </div>
                         </div>
                     </div>
