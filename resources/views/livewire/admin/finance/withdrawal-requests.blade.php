@@ -142,8 +142,8 @@
                                 <tr>
                                     <td><a href="#" class="text-body fw-bold">#{{$loop->iteration}}</a> </td>
                                     <td>{{$withdrawal->user->firstName?? "No Name"}} {{$withdrawal->user->lastName?? ""}}</td>
-                                    <td>{{ $withdrawal->bank->bank}}</td>
-                                    <td>{{ $withdrawal->bank->nuban}}</td>
+                                    <td>{{ isset($withdrawal->bank) ?: $withdrawal->bank->bank}}</td>
+                                    <td>{{ isset($withdrawal->bank) ?: $withdrawal->bank->nuban}}</td>
                                     <td>
                                         ₦{{number_format($withdrawal->amount)}}
                                     </td>

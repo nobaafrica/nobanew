@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-    </x-slot> 
+    </x-slot>
     <!-- end header -->
     <x-alert />
     <div class="row">
@@ -57,7 +57,7 @@
                                 <h6 class="text-success text-uppercase">{{$package->profitPercentage}}% Profit</h6>
                                 <h5>Minimum Commitment : <b>₦{{number_format($package->price)}}</b></h5>
                                 <h5 class="mb-4">Estimated Payout : <b>₦{{number_format($package->price + $package->price * ($package->profitPercentage/100))}}</b></h5>
-                                <p class="text-muted mb-4">{!! $package->info !!}</p>
+                                <p class="text-muted mb-4">{!! $package->info ?: '' !!}</p>
                             </div>
                         </div>
                     </div>
@@ -68,5 +68,5 @@
             <!-- end card -->
         </div>
     </div>
-    <!-- end row --> 
+    <!-- end row -->
 </div>
